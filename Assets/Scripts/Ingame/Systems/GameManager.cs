@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static readonly Vector3 PieceFieldSize = new Vector3(10, 10);
+    public static readonly Vector3Int PieceFieldSize = new Vector3Int(10, 10);
     public const int PieceSize = 32;
     public const int PieceTypeAmount = 7;
     void Start()
