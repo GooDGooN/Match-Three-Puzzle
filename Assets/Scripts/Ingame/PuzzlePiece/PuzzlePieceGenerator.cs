@@ -1,4 +1,4 @@
-using System;
+
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,6 +8,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
 {
     public GameObject PuzzlePiecePrefab;
     public PuzzlePiece[,] puzzlePieces;
+    private Vector2Int matchablePieceAmount = new Vector2Int(3, 5);
 
     private void Awake() 
     {
@@ -16,12 +17,35 @@ public class PuzzlePieceGenerator : MonoBehaviour
 
     private void Start()
     {
-        #region PieceCreate
+        #region Initialize
+        var fieldWidth = GameManager.PieceFieldSize.x;
+        var fieldHeight = GameManager.PieceFieldSize.y;
+        puzzlePieces = new PuzzlePiece[fieldWidth, fieldHeight];
+        #endregion
+
+        #region Minimum Matchable Piece Create
         {
-            puzzlePieces = new PuzzlePiece[GameManager.PieceFieldSize.x, GameManager.PieceFieldSize.y];
+            List<int[,]> matchablePointList = new();
+            var count = Random.Range(matchablePieceAmount.x, matchablePieceAmount.y + 1);
+            for (int i = 0; i < count; i++)
+            {
+                var ix = Utility.PickRandom(0, fieldWidth);
+                var iy = Utility.PickRandom(0, fieldHeight);
+                matchablePointList.Add(new int[ix, iy]);
+            }
+
+            while(matchablePointList.Count > 0)
+            {
+                var randomIndex = Random.Range(0, matchablePointList.Count);
+
+                //check
+            }
+        }
+        #endregion
+        #region Piece Create All
+        {
             var fieldSize = GameManager.PieceFieldSize - new Vector3(1.0f, 1.0f, 0.0f);
             var pieceSize = GameManager.PieceSize + 4;
-            var typeArray = Enum. GetValues(typeof(PieceType));
 
             for (int iy = 0; iy <= fieldSize.y; iy++)
             {
