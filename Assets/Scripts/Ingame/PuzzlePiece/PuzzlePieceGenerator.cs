@@ -7,12 +7,12 @@ using UnityEngine;
 public class PuzzlePieceGenerator : MonoBehaviour
 {
     public GameObject PuzzlePiecePrefab;
-    public PuzzlePiece[,] puzzlePieces;
+    private PuzzlePieceManager pieceManager;
     private Vector2Int matchablePieceAmount = new Vector2Int(3, 5);
 
     private void Awake() 
     {
-        
+        pieceManager = GetComponentInParent<PuzzlePieceManager>();
     }   
 
     private void Start()
@@ -21,8 +21,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         var fieldWidth = GameManager.PieceFieldSize.x;
         var fieldHeight = GameManager.PieceFieldSize.y;
         var fieldSize = GameManager.PieceFieldSize - new Vector3(1.0f, 1.0f, 0.0f);
-
-        puzzlePieces = new PuzzlePiece[fieldWidth, fieldHeight];
+        var puzzlePieces = pieceManager.PuzzlePieces;
         #endregion
 
         #region Instantiate Minimum Matchable Piece

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class PuzzlePieceManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public PuzzlePiece[,] PuzzlePieces;
+
+    private void Awake()
     {
-        
+        PuzzlePieces = new PuzzlePiece[GameManager.PieceFieldSize.x, GameManager.PieceFieldSize.y];
     }
 
     // Update is called once per frame
