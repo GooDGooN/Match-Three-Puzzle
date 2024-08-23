@@ -102,33 +102,35 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #endregion
         #region Instantiate All Piece
         {
+            List<PieceType> excludeType = new();
             for (int iy = 0; iy <= fieldSize.y; iy++)
             {
                 for (int ix = 0; ix <= fieldSize.x; ix++)
                 {
-                    var excludeType = new PieceType[2];
 
                     if (ix >= 2)
                     {
                         if(puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
                         {
-                            excludeType[0] = puzzlePieces[ix - 1, iy].MyType;
+                            excludeType.Add(puzzlePieces[ix - 1, iy].MyType);
                         }
                     }
                     if (iy >= 2)
                     {
                         if (puzzlePieces[ix, iy - 2].MyType == puzzlePieces[ix, iy - 1].MyType)
                         {
-                            excludeType[1] = puzzlePieces[ix, iy - 1].MyType;
+                            excludeType.Add(puzzlePieces[ix, iy - 1].MyType);
                         }
                     }
-                    InstantiatePiece(ix, iy, excludeType);
+                    InstantiatePiece(ix, iy, excludeType.ToArray());
+                    excludeType.Clear();
                 }
             }
         }
         #endregion
         #region Local Function
-        void InstantiatePiece(int x, int y, PieceType[] exceptType = null)
+
+        void InstantiatePiece(int x, int y, params PieceType[] exceptType)
         {
             var pos = new Vector3(x, y);
             pos -= fieldSize / 2.0f;
@@ -138,8 +140,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
             var target = puzzlePieces[x, y];
             target.MyIndex = (x, y);
             target.transform.localPosition = pos;
-            
-            if(exceptType != null)
+            if (exceptType != null)
             {
                 target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(), exceptType);
             }
@@ -156,10 +157,24 @@ public class PuzzlePieceGenerator : MonoBehaviour
 
 
         #endregion
-
+        TestCallAllPiece();
 
     }
 
+
+    private void TestCallAllPiece()
+    {
+        var fieldSize = GameManager.PieceFieldSize - new Vector3(1.0f, 1.0f, 0.0f);
+        var indexCount = Utility.GetEnumArray<PieceType>().Length;
+        var colorCount = new int[indexCount];
+        for (int iy = 0; iy <= fieldSize.y; iy++)
+        {
+            for (int ix = 0; ix <= fieldSize.x; ix++)
+            {
+                colorCount[(int)pieceManager.PuzzlePieces[ix, iy].MyType]++; 
+            }
+        }
+    }
 
     void Update()
     {
