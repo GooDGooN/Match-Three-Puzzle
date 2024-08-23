@@ -130,14 +130,13 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #region Local Function
         void InstantiatePiece(int x, int y, PieceType[] exceptType = null)
         {
-            var pieceSize = GameManager.PieceSize + 4;
-
             var pos = new Vector3(x, y);
             pos -= fieldSize / 2.0f;
-            pos *= pieceSize;
+            pos *= GameManager.PieceSize;
 
-            puzzlePieces[x, y] = Instantiate(PuzzlePiecePrefab, transform).GetComponent<PuzzlePiece>();
+            puzzlePieces[x, y] = Instantiate(PuzzlePiecePrefab, pieceManager.PuzzlePieceContainer.transform).GetComponent<PuzzlePiece>();
             var target = puzzlePieces[x, y];
+            target.MyIndex = (x, y);
             target.transform.localPosition = pos;
             
             if(exceptType != null)
@@ -147,6 +146,11 @@ public class PuzzlePieceGenerator : MonoBehaviour
             else
             {
                 target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>());
+            }
+
+            if(target.IsMatchable())
+            {
+                Debug.Log("matched");
             }
         }
 
