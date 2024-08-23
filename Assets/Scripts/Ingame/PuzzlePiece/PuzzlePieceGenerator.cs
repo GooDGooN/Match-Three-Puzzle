@@ -25,7 +25,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         puzzlePieces = new PuzzlePiece[fieldWidth, fieldHeight];
         #endregion
 
-        #region Minimum Matchable Piece Create
+        #region Instantiate Minimum Matchable Piece
         {
             List<(int, int)> matchablePointList = new();
             var count = Random.Range(matchablePieceAmount.x, matchablePieceAmount.y + 1);
@@ -101,7 +101,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
             }
         }
         #endregion
-        #region Piece Create All
+        #region Instantiate All Piece
         {
             for (int iy = 0; iy <= fieldSize.y; iy++)
             {
@@ -128,7 +128,6 @@ public class PuzzlePieceGenerator : MonoBehaviour
             }
         }
         #endregion
-
         #region Local Function
         void InstantiatePiece(int x, int y, PieceType[] exceptType = null)
         {
@@ -151,10 +150,14 @@ public class PuzzlePieceGenerator : MonoBehaviour
                 target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>());
             }
         }
+
+
         #endregion
+
+
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         
