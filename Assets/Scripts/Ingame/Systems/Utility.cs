@@ -12,9 +12,9 @@ public class Utility
         return arr[Random.Range(0, arr.Length)];
     }
 
-    public static T PickRandom<T>(T[] arr, T[] excludeArr)
+    public static T PickRandom<T>(T[] arr, params T[] exceptArr )
     {
-        var newArr = arr.Except(excludeArr).ToArray();
+        var newArr = arr.Except(exceptArr).ToArray();
         return newArr[Random.Range(0, newArr.Length)];
     }
 
@@ -28,14 +28,14 @@ public class Utility
         return newArr[Random.Range(0, newArr.Length)];
     }
 
-    public static int PickRandom(int includeMin, int excludeMax, int[] excludeArr)
+    public static int PickRandom(int includeMin, int excludeMax, params int[] exceptArr)
     {
         var newArr = new int[Mathf.Abs(excludeMax - includeMin)];
         for (int i = includeMin; i < excludeMax; i += 1)
         {
             newArr[i] = i;
         }
-        newArr = newArr.Except(excludeArr).ToArray();
+        newArr = newArr.Except(exceptArr).ToArray();
         return newArr[Random.Range(0, newArr.Length)];
     }
     #endregion
@@ -51,6 +51,13 @@ public class Utility
             result[index++] = (T)element;
         }
         return result;
+    }
+    #endregion
+
+    #region Choose
+    public static T Choose<T>(params T[] values)
+    {
+        return values[Random.Range(0, values.Length)];
     }
     #endregion
 }
