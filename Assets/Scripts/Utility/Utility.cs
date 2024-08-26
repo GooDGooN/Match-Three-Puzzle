@@ -44,16 +44,15 @@ public class Utility
     public static T[] GetEnumArray<T>(params T[] except) where T : System.Enum
     {
         var arr = System.Enum.GetValues(typeof(T));
-        var result = new T[arr.Length - except.Length];
-        var index = 0;
-        foreach (var element in arr)
+        var result = new List<T>();
+        foreach (T element in arr)
         {
-            if (!except.Contains((T)element))
+            if (!except.Contains(element))
             {
-                result[index++] = (T)element;
+                result.Add(element);
             }
         }
-        return result;
+        return result.ToArray();
     }
     #endregion
 
