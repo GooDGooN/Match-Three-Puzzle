@@ -41,14 +41,17 @@ public class Utility
     #endregion
 
     #region GetEnumArray
-    public static T[] GetEnumArray<T>() where T : System.Enum
+    public static T[] GetEnumArray<T>(params T[] except) where T : System.Enum
     {
         var arr = System.Enum.GetValues(typeof(T));
-        var result = new T[arr.Length];
+        var result = new T[arr.Length - except.Length];
         var index = 0;
         foreach (var element in arr)
         {
-            result[index++] = (T)element;
+            if (!except.Contains((T)element))
+            {
+                result[index++] = (T)element;
+            }
         }
         return result;
     }

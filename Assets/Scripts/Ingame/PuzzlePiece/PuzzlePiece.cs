@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum PieceType
 {
+    None = -1,
     Blue,
     Green,
     Orange,
@@ -22,6 +23,7 @@ public class PuzzlePiece : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
+        Debug.Log((int)MyType);
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
     }
 
@@ -34,15 +36,15 @@ public class PuzzlePiece : MonoBehaviour
     public bool IsMatchable()
     {
         var fieldSize = GameManager.PieceFieldSize - new Vector3(1.0f, 1.0f, 0.0f);
-        var pieces = MyManager?.PuzzlePieces;
+        var pieces = MyManager.PuzzlePieces;
         if(pieces != null)
         {
-            for (int dir = 0; dir <= 270; dir += 90)
+            for (int dir = 0; dir <= 90; dir += 90)
             {
-                var dirx = (int)Mathf.Sin(dir);
-                var diry = (int)Mathf.Cos(dir);
+                var dirx = (int)Mathf.Cos(dir);
+                var diry = (int)Mathf.Sin(dir);
                 var dupCount = 0;
-                for (int dist = 0; dist < 3; dist++)
+                for (int dist = -2; dist < 3; dist++)
                 {
                     var targetXIndex = MyIndex.Item1 + (dirx * dist);
                     var targetYIndex = MyIndex.Item2 + (diry * dist);
@@ -52,17 +54,18 @@ public class PuzzlePiece : MonoBehaviour
                     }
                     else
                     {
-                        if(pieces[targetXIndex, targetYIndex] == null)
+                        if(pieces[targetXIndex, targetYIndex] != null)
                         {
-                            continue;
-                        }
-                        else if (pieces[targetXIndex, targetYIndex].MyType == MyType)
-                        {
-                            dupCount++;
-                        }
-                        else
-                        {
-                            continue;
+                            var targetType = pieces[targetXIndex, targetYIndex].MyType;
+                            if (targetType == MyType && targetType != PieceType.None)
+                            {
+                                dupCount++;
+                            }
+                            else
+                            {
+                                dupCount = 0;
+                                continue;
+                            }
                         }
                     }
                 }

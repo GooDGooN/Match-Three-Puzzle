@@ -1,8 +1,9 @@
-
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PuzzlePieceGenerator : MonoBehaviour
 {
@@ -32,17 +33,16 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 var ix = Utility.PickRandom(0, fieldWidth);
                 var iy = Utility.PickRandom(0, fieldHeight);
-                matchablePointList.Add(new (ix, iy));
+                matchablePointList.Add(new(ix, iy));
             }
 
-            while(matchablePointList.Count > 0)
+            while (matchablePointList.Count > 0)
             {
                 var targetRandomPointIndex = Random.Range(0, matchablePointList.Count);
                 var targetRandomPiecePoint = matchablePointList[targetRandomPointIndex];
                 var createDirection = new List<int>();
 
                 //4 dir check
-
                 for (int i = 0; i <= 270; i += 90)
                 {
                     var ix = (int)Mathf.Cos(i);
@@ -58,7 +58,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         iy *= j;
                         iy += targetRandomPiecePoint.Item2;
 
-                        if(ix != Mathf.Clamp(ix, 0, 9) || iy != Mathf.Clamp(iy, 0, 9))
+                        if (ix != Mathf.Clamp(ix, 0, 9) || iy != Mathf.Clamp(iy, 0, 9))
                         {
                             passable = false;
                             break;
@@ -71,18 +71,18 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         }
                     }
 
-                    if(passable)
+                    if (passable)
                     {
                         createDirection.Add(i);
                     }
                 }
-                if(createDirection.Count > 0)
+                if (createDirection.Count > 0)
                 {
                     var finalDirection = createDirection[Random.Range(0, createDirection.Count)];
                     var ix = (int)Mathf.Cos(finalDirection);
                     var iy = (int)Mathf.Sin(finalDirection);
                     var exceptIndex = Utility.Choose(2, 3);
-                    
+
                     for (int i = 0; i < 4; i++)
                     {
                         ix *= i;
@@ -90,7 +90,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
 
                         iy *= i;
                         iy += targetRandomPiecePoint.Item2;
-                        if(i != exceptIndex)
+                        if (i != exceptIndex)
                         {
                             InstantiatePiece(ix, iy);
                         }
@@ -108,9 +108,9 @@ public class PuzzlePieceGenerator : MonoBehaviour
                 for (int ix = 0; ix <= fieldSize.x; ix++)
                 {
 
-                    if (ix >= 2)
+                    /*if (ix >= 2)
                     {
-                        if(puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
+                        if (puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
                         {
                             excludeType.Add(puzzlePieces[ix - 1, iy].MyType);
                         }
@@ -122,7 +122,9 @@ public class PuzzlePieceGenerator : MonoBehaviour
                             excludeType.Add(puzzlePieces[ix, iy - 1].MyType);
                         }
                     }
-                    InstantiatePiece(ix, iy, excludeType.ToArray());
+                    InstantiatePiece(ix, iy, excludeType.ToArray());*/
+                    InstantiatePiece(ix, iy);
+                    Debug.Log( puzzlePieces[ix, iy].IsMatchable());
                     excludeType.Clear();
                 }
             }
@@ -136,29 +138,29 @@ public class PuzzlePieceGenerator : MonoBehaviour
             pos -= fieldSize / 2.0f;
             pos *= GameManager.PieceSize;
 
+            var resultExcept = new PieceType[exceptType.Length + 1];
+            resultExcept[0] = PieceType.None;
+            for (int i = 0; i < exceptType.Length; i++)
+            {
+                resultExcept[i + 1] = exceptType[i];
+            }
+
             puzzlePieces[x, y] = Instantiate(PuzzlePiecePrefab, pieceManager.PuzzlePieceContainer.transform).GetComponent<PuzzlePiece>();
             var target = puzzlePieces[x, y];
             target.MyIndex = (x, y);
             target.transform.localPosition = pos;
+            target.MyManager = pieceManager;
+
             if (exceptType != null)
             {
-                target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(), exceptType);
+                target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(resultExcept));
             }
             else
             {
-                target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>());
-            }
-
-            if(target.IsMatchable())
-            {
-                Debug.Log("matched");
+                target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(PieceType.None));
             }
         }
-
-
         #endregion
-        TestCallAllPiece();
-
     }
 
 
