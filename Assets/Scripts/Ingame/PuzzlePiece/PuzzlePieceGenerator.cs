@@ -21,7 +21,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #region Initialize
         var fieldWidth = GameManager.PieceFieldSize.x;
         var fieldHeight = GameManager.PieceFieldSize.y;
-        var fieldSize = GameManager.PieceFieldSize - new Vector3(1.0f, 1.0f, 0.0f);
+        var fieldRange = GameManager.PieceFieldSize;
         var puzzlePieces = pieceManager.PuzzlePieces;
         #endregion
 
@@ -58,7 +58,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         iy *= dist;
                         iy += targetRandomPiecePoint.Item2;
 
-                        if (ix != Mathf.Clamp(ix, 0, 9) || iy != Mathf.Clamp(iy, 0, 9))
+                        if (ix != Mathf.Clamp(ix, 0, fieldRange.x - 1) || iy != Mathf.Clamp(iy, 0, fieldRange.y - 1))
                         {
                             passable = false;
                             break;
@@ -103,9 +103,9 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #region Instantiate All Piece
         {
             List<PieceType> excludeType = new();
-            for (int iy = 0; iy <= fieldSize.y; iy++)
+            for (int iy = 0; iy < fieldRange.y; iy++)
             {
-                for (int ix = 0; ix <= fieldSize.x; ix++)
+                for (int ix = 0; ix < fieldRange.x; ix++)
                 {
                     if (puzzlePieces[ix, iy] == null)
                     {
@@ -142,7 +142,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         void InstantiatePiece(int x, int y, params PieceType[] exceptType)
         {
             var pos = new Vector3(x, y);
-            pos -= fieldSize / 2.0f;
+            pos -= fieldRange / 2;
             pos *= GameManager.PieceSize;
 
             var resultExcept = new PieceType[exceptType.Length + 1];
@@ -173,12 +173,12 @@ public class PuzzlePieceGenerator : MonoBehaviour
 
     private void TestCallAllPiece()
     {
-        var fieldSize = GameManager.PieceFieldSize - new Vector3(1.0f, 1.0f, 0.0f);
+        var fieldRange = GameManager.PieceFieldSize;
         var indexCount = Utility.GetEnumArray<PieceType>().Length;
         var colorCount = new int[indexCount];
-        for (int iy = 0; iy <= fieldSize.y; iy++)
+        for (int iy = 0; iy < fieldRange.y; iy++)
         {
-            for (int ix = 0; ix <= fieldSize.x; ix++)
+            for (int ix = 0; ix < fieldRange.x; ix++)
             {
                 colorCount[(int)pieceManager.PuzzlePieces[ix, iy].MyType]++; 
             }
