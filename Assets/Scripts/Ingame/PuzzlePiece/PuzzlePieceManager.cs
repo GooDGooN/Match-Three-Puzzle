@@ -9,7 +9,7 @@ public class PuzzlePieceManager : MonoBehaviour
 
     private void Awake()
     {
-        PuzzlePieces = new PuzzlePiece[GameManager.PieceFieldSize.x, GameManager.PieceFieldSize.y];
+        PuzzlePieces = new PuzzlePiece[GameManager.PieceFieldWidth, GameManager.PieceFieldHeight];
         PuzzlePieceContainer = new GameObject("PuzzlePieceContainer");
         PuzzlePieceContainer.transform.parent = transform;
     } 

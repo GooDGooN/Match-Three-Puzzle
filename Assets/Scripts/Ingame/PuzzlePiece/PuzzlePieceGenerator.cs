@@ -21,7 +21,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #region Initialize
         var fieldWidth = GameManager.PieceFieldSize.x;
         var fieldHeight = GameManager.PieceFieldSize.y;
-        var fieldSize = GameManager.PieceFieldSize - new Vector3(1.0f, 1.0f, 0.0f);
+        var fieldSize = GameManager.PieceFieldSize;
         var puzzlePieces = pieceManager.PuzzlePieces;
         #endregion
 
