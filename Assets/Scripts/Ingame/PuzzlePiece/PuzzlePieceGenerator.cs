@@ -107,22 +107,31 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 for (int ix = 0; ix <= fieldSize.x; ix++)
                 {
-                    if (ix >= 2)
+                    if (puzzlePieces[ix, iy].MyType == PieceType.None)
                     {
-                        if (puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
+                        if (ix >= 2)
                         {
-                            excludeType.Add(puzzlePieces[ix - 1, iy].MyType);
+                            if (puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
+                            {
+                                excludeType.Add(puzzlePieces[ix - 1, iy].MyType);
+                            }
+                        }
+                        if (iy >= 2)
+                        {
+                            if (puzzlePieces[ix, iy - 2].MyType == puzzlePieces[ix, iy - 1].MyType)
+                            {
+                                excludeType.Add(puzzlePieces[ix, iy - 1].MyType);
+                            }
+                        }
+                        InstantiatePiece(ix, iy, excludeType.ToArray());
+                    }
+                    else
+                    {
+                        if(puzzlePieces[ix, iy].IsMatchable())
+                        {
+
                         }
                     }
-                    if (iy >= 2)
-                    {
-                        if (puzzlePieces[ix, iy - 2].MyType == puzzlePieces[ix, iy - 1].MyType)
-                        {
-                            excludeType.Add(puzzlePieces[ix, iy - 1].MyType);
-                        }
-                    }
-                    InstantiatePiece(ix, iy, excludeType.ToArray());
-                    Debug.Log( puzzlePieces[ix, iy].IsMatchable());
                     excludeType.Clear();
                 }
             }
