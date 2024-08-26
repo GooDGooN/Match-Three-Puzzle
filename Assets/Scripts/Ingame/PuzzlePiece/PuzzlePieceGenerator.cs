@@ -107,7 +107,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 for (int ix = 0; ix <= fieldSize.x; ix++)
                 {
-                    if (puzzlePieces[ix, iy].MyType == PieceType.None)
+                    if (puzzlePieces[ix, iy] == null)
                     {
                         if (ix >= 2)
                         {
