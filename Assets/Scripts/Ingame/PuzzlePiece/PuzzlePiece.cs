@@ -77,4 +77,16 @@ public class PuzzlePiece : MonoBehaviour
         return false;
     }
 
+    public PieceType[] GetNearPieces()
+    {
+        for (int dir = 0; dir <= 90; dir += 90)
+        {
+            var dirx = (int)MyMath.GetCosAngle(dir, true);
+            var diry = (int)MyMath.GetSinAngle(dir, true);
+            if (targetXIndex != Mathf.Clamp(targetXIndex, 0, fieldSize.x) || targetYIndex != Mathf.Clamp(targetYIndex, 0, fieldSize.y))
+            {
+                continue;
+            }
+        }
+    }
 }

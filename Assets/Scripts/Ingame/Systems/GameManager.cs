@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    public const int PieceFieldWidth = 10;
+    public const int PieceFieldHeight = 10;
     public static readonly Vector3Int PieceFieldSize = new Vector3Int(10, 10);
     public const int PieceSize = 36;
     public const int PieceTypeAmount = 7;
