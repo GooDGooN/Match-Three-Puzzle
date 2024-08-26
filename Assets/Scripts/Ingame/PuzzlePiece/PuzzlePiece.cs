@@ -77,6 +77,25 @@ public class PuzzlePiece : MonoBehaviour
         return false;
     }
 
-
-
+    public PieceType[] GetNearPieces()
+    {
+        var fieldSize = GameManager.PieceFieldSize;
+        var result = new List<PieceType>();
+        for (int dir = 0; dir <= 270; dir += 90)
+        {
+            var dirx = (int)MyMath.GetCosAngle(dir, true);
+            var diry = (int)MyMath.GetSinAngle(dir, true);
+            var targetPiece = MyManager.PuzzlePieces[dirx, diry];
+            if (dirx != Mathf.Clamp(dirx, 0, fieldSize.x - 1) || diry != Mathf.Clamp(diry, 0, fieldSize.y - 1))
+            {
+                continue;
+            }
+            if (targetPiece == null)
+            {
+                continue;
+            }
+            result.Add(targetPiece.MyType);
+        }
+        return result.ToArray();
+    }
 }
