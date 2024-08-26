@@ -102,7 +102,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #endregion
         #region Instantiate All Piece
         {
-            List<PieceType> excludeType = new();
+            List<PieceType> exceptTypes = new();
             for (int iy = 0; iy < fieldRange.y; iy++)
             {
                 for (int ix = 0; ix < fieldRange.x; ix++)
@@ -113,26 +113,27 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         {
                             if (puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
                             {
-                                excludeType.Add(puzzlePieces[ix - 1, iy].MyType);
+                                exceptTypes.Add(puzzlePieces[ix - 1, iy].MyType);
                             }
                         }
                         if (iy >= 2)
                         {
                             if (puzzlePieces[ix, iy - 2].MyType == puzzlePieces[ix, iy - 1].MyType)
                             {
-                                excludeType.Add(puzzlePieces[ix, iy - 1].MyType);
+                                exceptTypes.Add(puzzlePieces[ix, iy - 1].MyType);
                             }
                         }
-                        InstantiatePiece(ix, iy, excludeType.ToArray());
+                        InstantiatePiece(ix, iy, exceptTypes.ToArray());
                     }
                     else
                     {
                         if(puzzlePieces[ix, iy].IsMatchable())
                         {
-
+                            puzzlePieces[ix, iy].MyType = Utility.PickRandom(Utility.GetEnumArray(puzzlePieces[ix, iy].GetNearPieces()));
                         }
                     }
-                    excludeType.Clear();
+                    Debug.Log(puzzlePieces[ix, iy].IsMatchable());
+                    exceptTypes.Clear();
                 }
             }
         }
