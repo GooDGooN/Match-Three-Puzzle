@@ -43,19 +43,19 @@ public class PuzzlePieceGenerator : MonoBehaviour
                 var createDirection = new List<int>();
 
                 //4 dir check
-                for (int i = 0; i <= 270; i += 90)
+                for (int dir = 0; dir <= 270; dir += 90)
                 {
-                    var ix = (int)Mathf.Cos(i);
-                    var iy = (int)Mathf.Sin(i);
+                    var ix = (int)MyMath.GetCosAngle(dir, true);
+                    var iy = (int)MyMath.GetSinAngle(dir, true);
                     var passable = true;
 
                     // check if direction is ok
-                    for (int j = 0; j < 4; j++)
+                    for (int dist = 0; dist < 4; dist++)
                     {
-                        ix *= j;
+                        ix *= dist;
                         ix += targetRandomPiecePoint.Item1;
 
-                        iy *= j;
+                        iy *= dist;
                         iy += targetRandomPiecePoint.Item2;
 
                         if (ix != Mathf.Clamp(ix, 0, 9) || iy != Mathf.Clamp(iy, 0, 9))
@@ -73,24 +73,24 @@ public class PuzzlePieceGenerator : MonoBehaviour
 
                     if (passable)
                     {
-                        createDirection.Add(i);
+                        createDirection.Add(dir);
                     }
                 }
                 if (createDirection.Count > 0)
                 {
                     var finalDirection = createDirection[Random.Range(0, createDirection.Count)];
-                    var ix = (int)Mathf.Cos(finalDirection);
-                    var iy = (int)Mathf.Sin(finalDirection);
+                    var ix = (int)MyMath.GetCosAngle(finalDirection);
+                    var iy = (int)MyMath.GetSinAngle(finalDirection);
                     var exceptIndex = Utility.Choose(2, 3);
 
-                    for (int i = 0; i < 4; i++)
+                    for (int dist = 0; dist < 4; dist++)
                     {
-                        ix *= i;
+                        ix *= dist;
                         ix += targetRandomPiecePoint.Item1;
 
-                        iy *= i;
+                        iy *= dist;
                         iy += targetRandomPiecePoint.Item2;
-                        if (i != exceptIndex)
+                        if (dist != exceptIndex)
                         {
                             InstantiatePiece(ix, iy);
                         }

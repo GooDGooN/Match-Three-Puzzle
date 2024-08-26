@@ -41,8 +41,8 @@ public class PuzzlePiece : MonoBehaviour
         {
             for (int dir = 0; dir <= 90; dir += 90)
             {
-                var dirx = (int)Mathf.Cos(dir);
-                var diry = (int)Mathf.Sin(dir);
+                var dirx = (int)MyMath.GetCosAngle(dir, true);
+                var diry = (int)MyMath.GetSinAngle(dir, true);
                 var dupCount = 0;
                 for (int dist = -2; dist < 3; dist++)
                 {
