@@ -23,7 +23,6 @@ public class PuzzlePiece : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        Debug.Log((int)MyType);
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
     }
 

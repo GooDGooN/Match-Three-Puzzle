@@ -107,8 +107,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 for (int ix = 0; ix <= fieldSize.x; ix++)
                 {
-
-                    /*if (ix >= 2)
+                    if (ix >= 2)
                     {
                         if (puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
                         {
@@ -122,8 +121,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                             excludeType.Add(puzzlePieces[ix, iy - 1].MyType);
                         }
                     }
-                    InstantiatePiece(ix, iy, excludeType.ToArray());*/
-                    InstantiatePiece(ix, iy);
+                    InstantiatePiece(ix, iy, excludeType.ToArray());
                     Debug.Log( puzzlePieces[ix, iy].IsMatchable());
                     excludeType.Clear();
                 }
