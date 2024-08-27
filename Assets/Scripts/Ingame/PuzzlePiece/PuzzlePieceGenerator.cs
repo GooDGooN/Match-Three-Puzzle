@@ -22,7 +22,8 @@ public class PuzzlePieceGenerator : MonoBehaviour
         var fieldWidth = GameManager.PieceFieldSize.x;
         var fieldHeight = GameManager.PieceFieldSize.y;
         var fieldRange = GameManager.PieceFieldSize;
-        var puzzlePieces = pieceManager.PuzzlePieces;
+        var pieceField = pieceManager.PieceField;
+        var pieceList = pieceManager.PieceList;
         #endregion
 
         #region Instantiate Minimum Matchable Piece
@@ -64,7 +65,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                             break;
                         }
 
-                        if (puzzlePieces[ix, iy] != null)
+                        if (pieceField[ix, iy] != null)
                         {
                             passable = false;
                             break;
@@ -107,32 +108,32 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 for (int ix = 0; ix < fieldRange.x; ix++)
                 {
-                    if (puzzlePieces[ix, iy] == null)
+                    if (pieceField[ix, iy] == null)
                     {
                         if (ix >= 2)
                         {
-                            if (puzzlePieces[ix - 2, iy].MyType == puzzlePieces[ix - 1, iy].MyType)
+                            if (pieceField[ix - 2, iy].MyType == pieceField[ix - 1, iy].MyType)
                             {
-                                exceptTypes.Add(puzzlePieces[ix - 1, iy].MyType);
+                                exceptTypes.Add(pieceField[ix - 1, iy].MyType);
                             }
                         }
                         if (iy >= 2)
                         {
-                            if (puzzlePieces[ix, iy - 2].MyType == puzzlePieces[ix, iy - 1].MyType)
+                            if (pieceField[ix, iy - 2].MyType == pieceField[ix, iy - 1].MyType)
                             {
-                                exceptTypes.Add(puzzlePieces[ix, iy - 1].MyType);
+                                exceptTypes.Add(pieceField[ix, iy - 1].MyType);
                             }
                         }
                         InstantiatePiece(ix, iy, exceptTypes.ToArray());
                     }
                     else
                     {
-                        if(puzzlePieces[ix, iy].IsMatchable())
+                        if(pieceField[ix, iy].IsMatchable())
                         {
-                            puzzlePieces[ix, iy].MyType = Utility.PickRandom(Utility.GetEnumArray(puzzlePieces[ix, iy].GetNearPieces()));
+                            pieceField[ix, iy].MyType = Utility.PickRandom(Utility.GetEnumArray(pieceField[ix, iy].GetNearPieces()));
                         }
                     }
-                    Debug.Log(puzzlePieces[ix, iy].IsMatchable());
+                    Debug.Log(pieceField[ix, iy].IsMatchable());
                     exceptTypes.Clear();
                 }
             }
@@ -152,9 +153,10 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 resultExcept[i + 1] = exceptType[i];
             }
+            pieceList.Add(Instantiate(PuzzlePiecePrefab, pieceManager.PieceContainer.transform).GetComponent<PuzzlePiece>());
+            pieceField[x, y] = pieceList.Last();
 
-            puzzlePieces[x, y] = Instantiate(PuzzlePiecePrefab, pieceManager.PuzzlePieceContainer.transform).GetComponent<PuzzlePiece>();
-            var target = puzzlePieces[x, y];
+            var target = pieceField[x, y];
             target.MyIndex = (x, y);
             target.transform.localPosition = pos;
             target.MyManager = pieceManager;
@@ -181,7 +183,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         {
             for (int ix = 0; ix < fieldRange.x; ix++)
             {
-                colorCount[(int)pieceManager.PuzzlePieces[ix, iy].MyType]++; 
+                colorCount[(int)pieceManager.PieceField[ix, iy].MyType]++; 
             }
         }
     }

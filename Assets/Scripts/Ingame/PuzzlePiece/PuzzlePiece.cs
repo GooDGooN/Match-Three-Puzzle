@@ -35,7 +35,7 @@ public class PuzzlePiece : MonoBehaviour
     public bool IsMatchable()
     {
         var fieldSize = GameManager.PieceFieldSize;
-        var pieces = MyManager.PuzzlePieces;
+        var pieces = MyManager.PieceField;
         if(pieces != null)
         {
             for (int dir = 0; dir <= 90; dir += 90)
@@ -85,7 +85,7 @@ public class PuzzlePiece : MonoBehaviour
         {
             var dirx = (int)MyMath.GetCosAngle(dir, true);
             var diry = (int)MyMath.GetSinAngle(dir, true);
-            var targetPiece = MyManager.PuzzlePieces[dirx, diry];
+            var targetPiece = MyManager.PieceField[dirx, diry];
             if (dirx != Mathf.Clamp(dirx, 0, fieldSize.x - 1) || diry != Mathf.Clamp(diry, 0, fieldSize.y - 1))
             {
                 continue;

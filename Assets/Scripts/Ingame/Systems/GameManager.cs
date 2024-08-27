@@ -7,7 +7,6 @@ public class GameManager : MonoBehaviour
 {
     public static readonly Vector3Int PieceFieldSize = new Vector3Int(7, 7);
     public const int PieceSize = 36;
-    public const int PieceTypeAmount = 7;
     void Start()
     {
         
