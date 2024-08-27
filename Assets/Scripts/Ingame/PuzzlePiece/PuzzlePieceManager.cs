@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class PuzzlePieceManager : MonoBehaviour
 {
-    public PuzzlePiece[,] PuzzlePieces;
-    public GameObject PuzzlePieceContainer;
+    public PuzzlePiece[,] PieceField;
+    public PuzzlePiece[] Pieces;
+    public GameObject PieceContainer;
 
     private void Awake()
     {
-        PuzzlePieces = new PuzzlePiece[GameManager.PieceFieldSize.x, GameManager.PieceFieldSize.y];
-        PuzzlePieceContainer = new GameObject("PuzzlePieceContainer");
-        PuzzlePieceContainer.transform.parent = transform;
+        PieceField = new PuzzlePiece[GameManager.PieceFieldSize.x, GameManager.PieceFieldSize.y];
+        PieceContainer = new GameObject("PuzzlePieceContainer");
+        PieceContainer.transform.parent = transform;
     } 
 
     // Update is called once per frame
