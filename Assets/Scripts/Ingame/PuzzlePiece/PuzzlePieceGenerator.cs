@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PuzzlePieceGenerator : MonoBehaviour
 {
@@ -62,7 +60,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                             break;
                         }
 
-                        if (pieceField[ix, iy] != null)
+                        if(!pieceManager.IsPlaceEmpty(ix, iy))
                         {
                             passable = false;
                             break;
@@ -105,32 +103,32 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 for (int ix = 0; ix < fieldInfo.Width; ix++)
                 {
-                    if (pieceField[ix, iy] == null)
+                    if (pieceManager.IsPlaceEmpty(ix, iy))
                     {
                         if (ix >= 2)
                         {
-                            if (pieceField[ix - 2, iy].MyType == pieceField[ix - 1, iy].MyType)
+                            if (pieceField[ix - 2][iy].MyType == pieceField[ix - 1][iy].MyType)
                             {
-                                exceptTypes.Add(pieceField[ix - 1, iy].MyType);
+                                exceptTypes.Add(pieceField[ix - 1][iy].MyType);
                             }
                         }
                         if (iy >= 2)
                         {
-                            if (pieceField[ix, iy - 2].MyType == pieceField[ix, iy - 1].MyType)
+                            if (pieceField[ix][iy - 2].MyType == pieceField[ix][iy - 1].MyType)
                             {
-                                exceptTypes.Add(pieceField[ix, iy - 1].MyType);
+                                exceptTypes.Add(pieceField[ix][iy - 1].MyType);
                             }
                         }
                         InstantiatePiece(ix, iy, exceptTypes.ToArray());
                     }
                     else
                     {
-                        if(pieceField[ix, iy].IsMatchable())
+                        if (pieceField[ix][iy].IsMatchable())
                         {
-                            pieceField[ix, iy].MyType = Utility.PickRandom(Utility.GetEnumArray(pieceField[ix, iy].GetNearPieces()));
+                            pieceField[ix][iy].MyType = Utility.PickRandom(Utility.GetEnumArray(pieceField[ix][iy].GetNearPieces()));
                         }
                     }
-                    Debug.Log(pieceField[ix, iy].IsMatchable());
+                    Debug.Log(pieceField[ix][iy].IsMatchable());
                     exceptTypes.Clear();
                 }
             }
@@ -150,10 +148,11 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 resultExcept[i + 1] = exceptType[i];
             }
-            pieceList.Add(Instantiate(PuzzlePiecePrefab, pieceManager.PieceContainer.transform).GetComponent<PuzzlePiece>());
-            pieceField[x, y] = pieceList.Last();
 
-            var target = pieceField[x, y];
+            pieceList.Add(Instantiate(PuzzlePiecePrefab, pieceManager.PieceContainer.transform).GetComponent<PuzzlePiece>());
+            pieceField[x].Add(pieceList.Last());
+
+            var target = pieceField[x].Last();
             target.MyIndex = (x, y);
             target.transform.localPosition = pos;
             target.MyManager = pieceManager;

@@ -30,7 +30,6 @@ public class PuzzlePiece : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public bool IsMatchable()
@@ -55,9 +54,9 @@ public class PuzzlePiece : MonoBehaviour
                     }
                     else
                     {
-                        if(pieces[targetXIndex, targetYIndex] != null)
+                        if (!MyManager.IsPlaceEmpty(targetXIndex, targetYIndex))
                         {
-                            var targetType = pieces[targetXIndex, targetYIndex].MyType;
+                            var targetType = pieces[targetXIndex][targetYIndex].MyType;
                             if (targetType == MyType && targetType != PieceType.None)
                             {
                                 dupCount++;
@@ -88,16 +87,16 @@ public class PuzzlePiece : MonoBehaviour
         {
             var dirx = (int)MyMath.GetCosAngle(dir, true);
             var diry = (int)MyMath.GetSinAngle(dir, true);
-            var targetPiece = MyManager.PieceField[dirx, diry];
+
             if (dirx != Mathf.Clamp(dirx, 0, fieldInfo.Width - 1) || diry != Mathf.Clamp(diry, 0, fieldInfo.Height - 1))
             {
                 continue;
             }
-            if (targetPiece == null)
+            if (MyManager.IsPlaceEmpty(dirx, diry))
             {
                 continue;
             }
-            result.Add(targetPiece.MyType);
+            result.Add(MyManager.PieceField[dirx][diry].MyType);
         }
         return result.ToArray();
     }
