@@ -48,6 +48,17 @@ public class PuzzlePieceManager : MonoBehaviour
         PieceContainer.transform.parent = transform;
     } 
 
+    public bool IsPlaceEmpty(int x, int y)
+    {
+        if(y < PieceField[x].Count)
+        {
+            if (PieceField[x][y].MyType != PieceType.None)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 
     // Update is called once per frame
     private void Update()
