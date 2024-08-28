@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PuzzlePieceManager : MonoBehaviour
 {
-    public struct Field 
+    public struct Field
     {
         public int Width;
         public int Height;
@@ -13,23 +13,22 @@ public class PuzzlePieceManager : MonoBehaviour
         public Field(int width, int height)
         {
             Size = new Vector3Int(width, height);
-            Width = width; 
+            Width = width;
             Height = height;
         }
 
-        public static Vector3Int operator/ (Field a, int b)
+        public static Vector3Int operator /(Field a, int b)
         {
             return a.Size / b;
         }
     }
 
-    public PuzzlePiece[,] PieceField;
     public List<PuzzlePiece> PieceList;
     public GameObject PieceContainer;
-
+    public PuzzlePiece[,] PieceField;
     public readonly int PieceSize = 36;
-
     public readonly Field FieldInfo = new Field(7, 7);
+
 
     private void Awake()
     {
