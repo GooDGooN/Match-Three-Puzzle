@@ -13,6 +13,7 @@ public enum PieceType
     Sky,
     Yellow,
 }
+
 public class PuzzlePiece : MonoBehaviour
 {
     public Sprite[] PieceSprites;

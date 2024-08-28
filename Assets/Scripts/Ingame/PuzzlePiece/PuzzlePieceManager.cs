@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,19 +26,27 @@ public class PuzzlePieceManager : MonoBehaviour
 
     public List<PuzzlePiece> PieceList;
     public GameObject PieceContainer;
-    public PuzzlePiece[,] PieceField;
+    public List<PuzzlePiece>[] PieceField;
     public readonly int PieceSize = 36;
     public readonly Field FieldInfo = new Field(7, 7);
 
 
     private void Awake()
     {
-        PieceField = new PuzzlePiece[FieldInfo.Width, FieldInfo.Height];
+        PieceField = new List<PuzzlePiece>[FieldInfo.Width];
+
+        for (int i = 0; i < PieceField.Length; i++)
+        {
+            PieceField[i] = new List<PuzzlePiece>();
+        }
+        foreach (ref var column in PieceField.AsSpan())
+        {
+           column = new List<PuzzlePiece>();
+        }
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
     } 
-
 
 
     // Update is called once per frame

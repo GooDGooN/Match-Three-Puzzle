@@ -23,7 +23,6 @@ public class PuzzlePieceGenerator : MonoBehaviour
         var pieceField = pieceManager.PieceField;
         var pieceList = pieceManager.PieceList;
         #endregion
-
         #region Instantiate Minimum Matchable Piece
         {
             List<(int, int)> matchablePointList = new();
