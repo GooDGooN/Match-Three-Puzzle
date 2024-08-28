@@ -169,21 +169,6 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #endregion
     }
 
-
-/*    private void TestCallAllPiece()
-    {
-        var fieldRange = GameManager.PieceFieldSize;
-        var indexCount = Utility.GetEnumArray<PieceType>().Length;
-        var colorCount = new int[indexCount];
-        for (int iy = 0; iy < fieldRange.y; iy++)
-        {
-            for (int ix = 0; ix < fieldRange.x; ix++)
-            {
-                colorCount[(int)pieceManager.PieceField[ix, iy].MyType]++; 
-            }
-        }
-    }*/
-
     void Update()
     {
         
