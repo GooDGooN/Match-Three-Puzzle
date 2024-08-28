@@ -34,7 +34,8 @@ public class PuzzlePiece : MonoBehaviour
 
     public bool IsMatchable()
     {
-        var fieldSize = MyManager.PieceFieldSize;
+        var fieldInfo = MyManager.FieldInfo;
+
         var pieces = MyManager.PieceField;
         if(pieces != null)
         {
@@ -47,7 +48,7 @@ public class PuzzlePiece : MonoBehaviour
                 {
                     var targetXIndex = MyIndex.Item1 + (dirx * dist);
                     var targetYIndex = MyIndex.Item2 + (diry * dist);
-                    if (targetXIndex != Mathf.Clamp(targetXIndex, 0, fieldSize.x - 1) || targetYIndex != Mathf.Clamp(targetYIndex, 0, fieldSize.y - 1))
+                    if (targetXIndex != Mathf.Clamp(targetXIndex, 0, fieldInfo.Width - 1) || targetYIndex != Mathf.Clamp(targetYIndex, 0, fieldInfo.Height - 1))
                     {
                         continue;
                     }
@@ -79,14 +80,15 @@ public class PuzzlePiece : MonoBehaviour
 
     public PieceType[] GetNearPieces()
     {
-        var fieldSize = MyManager.PieceFieldSize;
+        var fieldInfo = MyManager.FieldInfo;
+
         var result = new List<PieceType>();
         for (int dir = 0; dir <= 270; dir += 90)
         {
             var dirx = (int)MyMath.GetCosAngle(dir, true);
             var diry = (int)MyMath.GetSinAngle(dir, true);
             var targetPiece = MyManager.PieceField[dirx, diry];
-            if (dirx != Mathf.Clamp(dirx, 0, fieldSize.x - 1) || diry != Mathf.Clamp(diry, 0, fieldSize.y - 1))
+            if (dirx != Mathf.Clamp(dirx, 0, fieldInfo.Width - 1) || diry != Mathf.Clamp(diry, 0, fieldInfo.Height - 1))
             {
                 continue;
             }
