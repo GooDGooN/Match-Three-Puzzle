@@ -34,7 +34,7 @@ public class PuzzlePiece : MonoBehaviour
 
     public bool IsMatchable()
     {
-        var fieldSize = GameManager.PieceFieldSize;
+        var fieldSize = MyManager.PieceFieldSize;
         var pieces = MyManager.PieceField;
         if(pieces != null)
         {
@@ -79,7 +79,7 @@ public class PuzzlePiece : MonoBehaviour
 
     public PieceType[] GetNearPieces()
     {
-        var fieldSize = GameManager.PieceFieldSize;
+        var fieldSize = MyManager.PieceFieldSize;
         var result = new List<PieceType>();
         for (int dir = 0; dir <= 270; dir += 90)
         {

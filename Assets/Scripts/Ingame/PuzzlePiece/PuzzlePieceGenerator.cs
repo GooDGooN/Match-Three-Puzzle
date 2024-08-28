@@ -19,9 +19,9 @@ public class PuzzlePieceGenerator : MonoBehaviour
     private void Start()
     {
         #region Initialize
-        var fieldWidth = GameManager.PieceFieldSize.x;
-        var fieldHeight = GameManager.PieceFieldSize.y;
-        var fieldRange = GameManager.PieceFieldSize;
+        var fieldWidth = pieceManager.PieceFieldSize.x;
+        var fieldHeight = pieceManager.PieceFieldSize.y;
+        var fieldRange = pieceManager.PieceFieldSize;
         var pieceField = pieceManager.PieceField;
         var pieceList = pieceManager.PieceList;
         #endregion
@@ -145,7 +145,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         {
             var pos = new Vector3(x, y);
             pos -= fieldRange / 2;
-            pos *= GameManager.PieceSize;
+            pos *= pieceManager.PieceSize;
 
             var resultExcept = new PieceType[exceptType.Length + 1];
             resultExcept[0] = PieceType.None;
@@ -174,7 +174,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
     }
 
 
-    private void TestCallAllPiece()
+/*    private void TestCallAllPiece()
     {
         var fieldRange = GameManager.PieceFieldSize;
         var indexCount = Utility.GetEnumArray<PieceType>().Length;
@@ -186,7 +186,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                 colorCount[(int)pieceManager.PieceField[ix, iy].MyType]++; 
             }
         }
-    }
+    }*/
 
     void Update()
     {
