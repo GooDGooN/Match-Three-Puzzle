@@ -27,14 +27,13 @@ public class PuzzlePieceManager : MonoBehaviour
     public List<PuzzlePiece> PieceList;
     public GameObject PieceContainer;
 
-    public readonly Vector3Int PieceFieldSize = new Vector3Int(7, 7);
     public readonly int PieceSize = 36;
 
     public readonly Field FieldInfo = new Field(7, 7);
 
     private void Awake()
     {
-        PieceField = new PuzzlePiece[PieceFieldSize.x, PieceFieldSize.y];
+        PieceField = new PuzzlePiece[FieldInfo.Width, FieldInfo.Height];
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;

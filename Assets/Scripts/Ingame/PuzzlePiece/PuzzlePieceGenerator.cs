@@ -19,9 +19,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
     private void Start()
     {
         #region Initialize
-        var fieldWidth = pieceManager.PieceFieldSize.x;
-        var fieldHeight = pieceManager.PieceFieldSize.y;
-        var fieldRange = pieceManager.PieceFieldSize;
+        var fieldInfo = pieceManager.FieldInfo;
         var pieceField = pieceManager.PieceField;
         var pieceList = pieceManager.PieceList;
         #endregion
@@ -32,8 +30,8 @@ public class PuzzlePieceGenerator : MonoBehaviour
             var count = Random.Range(matchablePieceAmount.x, matchablePieceAmount.y + 1);
             for (int i = 0; i < count; i++)
             {
-                var ix = Utility.PickRandom(0, fieldWidth);
-                var iy = Utility.PickRandom(0, fieldHeight);
+                var ix = Utility.PickRandom(0, fieldInfo.Width);
+                var iy = Utility.PickRandom(0, fieldInfo.Height);
                 matchablePointList.Add(new(ix, iy));
             }
 
@@ -59,7 +57,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         iy *= dist;
                         iy += targetRandomPiecePoint.Item2;
 
-                        if (ix != Mathf.Clamp(ix, 0, fieldRange.x - 1) || iy != Mathf.Clamp(iy, 0, fieldRange.y - 1))
+                        if (ix != Mathf.Clamp(ix, 0, fieldInfo.Width - 1) || iy != Mathf.Clamp(iy, 0, fieldInfo.Height - 1))
                         {
                             passable = false;
                             break;
@@ -104,9 +102,9 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #region Instantiate All Piece
         {
             List<PieceType> exceptTypes = new();
-            for (int iy = 0; iy < fieldRange.y; iy++)
+            for (int iy = 0; iy < fieldInfo.Height; iy++)
             {
-                for (int ix = 0; ix < fieldRange.x; ix++)
+                for (int ix = 0; ix < fieldInfo.Width; ix++)
                 {
                     if (pieceField[ix, iy] == null)
                     {
@@ -144,7 +142,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         void InstantiatePiece(int x, int y, params PieceType[] exceptType)
         {
             var pos = new Vector3(x, y);
-            pos -= fieldRange / 2;
+            pos -= fieldInfo.Size / 2;
             pos *= pieceManager.PieceSize;
 
             var resultExcept = new PieceType[exceptType.Length + 1];
