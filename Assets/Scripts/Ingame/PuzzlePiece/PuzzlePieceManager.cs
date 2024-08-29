@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PuzzlePieceManager : MonoBehaviour
@@ -60,6 +59,25 @@ public class PuzzlePieceManager : MonoBehaviour
                     return false;
                 }
             }
+        }
+        return true;
+    }
+
+    public bool IsPlaceEmpty((int, int)posTuple)
+    {
+        return IsPlaceEmpty(posTuple.Item1, posTuple.Item2);
+    }
+
+    public bool IsPlaceAreExist((int, int) posTuple)
+    {
+        return IsPlaceAreExist(posTuple.Item1, posTuple.Item2);
+    }
+
+    public bool IsPlaceAreExist(int x, int y)
+    {
+        if (x != Mathf.Clamp(x, 0, FieldInfo.Width - 1) || y != Mathf.Clamp(y, 0, FieldInfo.Height - 1))
+        {
+            return false;
         }
         return true;
     }
