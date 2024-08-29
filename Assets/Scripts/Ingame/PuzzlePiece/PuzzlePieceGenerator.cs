@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
+
 
 public class PuzzlePieceGenerator : MonoBehaviour
 {
@@ -78,6 +81,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                     var ix = (int)MyMath.GetCosAngle(finalDirection);
                     var iy = (int)MyMath.GetSinAngle(finalDirection);
                     var exceptIndex = Utility.Choose(2, 3);
+                    var targetType = Utility.PickRandom(Utility.GetEnumArray<PieceType>());
 
                     for (int dist = 0; dist < 4; dist++)
                     {
@@ -88,7 +92,11 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         iy += targetRandomPiecePoint.Item2;
                         if (dist != exceptIndex)
                         {
-                            InstantiatePiece(ix, iy);
+                            InstantiatePiece(ix, iy, Utility.GetEnumArray(targetType));
+                        }
+                        else
+                        {
+                            InstantiatePiece(ix, iy, targetType);
                         }
                     }
                 }
@@ -125,9 +133,12 @@ public class PuzzlePieceGenerator : MonoBehaviour
                     {
                         if (pieceField[ix][iy].IsMatchable())
                         {
-                            pieceField[ix][iy].MyType = Utility.PickRandom(Utility.GetEnumArray(pieceField[ix][iy].GetNearPieces()));
+                            var enumArr = Utility.GetEnumArray<PieceType>();
+                            var exceptArr = pieceField[ix][iy].GetNearPieces();
+                            pieceField[ix][iy].MyType = Utility.PickRandom(enumArr, exceptArr);
                         }
                     }
+                    // TESTLOG!!
                     Debug.Log(pieceField[ix][iy].IsMatchable());
                     exceptTypes.Clear();
                 }
@@ -135,35 +146,28 @@ public class PuzzlePieceGenerator : MonoBehaviour
         }
         #endregion
         #region Local Function
-
         void InstantiatePiece(int x, int y, params PieceType[] exceptType)
         {
             var pos = new Vector3(x, y);
             pos -= fieldInfo.Size / 2;
             pos *= pieceManager.PieceSize;
 
-            var resultExcept = new PieceType[exceptType.Length + 1];
-            resultExcept[0] = PieceType.None;
-            for (int i = 0; i < exceptType.Length; i++)
-            {
-                resultExcept[i + 1] = exceptType[i];
-            }
-
             pieceList.Add(Instantiate(PuzzlePiecePrefab, pieceManager.PieceContainer.transform).GetComponent<PuzzlePiece>());
-            pieceField[x].Add(pieceList.Last());
+            pieceField[x][y] = pieceList.Last();
 
-            var target = pieceField[x].Last();
+            var target = pieceList.Last();
             target.MyIndex = (x, y);
             target.transform.localPosition = pos;
             target.MyManager = pieceManager;
 
+            var enumArr = Utility.GetEnumArray<PieceType>(PieceType.None);
             if (exceptType != null)
             {
-                target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(resultExcept));
+                target.MyType = Utility.PickRandom(enumArr, exceptType);
             }
             else
             {
-                target.MyType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(PieceType.None));
+                target.MyType = Utility.PickRandom(enumArr);
             }
         }
         #endregion

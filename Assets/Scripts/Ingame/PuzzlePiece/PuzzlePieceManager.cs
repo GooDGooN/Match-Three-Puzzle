@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class PuzzlePieceManager : MonoBehaviour
@@ -38,10 +39,10 @@ public class PuzzlePieceManager : MonoBehaviour
         for (int i = 0; i < PieceField.Length; i++)
         {
             PieceField[i] = new List<PuzzlePiece>();
-        }
-        foreach (ref var column in PieceField.AsSpan())
-        {
-           column = new List<PuzzlePiece>();
+            for (int j = 0; j < FieldInfo.Height; j++)
+            {
+                PieceField[i].Add(null);
+            }
         }
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
@@ -52,9 +53,12 @@ public class PuzzlePieceManager : MonoBehaviour
     {
         if(y < PieceField[x].Count)
         {
-            if (PieceField[x][y].MyType != PieceType.None)
+            if(PieceField[x][y] != null)
             {
-                return false;
+                if (PieceField[x][y].MyType != PieceType.None)
+                {
+                    return false;
+                }
             }
         }
         return true;
