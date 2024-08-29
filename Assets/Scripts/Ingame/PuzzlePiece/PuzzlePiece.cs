@@ -42,8 +42,7 @@ public class PuzzlePiece : MonoBehaviour
 
         if (pieces != null)
         {
-            var dirs = Utility.Get4DirTuples();
-            foreach (var dir in dirs)
+            foreach (var dir in Utility.Get4DirTuples())
             {
                 var nextPos = (MyIndex.Item1 + dir.Item1, MyIndex.Item2 + dir.Item2);
                 while (MyManager.IsPlaceAreExist(nextPos) && !MyManager.IsPlaceEmpty(nextPos))
@@ -74,22 +73,14 @@ public class PuzzlePiece : MonoBehaviour
     public PieceType[] GetNearPieces()
     {
         var fieldInfo = MyManager.FieldInfo;
-
         var result = new List<PieceType>();
-        for (int dir = 0; dir <= 270; dir += 90)
-        {
-            var dirx = (int)MyMath.GetCosAngle(dir, true);
-            var diry = (int)MyMath.GetSinAngle(dir, true);
 
-            if (dirx != Mathf.Clamp(dirx, 0, fieldInfo.Width - 1) || diry != Mathf.Clamp(diry, 0, fieldInfo.Height - 1))
+        foreach(var dir in Utility.Get4DirTuples())
+        {
+            if(!MyManager.IsPlaceEmpty(dir) || MyManager.IsPlaceAreExist(dir))
             {
-                continue;
+                result.Add(MyManager.PieceField[dir.Item1][dir.Item2].MyType);
             }
-            if (MyManager.IsPlaceEmpty(dirx, diry))
-            {
-                continue;
-            }
-            result.Add(MyManager.PieceField[dirx][diry].MyType);
         }
         return result.ToArray();
     }

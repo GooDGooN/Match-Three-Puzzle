@@ -39,13 +39,13 @@ public class PuzzlePieceGenerator : MonoBehaviour
             {
                 var targetRandomPointIndex = Random.Range(0, matchablePointList.Count);
                 var targetRandomPiecePoint = matchablePointList[targetRandomPointIndex];
-                var createDirection = new List<int>();
+                var createDirection = new List<(int, int)>();
 
                 //4 dir check
-                for (int dir = 0; dir <= 270; dir += 90)
+                foreach(var dir in Utility.Get4DirTuples())
                 {
-                    var ix = (int)MyMath.GetCosAngle(dir, true);
-                    var iy = (int)MyMath.GetSinAngle(dir, true);
+                    var ix = dir.Item1;
+                    var iy = dir.Item2;
                     var passable = true;
 
                     // check if direction is ok
@@ -57,7 +57,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         iy *= dist;
                         iy += targetRandomPiecePoint.Item2;
 
-                        if(pieceManager.IsPlaceAreExist(ix, iy) || !pieceManager.IsPlaceEmpty(ix, iy))
+                        if (pieceManager.IsPlaceAreExist(ix, iy) || !pieceManager.IsPlaceEmpty(ix, iy))
                         {
                             passable = false;
                             break;
@@ -72,8 +72,8 @@ public class PuzzlePieceGenerator : MonoBehaviour
                 if (createDirection.Count > 0)
                 {
                     var finalDirection = createDirection[Random.Range(0, createDirection.Count)];
-                    var ix = (int)MyMath.GetCosAngle(finalDirection);
-                    var iy = (int)MyMath.GetSinAngle(finalDirection);
+                    var ix = finalDirection.Item1;
+                    var iy = finalDirection.Item2;
                     var exceptIndex = Utility.Choose(2, 3);
                     var targetType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(PieceType.None));
 
