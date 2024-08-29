@@ -63,4 +63,18 @@ public class Utility
     }
     #endregion
 
+    #region Direction
+    public static (int, int)[] Get4DirTuples()
+    {
+        var result = new (int, int)[4]
+        {
+            (1, 0),
+            (0, 1),
+            (-1, 0),
+            (0, -1),
+        };
+        return result;
+    }
+    #endregion
+
 }
