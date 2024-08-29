@@ -57,13 +57,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         iy *= dist;
                         iy += targetRandomPiecePoint.Item2;
 
-                        if (ix != Mathf.Clamp(ix, 0, fieldInfo.Width - 1) || iy != Mathf.Clamp(iy, 0, fieldInfo.Height - 1))
-                        {
-                            passable = false;
-                            break;
-                        }
-
-                        if(!pieceManager.IsPlaceEmpty(ix, iy))
+                        if(pieceManager.IsPlaceAreExist(ix, iy) || !pieceManager.IsPlaceEmpty(ix, iy))
                         {
                             passable = false;
                             break;
@@ -81,7 +75,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                     var ix = (int)MyMath.GetCosAngle(finalDirection);
                     var iy = (int)MyMath.GetSinAngle(finalDirection);
                     var exceptIndex = Utility.Choose(2, 3);
-                    var targetType = Utility.PickRandom(Utility.GetEnumArray<PieceType>());
+                    var targetType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(PieceType.None));
 
                     for (int dist = 0; dist < 4; dist++)
                     {
@@ -131,7 +125,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                     }
                     else
                     {
-                        if (pieceField[ix][iy].IsMatchable())
+                        if (pieceField[ix][iy].GetMatchablePieces().Length > 0)
                         {
                             var enumArr = Utility.GetEnumArray<PieceType>();
                             var exceptArr = pieceField[ix][iy].GetNearPieces();
@@ -139,7 +133,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         }
                     }
                     // TESTLOG!!
-                    Debug.Log(pieceField[ix][iy].IsMatchable());
+                    Debug.Log(pieceField[ix][iy].GetMatchablePieces().Length);
                     exceptTypes.Clear();
                 }
             }
