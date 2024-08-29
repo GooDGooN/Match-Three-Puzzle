@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,50 +33,42 @@ public class PuzzlePiece : MonoBehaviour
     {
     }
 
-    public bool IsMatchable()
+    public PuzzlePiece[] GetMatchablePieces()
     {
         var fieldInfo = MyManager.FieldInfo;
-
         var pieces = MyManager.PieceField;
-        if(pieces != null)
+        var resultList = new List<PuzzlePiece>();
+        var testList = new List<PuzzlePiece>();
+
+        if (pieces != null)
         {
-            for (int dir = 0; dir <= 90; dir += 90)
+            var dirs = Utility.Get4DirTuples();
+            foreach (var dir in dirs)
             {
-                var dirx = (int)MyMath.GetCosAngle(dir, true);
-                var diry = (int)MyMath.GetSinAngle(dir, true);
-                var dupCount = 0;
-                for (int dist = -2; dist < 3; dist++)
+                var nextPos = (MyIndex.Item1 + dir.Item1, MyIndex.Item2 + dir.Item2);
+                while (MyManager.IsPlaceAreExist(nextPos) && !MyManager.IsPlaceEmpty(nextPos))
                 {
-                    var targetXIndex = MyIndex.Item1 + (dirx * dist);
-                    var targetYIndex = MyIndex.Item2 + (diry * dist);
-                    if (targetXIndex != Mathf.Clamp(targetXIndex, 0, fieldInfo.Width - 1) || targetYIndex != Mathf.Clamp(targetYIndex, 0, fieldInfo.Height - 1))
+                    var target = pieces[nextPos.Item1][nextPos.Item2];
+                    if (target.MyType != MyType)
                     {
-                        continue;
+                        break;
                     }
-                    else
-                    {
-                        if (!MyManager.IsPlaceEmpty(targetXIndex, targetYIndex))
-                        {
-                            var targetType = pieces[targetXIndex][targetYIndex].MyType;
-                            if (targetType == MyType && targetType != PieceType.None)
-                            {
-                                dupCount++;
-                            }
-                            else
-                            {
-                                dupCount = 0;
-                                continue;
-                            }
-                        }
-                    }
+                    testList.Add(target);
+                    nextPos.Item1 += dir.Item1;
+                    nextPos.Item2 += dir.Item2;
                 }
-                if (dupCount >= 3)
+                if(testList.Count >= 2)
                 {
-                    return true;
+                    resultList.AddRange(testList);
                 }
+                testList.Clear();
             }
         }
-        return false;
+        if(resultList.Count > 0)
+        {
+            resultList.Add(this);
+        }
+        return resultList.ToArray();
     }
 
     public PieceType[] GetNearPieces()
@@ -100,4 +93,7 @@ public class PuzzlePiece : MonoBehaviour
         }
         return result.ToArray();
     }
+
+
 }
+
