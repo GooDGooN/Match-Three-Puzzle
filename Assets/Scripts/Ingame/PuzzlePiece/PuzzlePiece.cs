@@ -20,15 +20,14 @@ public class PuzzlePiece : MonoBehaviour
     public Sprite[] PieceSprites;
     public PieceType MyType;
     public (int, int) MyIndex;
-
     public PuzzlePieceManager MyManager;
-    // Start is called before the first frame update
+
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
     }
 
-    // Update is called once per frame
+
     void Update()
     {
     }
@@ -70,22 +69,49 @@ public class PuzzlePiece : MonoBehaviour
         return resultList.ToArray();
     }
 
-    public PieceType[] GetNearPieces()
+    public PieceType[] GetNearTypes()
+    {
+        var result = new List<PieceType>();
+        foreach(var item in GetNearPieces())
+        {
+            result.Add(item.MyType);
+        }
+        return result.ToArray();
+    }
+
+    public PuzzlePiece[] GetNearPieces()
     {
         var fieldInfo = MyManager.FieldInfo;
-        var result = new List<PieceType>();
+        var result = new List<PuzzlePiece>();
 
-        foreach(var dir in Utility.Get4DirTuples())
+        foreach (var dir in Utility.Get4DirTuples())
         {
-            if(!MyManager.IsPlaceEmpty(dir) || MyManager.IsPlaceAreExist(dir))
+            var pos = (dir.Item1 + MyIndex.Item1, dir.Item2 + MyIndex.Item2);
+            if (MyManager.IsPlaceAreExist(pos) && !MyManager.IsPlaceEmpty(pos))
             {
-                result.Add(MyManager.PieceField[dir.Item1][dir.Item2].MyType);
+                result.Add(MyManager.PieceField[pos.Item1][pos.Item2]);
             }
         }
         return result.ToArray();
     }
 
-    
+    public void SwapPiece(PuzzlePiece target)
+    {
+        var field = MyManager.PieceField;
+        var targetIndex = target.MyIndex;
+        field[MyIndex.Item1][MyIndex.Item2] = target;
+        field[targetIndex.Item1][targetIndex.Item2] = this;
+
+        target.Reposition(MyIndex);
+        Reposition(targetIndex);
+    }
+
+    public void Reposition((int, int)index)
+    {
+        MyIndex = index;
+        var pos = new Vector3(index.Item1, index.Item2) - (MyManager.FieldInfo / 2);
+        transform.position = pos * MyManager.PieceSize;
+    }
 
 }
 

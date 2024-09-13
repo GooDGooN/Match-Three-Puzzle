@@ -128,7 +128,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
                         if (pieceField[ix][iy].GetMatchablePieces().Length > 0)
                         {
                             var enumArr = Utility.GetEnumArray<PieceType>();
-                            var exceptArr = pieceField[ix][iy].GetNearPieces();
+                            var exceptArr = pieceField[ix][iy].GetNearTypes();
                             pieceField[ix][iy].MyType = Utility.PickRandom(enumArr, exceptArr);
                         }
                     }
@@ -154,7 +154,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
             target.transform.localPosition = pos;
             target.MyManager = pieceManager;
 
-            var enumArr = Utility.GetEnumArray<PieceType>(PieceType.None);
+            var enumArr = Utility.GetEnumArray(PieceType.None);
             if (exceptType != null)
             {
                 target.MyType = Utility.PickRandom(enumArr, exceptType);
@@ -165,11 +165,6 @@ public class PuzzlePieceGenerator : MonoBehaviour
             }
         }
         #endregion
-    }
-
-    void Update()
-    {
-        
     }
 }
 

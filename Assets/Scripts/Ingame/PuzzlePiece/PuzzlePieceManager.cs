@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PuzzlePieceManager : MonoBehaviour
@@ -30,10 +31,13 @@ public class PuzzlePieceManager : MonoBehaviour
     public readonly int PieceSize = 36;
     public readonly Field FieldInfo = new Field(7, 7);
 
+    public GameObject SelectedIcon;
+    private PuzzlePiece selectedPuzzlePiece;
 
     private void Awake()
     {
         PieceField = new List<PuzzlePiece>[FieldInfo.Width];
+        SelectedIcon.SetActive(false);
 
         for (int i = 0; i < PieceField.Length; i++)
         {
@@ -46,13 +50,42 @@ public class PuzzlePieceManager : MonoBehaviour
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
-    } 
+    }
 
+
+    // Update is called once per frame
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+        {
+            var pieceObjs = IngameTouchManager.GetMousePointObjects(1 << 6);
+            if(pieceObjs != null)
+            {
+                var targetPiece = pieceObjs[0].GetComponent<PuzzlePiece>();
+                if (selectedPuzzlePiece == null)
+                {
+                    selectedPuzzlePiece = targetPiece;
+                    SelectedIcon.SetActive(true);
+                    SelectedIcon.transform.position = selectedPuzzlePiece.transform.position;
+                }
+                else
+                {
+                    if (targetPiece.GetNearPieces().Contains(selectedPuzzlePiece))
+                    {
+                        selectedPuzzlePiece.SwapPiece(targetPiece);
+                    }
+                    selectedPuzzlePiece = null;
+                    SelectedIcon.SetActive(false);
+                }
+            }
+        }
+    }
+    #region PlaceCheck
     public bool IsPlaceEmpty(int x, int y)
     {
-        if(y < PieceField[x].Count)
+        if (y < PieceField[x].Count)
         {
-            if(PieceField[x][y] != null)
+            if (PieceField[x][y] != null)
             {
                 if (PieceField[x][y].MyType != PieceType.None)
                 {
@@ -63,7 +96,7 @@ public class PuzzlePieceManager : MonoBehaviour
         return true;
     }
 
-    public bool IsPlaceEmpty((int, int)posTuple)
+    public bool IsPlaceEmpty((int, int) posTuple)
     {
         return IsPlaceEmpty(posTuple.Item1, posTuple.Item2);
     }
@@ -82,9 +115,5 @@ public class PuzzlePieceManager : MonoBehaviour
         return true;
     }
 
-    // Update is called once per frame
-    private void Update()
-    {
-        
-    }
+    #endregion
 }
