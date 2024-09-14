@@ -82,8 +82,8 @@ public class PuzzlePieceManager : MonoBehaviour
                         selectedPuzzlePiece.MyIndex = targetIndex;
                         targetPiece.MyIndex = selectedIndex;
 
-                        var matchableList = selectedPuzzlePiece.GetMatchablePieces().ToList();
-                        matchableList.AddRange(targetPiece.GetMatchablePieces());
+                        var matchableList = GetMatchablePieces(selectedPuzzlePiece).ToList();
+                        matchableList.AddRange(GetMatchablePieces(targetPiece));
                         if(matchableList.Count > 0)
                         {
                             foreach( var piece in matchableList )
@@ -117,15 +117,16 @@ public class PuzzlePieceManager : MonoBehaviour
         return true;
     }
 
-    public bool IsPlaceEmpty((int, int) posTuple)
+    public bool IsPlaceEmpty((int, int) tuplePos)
     {
-        return IsPlaceEmpty(posTuple.Item1, posTuple.Item2);
+        return IsPlaceEmpty(tuplePos.Item1, tuplePos.Item2);
     }
 
-    public bool IsPlaceAreExist((int, int) posTuple)
+    public bool IsPlaceEmpty(Vector2Int vectorPos)
     {
-        return IsPlaceAreExist(posTuple.Item1, posTuple.Item2);
+        return IsPlaceEmpty(vectorPos.x, vectorPos.y);
     }
+
 
     public bool IsPlaceAreExist(int x, int y)
     {
@@ -136,5 +137,74 @@ public class PuzzlePieceManager : MonoBehaviour
         return true;
     }
 
+    public bool IsPlaceAreExist((int, int) tuplePos)
+    {
+        return IsPlaceAreExist(tuplePos.Item1, tuplePos.Item2);
+    }
+
+    public bool IsPlaceAreExist(Vector2Int vectorPos)
+    {
+        return IsPlaceAreExist(vectorPos.x, vectorPos.y);
+    }
+
+    #endregion
+
+    #region PieceCheck
+    public PuzzlePiece[] GetMatchablePieces(PuzzlePiece origin)
+    {
+        var resultList = new List<PuzzlePiece>();
+        var testList = new List<PuzzlePiece>();
+        var dirs = new Vector2Int[2]
+        {
+            new Vector2Int(1, 0),
+            new Vector2Int(0, 1)
+        };
+            
+        if (PieceField != null)
+        {
+            foreach (var dir in dirs)
+            {
+                var nextPos = new Vector2Int(origin.MyIndex.Item1 + dir.x, origin.MyIndex.Item2 + dir.y);
+                var prevPos = new Vector2Int(origin.MyIndex.Item1 - dir.x, origin.MyIndex.Item2 - dir.y);
+                var lastLength = -1;
+                while (true)
+                {
+                    if(IsPlaceAreExist(nextPos) && !IsPlaceEmpty(nextPos))
+                    {
+                        var nextTarget = PieceField[nextPos.x][nextPos.y];
+                        if (nextTarget.MyType == origin.MyType)
+                        {
+                            testList.Add(nextTarget);
+                            nextPos += dir;
+                        }
+                    }
+                    if(IsPlaceAreExist(prevPos) && !IsPlaceEmpty(prevPos))
+                    {
+                        var prevTarget = PieceField[prevPos.x][prevPos.y];
+                        if (prevTarget.MyType == origin.MyType)
+                        {
+                            testList.Add(prevTarget);
+                            prevPos -= dir;
+                        }
+                    }
+                    if(lastLength == testList.Count)
+                    {
+                        break;
+                    }
+                    lastLength = testList.Count;
+                }
+                if (testList.Count >= 2)
+                {
+                    resultList.AddRange(testList);
+                }
+                testList.Clear();
+            }
+        }
+        if (resultList.Count > 0)
+        {
+            resultList.Add(origin);
+        }
+        return resultList.ToArray();
+    }
     #endregion
 }
