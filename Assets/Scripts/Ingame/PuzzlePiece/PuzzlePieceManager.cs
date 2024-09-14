@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PuzzlePieceManager : MonoBehaviour
@@ -72,7 +73,27 @@ public class PuzzlePieceManager : MonoBehaviour
                 {
                     if (targetPiece.GetNearPieces().Contains(selectedPuzzlePiece))
                     {
-                        selectedPuzzlePiece.SwapPiece(targetPiece);
+                        var selectedIndex = selectedPuzzlePiece.MyIndex;
+                        var targetIndex = targetPiece.MyIndex;
+
+                        PieceField[targetIndex.Item1][targetIndex.Item2] = selectedPuzzlePiece;
+                        PieceField[selectedIndex.Item1][selectedIndex.Item2] = targetPiece;
+                        
+                        selectedPuzzlePiece.MyIndex = targetIndex;
+                        targetPiece.MyIndex = selectedIndex;
+
+                        var matchableList = selectedPuzzlePiece.GetMatchablePieces().ToList();
+                        matchableList.AddRange(targetPiece.GetMatchablePieces());
+                        if(matchableList.Count > 0)
+                        {
+                            foreach( var piece in matchableList )
+                            {
+                                Destroy(piece.gameObject);
+                            }
+                        }    
+                        
+                        selectedPuzzlePiece.Reposition();
+                        targetPiece.Reposition();
                     }
                     selectedPuzzlePiece = null;
                     SelectedIcon.SetActive(false);

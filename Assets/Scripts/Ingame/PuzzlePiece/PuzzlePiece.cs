@@ -95,21 +95,9 @@ public class PuzzlePiece : MonoBehaviour
         return result.ToArray();
     }
 
-    public void SwapPiece(PuzzlePiece target)
+    public void Reposition()
     {
-        var field = MyManager.PieceField;
-        var targetIndex = target.MyIndex;
-        field[MyIndex.Item1][MyIndex.Item2] = target;
-        field[targetIndex.Item1][targetIndex.Item2] = this;
-
-        target.Reposition(MyIndex);
-        Reposition(targetIndex);
-    }
-
-    public void Reposition((int, int)index)
-    {
-        MyIndex = index;
-        var pos = new Vector3(index.Item1, index.Item2) - (MyManager.FieldInfo / 2);
+        var pos = new Vector3(MyIndex.Item1, MyIndex.Item2) - (MyManager.FieldInfo / 2);
         transform.position = pos * MyManager.PieceSize;
     }
 
