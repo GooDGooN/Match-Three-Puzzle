@@ -1,7 +1,10 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -57,48 +60,9 @@ public class PuzzlePieceManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))
         {
-            var pieceObjs = IngameTouchManager.GetMousePointObjects(1 << 6);
-            if(pieceObjs != null)
-            {
-                var targetPiece = pieceObjs[0].GetComponent<PuzzlePiece>();
-                if (selectedPuzzlePiece == null)
-                {
-                    selectedPuzzlePiece = targetPiece;
-                    SelectedIcon.SetActive(true);
-                    SelectedIcon.transform.position = selectedPuzzlePiece.transform.position;
-                }
-                else
-                {
-                    if (targetPiece.GetNearPieces().Contains(selectedPuzzlePiece))
-                    {
-                        var selectedIndex = selectedPuzzlePiece.MyIndex;
-                        var targetIndex = targetPiece.MyIndex;
-
-                        PieceField[targetIndex.Item1][targetIndex.Item2] = selectedPuzzlePiece;
-                        PieceField[selectedIndex.Item1][selectedIndex.Item2] = targetPiece;
-                        
-                        selectedPuzzlePiece.MyIndex = targetIndex;
-                        targetPiece.MyIndex = selectedIndex;
-
-                        var matchableList = GetMatchablePieces(selectedPuzzlePiece).ToList();
-                        matchableList.AddRange(GetMatchablePieces(targetPiece));
-                        if(matchableList.Count > 0)
-                        {
-                            foreach( var piece in matchableList )
-                            {
-                                Destroy(piece.gameObject);
-                            }
-                        }    
-                        
-                        selectedPuzzlePiece.Reposition();
-                        targetPiece.Reposition();
-                    }
-                    selectedPuzzlePiece = null;
-                    SelectedIcon.SetActive(false);
-                }
-            }
+            StartCoroutine(ClickPiece());
         }
     }
     #region PlaceCheck
@@ -206,7 +170,75 @@ public class PuzzlePieceManager : MonoBehaviour
         }
         return resultList.ToArray();
     }
-    #endregion
 
+    public IEnumerator ClickPiece()
+    {
+        var pieceObjs = IngameTouchManager.GetMousePointObjects(1 << 6);
+        if (pieceObjs != null)
+        {
+            var targetPiece = pieceObjs[0].GetComponent<PuzzlePiece>();
+            if (selectedPuzzlePiece == null)
+            {
+                selectedPuzzlePiece = targetPiece;
+                SelectedIcon.SetActive(true);
+                SelectedIcon.transform.position = selectedPuzzlePiece.transform.position;
+            }
+            else
+            {
+                if (targetPiece.GetNearPieces().Contains(selectedPuzzlePiece))
+                {
+                    // Swap
+                    var selectedPos = selectedPuzzlePiece.transform.position;
+                    var targetPos = targetPiece.transform.position;
+                    var time = 0.1f;
 
+                    SwapPiece();
+                    selectedPuzzlePiece.transform.DOMove(targetPos, time);
+                    targetPiece.transform.DOMove(selectedPos, time);
+
+                    while (selectedPuzzlePiece.transform.position != targetPos)
+                    {
+                        yield return null;
+                    }
+
+                    var matchableList = GetMatchablePieces(selectedPuzzlePiece).ToList();
+                    matchableList.AddRange(GetMatchablePieces(targetPiece));
+                    if (matchableList.Count > 0)
+                    {
+                        foreach (var piece in matchableList)
+                        {
+                            PieceField[piece.MyIndex.Item1].Remove(piece);
+                            piece.MyIndex = (-1, -1);
+                            piece.transform.position = new Vector2(0, -500.0f);
+                        }
+                    }
+                    else
+                    {
+                        SwapPiece();
+                        selectedPuzzlePiece.transform.DOMove(selectedPos, time);
+                        targetPiece.transform.DOMove(targetPos, time);
+                    }
+
+                    void SwapPiece()
+                    {
+                        var selectedIndex = selectedPuzzlePiece.MyIndex;
+                        var targetIndex = targetPiece.MyIndex;
+
+                        selectedPuzzlePiece.MyIndex = targetIndex;
+                        targetPiece.MyIndex = selectedIndex;
+
+                        PieceField[targetIndex.Item1][targetIndex.Item2] = selectedPuzzlePiece;
+                        PieceField[selectedIndex.Item1][selectedIndex.Item2] = targetPiece;
+                    }
+
+                }
+                selectedPuzzlePiece = null;
+                SelectedIcon.SetActive(false);
+
+            }
+        }
+    }
 }
+
+#endregion
+

@@ -1,6 +1,8 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public enum PieceType
@@ -93,12 +95,6 @@ public class PuzzlePiece : MonoBehaviour
             }
         }
         return result.ToArray();
-    }
-
-    public void Reposition()
-    {
-        var pos = new Vector3(MyIndex.Item1, MyIndex.Item2) - (MyManager.FieldInfo / 2);
-        transform.position = pos * MyManager.PieceSize;
     }
 
 }
