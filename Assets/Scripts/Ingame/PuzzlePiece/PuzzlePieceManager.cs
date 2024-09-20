@@ -38,6 +38,9 @@ public class PuzzlePieceManager : MonoBehaviour
     public GameObject SelectedIcon;
     private PuzzlePiece selectedPuzzlePiece;
 
+    public bool IsPieceMoving = false;
+    public bool IsAbleToMove = true;
+
     private void Awake()
     {
         PieceField = new List<PuzzlePiece>[FieldInfo.Width];
@@ -60,12 +63,16 @@ public class PuzzlePieceManager : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && IsAbleToMove)
         {
             StartCoroutine(ClickPiece());
         }
+        if (!IsAbleToMove)
+        {
+
+        }
     }
-    #region PlaceCheck
+    #region Field Check
     public bool IsPlaceEmpty(int x, int y)
     {
         if (y < PieceField[x].Count)
@@ -111,9 +118,6 @@ public class PuzzlePieceManager : MonoBehaviour
         return IsPlaceAreExist(vectorPos.x, vectorPos.y);
     }
 
-    #endregion
-
-    #region PieceCheck
     public PuzzlePiece[] GetMatchablePieces(PuzzlePiece origin)
     {
         var resultList = new List<PuzzlePiece>();
@@ -123,7 +127,7 @@ public class PuzzlePieceManager : MonoBehaviour
             new Vector2Int(1, 0),
             new Vector2Int(0, 1)
         };
-            
+
         if (PieceField != null)
         {
             foreach (var dir in dirs)
@@ -133,7 +137,7 @@ public class PuzzlePieceManager : MonoBehaviour
                 var lastLength = -1;
                 while (true)
                 {
-                    if(IsPlaceAreExist(nextPos) && !IsPlaceEmpty(nextPos))
+                    if (IsPlaceAreExist(nextPos) && !IsPlaceEmpty(nextPos))
                     {
                         var nextTarget = PieceField[nextPos.x][nextPos.y];
                         if (nextTarget.MyType == origin.MyType)
@@ -142,7 +146,7 @@ public class PuzzlePieceManager : MonoBehaviour
                             nextPos += dir;
                         }
                     }
-                    if(IsPlaceAreExist(prevPos) && !IsPlaceEmpty(prevPos))
+                    if (IsPlaceAreExist(prevPos) && !IsPlaceEmpty(prevPos))
                     {
                         var prevTarget = PieceField[prevPos.x][prevPos.y];
                         if (prevTarget.MyType == origin.MyType)
@@ -151,7 +155,7 @@ public class PuzzlePieceManager : MonoBehaviour
                             prevPos -= dir;
                         }
                     }
-                    if(lastLength == testList.Count)
+                    if (lastLength == testList.Count)
                     {
                         break;
                     }
@@ -171,6 +175,10 @@ public class PuzzlePieceManager : MonoBehaviour
         return resultList.ToArray();
     }
 
+
+    #endregion
+
+    #region Piece Control
     public IEnumerator ClickPiece()
     {
         var pieceObjs = IngameTouchManager.GetMousePointObjects(1 << 6);
@@ -185,21 +193,24 @@ public class PuzzlePieceManager : MonoBehaviour
             }
             else
             {
+                IsAbleToMove = true;
                 if (targetPiece.GetNearPieces().Contains(selectedPuzzlePiece))
                 {
+                    var selectedIndex = selectedPuzzlePiece.MyIndex;
+                    var targetIndex = targetPiece.MyIndex;
+
+                    TweenCallback callback = CompleteMove;
+                    var isMoveComplete = false;
+
                     // Swap
-                    var selectedPos = selectedPuzzlePiece.transform.position;
-                    var targetPos = targetPiece.transform.position;
-                    var time = 0.1f;
+                    RepositionPiece(targetPiece, selectedIndex);
+                    RepositionPiece(selectedPuzzlePiece, targetIndex, callback);
 
-                    SwapPiece();
-                    selectedPuzzlePiece.transform.DOMove(targetPos, time);
-                    targetPiece.transform.DOMove(selectedPos, time);
-
-                    while (selectedPuzzlePiece.transform.position != targetPos)
+                    while (!isMoveComplete)
                     {
                         yield return null;
                     }
+                    isMoveComplete = false;
 
                     var matchableList = GetMatchablePieces(selectedPuzzlePiece).ToList();
                     matchableList.AddRange(GetMatchablePieces(targetPiece));
@@ -214,31 +225,71 @@ public class PuzzlePieceManager : MonoBehaviour
                     }
                     else
                     {
-                        SwapPiece();
-                        selectedPuzzlePiece.transform.DOMove(selectedPos, time);
-                        targetPiece.transform.DOMove(targetPos, time);
+                        RepositionPiece(targetPiece, targetIndex);
+                        RepositionPiece(selectedPuzzlePiece, selectedIndex, callback);
+                        while (!isMoveComplete)
+                        {
+                            yield return null;
+                        }
+                        isMoveComplete = false;
                     }
 
-                    void SwapPiece()
+                    void CompleteMove()
                     {
-                        var selectedIndex = selectedPuzzlePiece.MyIndex;
-                        var targetIndex = targetPiece.MyIndex;
-
-                        selectedPuzzlePiece.MyIndex = targetIndex;
-                        targetPiece.MyIndex = selectedIndex;
-
-                        PieceField[targetIndex.Item1][targetIndex.Item2] = selectedPuzzlePiece;
-                        PieceField[selectedIndex.Item1][selectedIndex.Item2] = targetPiece;
+                        isMoveComplete = true;
                     }
-
                 }
                 selectedPuzzlePiece = null;
                 SelectedIcon.SetActive(false);
-
             }
         }
     }
-}
 
-#endregion
+
+/*    private IEnumerator RefillPieces()
+    {
+        foreach(var col in PieceField)
+        {
+            if(col.Count < FieldInfo.Height)
+            {
+                GetUseablePiece();
+            }
+        }
+    }*/
+
+    private PuzzlePiece GetUseablePiece()
+    {
+        foreach(var piece in PieceList)
+        {
+            if(piece.MyIndex == (-1, -1))
+            {
+                return piece;
+            }
+        }
+        return null;
+    }
+
+    #endregion
+
+    #region Piece Position
+    public Vector3Int GetPiecePosition(int x, int y)
+    {
+        return (new Vector3Int(x, y) - (FieldInfo.Size / 2)) * PieceSize;
+    }
+
+    public Vector3Int GetPiecePosition((int, int) targetIndex)
+    {
+        return GetPiecePosition(targetIndex.Item1, targetIndex.Item2);
+    }
+
+    private void RepositionPiece(PuzzlePiece target, (int, int) targetIndex, TweenCallback callback = null)
+    {
+        var pos = GetPiecePosition(targetIndex);
+        target.MyIndex = targetIndex;
+        PieceField[targetIndex.Item1][targetIndex.Item2] = target;
+        target.transform.DOMove(pos, 0.15f).onComplete = callback;
+    }
+
+    #endregion
+}
 

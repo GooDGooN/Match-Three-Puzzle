@@ -142,9 +142,7 @@ public class PuzzlePieceGenerator : MonoBehaviour
         #region Local Function
         void InstantiatePiece(int x, int y, params PieceType[] exceptType)
         {
-            var pos = new Vector3(x, y);
-            pos -= fieldInfo.Size / 2;
-            pos *= pieceManager.PieceSize;
+            var pos = pieceManager.GetPiecePosition(x, y);
 
             pieceList.Add(Instantiate(PuzzlePiecePrefab, pieceManager.PieceContainer.transform).GetComponent<PuzzlePiece>());
             pieceField[x][y] = pieceList.Last();
