@@ -125,15 +125,13 @@ public class PuzzlePieceGenerator : MonoBehaviour
                     }
                     else
                     {
-                        if (pieceField[ix][iy].GetMatchablePieces().Length > 0)
+                        if(pieceManager.GetMatchablePieces(pieceField[ix][iy]).Length > 0)
                         {
                             var enumArr = Utility.GetEnumArray<PieceType>();
                             var exceptArr = pieceField[ix][iy].GetNearTypes();
                             pieceField[ix][iy].MyType = Utility.PickRandom(enumArr, exceptArr);
                         }
                     }
-                    // TESTLOG!!
-                    Debug.Log(pieceField[ix][iy].GetMatchablePieces().Length);
                     exceptTypes.Clear();
                 }
             }

@@ -38,44 +38,6 @@ public class PuzzlePiece : MonoBehaviour
         testpos[0] = MyIndex.Item1;
         testpos[1] = MyIndex.Item2;
     }
-
-    public PuzzlePiece[] GetMatchablePieces()
-    {
-        var fieldInfo = MyManager.FieldInfo;
-        var pieces = MyManager.PieceField;
-        var resultList = new List<PuzzlePiece>();
-        var testList = new List<PuzzlePiece>();
-
-        if (pieces != null)
-        {
-            foreach (var dir in Utility.Get4DirTuples())
-            {
-                var nextPos = (MyIndex.Item1 + dir.Item1, MyIndex.Item2 + dir.Item2);
-                while (MyManager.IsPlaceAreExist(nextPos) && !MyManager.IsPlaceEmpty(nextPos))
-                {
-                    var target = pieces[nextPos.Item1][nextPos.Item2];
-                    if (target.MyType != MyType)
-                    {
-                        break;
-                    }
-                    testList.Add(target);
-                    nextPos.Item1 += dir.Item1;
-                    nextPos.Item2 += dir.Item2;
-                }
-                if(testList.Count >= 2)
-                {
-                    resultList.AddRange(testList);
-                }
-                testList.Clear();
-            }
-        }
-        if(resultList.Count > 0)
-        {
-            resultList.Add(this);
-        }
-        return resultList.ToArray();
-    }
-
     public PieceType[] GetNearTypes()
     {
         var result = new List<PieceType>();
