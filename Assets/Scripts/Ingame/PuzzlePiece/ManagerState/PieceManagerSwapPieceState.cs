@@ -49,8 +49,8 @@ public partial class PuzzlePieceManager
                     self.PieceField[piece.MyIndex.Item1].Remove(piece);
                     piece.MyIndex = (-1, -1);
                     piece.transform.position = new Vector2(0, -500.0f);
-                    // Change to Refill State
                 }
+                stateManager.ChangeState<PieceManagerRefillState>();
             }
             else
             {

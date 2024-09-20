@@ -411,6 +411,8 @@ MonoBehaviour:
   PieceList: []
   PieceContainer: {fileID: 0}
   SelectedIcon: {fileID: 790027101}
+  Controllable: 0
+  IsAbleToMove: 1
 --- !u!1 &790027101
 GameObject:
   m_ObjectHideFlags: 0

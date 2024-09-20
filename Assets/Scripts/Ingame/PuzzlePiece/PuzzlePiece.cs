@@ -24,6 +24,8 @@ public class PuzzlePiece : MonoBehaviour
     public (int, int) MyIndex;
     public PuzzlePieceManager MyManager;
 
+    public int[] testpos = new int[2];
+
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
@@ -32,6 +34,9 @@ public class PuzzlePiece : MonoBehaviour
 
     void Update()
     {
+        GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
+        testpos[0] = MyIndex.Item1;
+        testpos[1] = MyIndex.Item2;
     }
 
     public PuzzlePiece[] GetMatchablePieces()
@@ -95,6 +100,11 @@ public class PuzzlePiece : MonoBehaviour
             }
         }
         return result.ToArray();
+    }
+
+    public void RefreshSprite()
+    {
+        GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
     }
 
 }

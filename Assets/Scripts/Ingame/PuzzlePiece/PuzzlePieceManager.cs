@@ -194,6 +194,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
         var pos = GetPiecePosition(targetIndex);
         target.MyIndex = targetIndex;
         PieceField[targetIndex.Item1][targetIndex.Item2] = target;
+        target.DOKill();
         target.transform.DOMove(pos, 0.15f).onComplete = callback;
     }
     #endregion
