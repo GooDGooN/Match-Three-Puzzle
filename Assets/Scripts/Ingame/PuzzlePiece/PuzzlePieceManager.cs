@@ -68,8 +68,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
         myStateController.ChangeState<PieceManagerIdleState>();
     }
 
-
-    // Update is called once per frame
     private void Update()
     {
         myStateController.CurrentState.StateUpdate();
@@ -198,48 +196,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
         PieceField[targetIndex.Item1][targetIndex.Item2] = target;
         target.transform.DOMove(pos, 0.15f).onComplete = callback;
     }
-
-    private IEnumerator SwapPiece(PuzzlePiece targetPiece)
-    {
-        if (targetPiece.GetNearPieces().Contains(selectedPuzzlePiece))
-        {
-            var selectedPos = selectedPuzzlePiece.transform.position;
-            var targetPos = targetPiece.transform.position;
-            var selectedIndex = selectedPuzzlePiece.MyIndex;
-            var targetIndex = targetPiece.MyIndex;
-
-            RepositionPiece(targetPiece, selectedIndex);
-            RepositionPiece(selectedPuzzlePiece, targetIndex);
-
-            while (selectedPuzzlePiece.transform.position != targetPos)
-            {
-                yield return null;
-            }
-
-            var matchableList = GetMatchablePieces(selectedPuzzlePiece).ToList();
-            matchableList.AddRange(GetMatchablePieces(targetPiece));
-            if (matchableList.Count > 0)
-            {
-                foreach (var piece in matchableList)
-                {
-                    PieceField[piece.MyIndex.Item1].Remove(piece);
-                    piece.MyIndex = (-1, -1);
-                    piece.transform.position = new Vector2(0, -500.0f);
-                }
-            }
-            else
-            {
-                RepositionPiece(targetPiece, targetIndex);
-                RepositionPiece(selectedPuzzlePiece, selectedIndex);
-                while (selectedPuzzlePiece.transform.position != targetPos)
-                {
-                    yield return null;
-                }
-            }
-        }
-    }
-
-
     #endregion
 }
 
