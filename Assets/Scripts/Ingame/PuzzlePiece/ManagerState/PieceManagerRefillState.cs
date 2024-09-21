@@ -2,6 +2,7 @@ using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public partial class PuzzlePieceManager
 {
@@ -14,16 +15,17 @@ public partial class PuzzlePieceManager
                 var col = self.PieceField[ix];
                 if (col.Count < self.FieldInfo.Height)
                 {
-                    for(int iy = 0;  iy < col.Count; iy++)
+                    for (int iy = 0; iy < col.Count; iy++)
                     {
                         var targetPiece = self.PieceField[ix][iy];
-                        if(targetPiece.MyIndex.Item2 > iy)
+                        if (targetPiece.MyIndex.Item2 > iy)
                         {
                             self.RepositionPiece(targetPiece, (ix, iy));
+                            self.repositionedPieceQueue.Enqueue(targetPiece);
                         }
                     }
 
-                    while(col.Count != self.FieldInfo.Height)
+                    while (col.Count != self.FieldInfo.Height)
                     {
                         var newPiece = GetUseablePiece();
                         newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(PieceType.None));
@@ -32,12 +34,31 @@ public partial class PuzzlePieceManager
 
                         var pos = self.GetPiecePosition(newPiece.MyIndex) + (Vector3Int.up * 300);
                         newPiece.transform.position = pos;
-                        self.RepositionPiece(newPiece, newPiece.MyIndex);
+
+                        if (col.Count < self.FieldInfo.Height)
+                        {
+                            self.RepositionPiece(newPiece, newPiece.MyIndex);
+                        }
+                        else
+                        {
+                            self.RepositionPiece(newPiece, newPiece.MyIndex, ChangeToMatchable);
+                        }
+                        self.repositionedPieceQueue.Enqueue(newPiece);
+                    }
+
+                    PuzzlePiece GetUseablePiece()
+                    {
+                        foreach (var piece in self.PieceList)
+                        {
+                            if (piece.MyIndex == (-1, -1))
+                            {
+                                return piece;
+                            }
+                        }
+                        return null;
                     }
                 }
             }
-
-            stateManager.ChangeState<PieceManagerIdleState>();
         }
 
         public override void StateExit()
@@ -52,16 +73,9 @@ public partial class PuzzlePieceManager
         {
         }
 
-        private PuzzlePiece GetUseablePiece()
+        private void ChangeToMatchable()
         {
-            foreach (var piece in self.PieceList)
-            {
-                if (piece.MyIndex == (-1, -1))
-                {
-                    return piece;
-                }
-            }
-            return null;
+            stateManager.ChangeState<PieceManagerCheckMatchableState>();
         }
     }
 }

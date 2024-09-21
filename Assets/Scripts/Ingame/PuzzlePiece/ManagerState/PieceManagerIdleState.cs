@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public partial class PuzzlePieceManager 
@@ -36,8 +37,16 @@ public partial class PuzzlePieceManager
                     }
                     else
                     {
-                        self.swapTargetPuzzlePiece = targetPiece;
-                        stateManager.ChangeState<PieceManagerSwapPieceState>();
+                        if (self.selectedPuzzlePiece.GetNearPieces().Contains(targetPiece))
+                        {
+                            self.swapTargetPuzzlePiece = targetPiece;
+                            stateManager.ChangeState<PieceManagerSwapPieceState>();
+                        }
+                        else
+                        {
+                            self.selectedPuzzlePiece = null;
+                            self.SelectedIcon.SetActive(false);
+                        }
                     }
                 }
 

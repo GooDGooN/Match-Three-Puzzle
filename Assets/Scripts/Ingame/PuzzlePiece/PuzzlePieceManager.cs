@@ -39,6 +39,8 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private PuzzlePiece selectedPuzzlePiece;
     private PuzzlePiece swapTargetPuzzlePiece;
 
+    private Queue<PuzzlePiece> repositionedPieceQueue;
+
     private StateController<PuzzlePieceManager> myStateController;
 
     public bool Controllable = false;
@@ -60,6 +62,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
+        repositionedPieceQueue = new Queue<PuzzlePiece>();   
         myStateController = new StateController<PuzzlePieceManager>(this);
     }
 
@@ -68,6 +71,10 @@ public partial class PuzzlePieceManager : MonoBehaviour
         myStateController.ChangeState<PieceManagerIdleState>();
     }
 
+    private void FixedUpdate()
+    {
+        myStateController.CurrentState.StateFixedUpdate();
+    }
     private void Update()
     {
         myStateController.CurrentState.StateUpdate();
@@ -195,7 +202,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
         target.MyIndex = targetIndex;
         PieceField[targetIndex.Item1][targetIndex.Item2] = target;
         target.DOKill();
-        target.transform.DOMove(pos, 0.15f).onComplete = callback;
+        target.transform.DOMove(pos, 0.5f).onComplete = callback;
     }
     #endregion
 }
