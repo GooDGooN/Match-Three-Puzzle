@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 
 public partial class PuzzlePieceManager
@@ -36,7 +37,7 @@ public partial class PuzzlePieceManager
                         {
                             foreach (var piece in matchables)
                             {
-                                if(piece.MyIndex != (-1, -1))
+                                if (piece.MyIndex != (-1, -1))
                                 {
                                     self.PieceField[piece.MyIndex.Item1].Remove(piece);
                                     piece.MyIndex = (-1, -1);
@@ -50,11 +51,12 @@ public partial class PuzzlePieceManager
 
                 if (isRefill)
                 {
+                    self.repositionedPieceQueue.Clear();
                     stateManager.ChangeState<PieceManagerRefillState>();
                 }
                 else
                 {
-                    stateManager.ChangeState<PieceManagerIdleState>();
+                    stateManager.ChangeState<PieceManagerCheckAllFieldState>();
                 }
             }
         }

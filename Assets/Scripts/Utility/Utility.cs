@@ -68,6 +68,7 @@ public class Utility
     {
         var result = new (int, int)[4]
         {
+            // cos(0~270), sin(0~270)
             (1, 0),
             (0, 1),
             (-1, 0),
