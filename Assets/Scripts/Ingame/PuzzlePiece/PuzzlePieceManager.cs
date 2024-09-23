@@ -30,12 +30,14 @@ public partial class PuzzlePieceManager : MonoBehaviour
     }
 
     public List<PuzzlePiece> PieceList;
-    public GameObject PieceContainer;
     public List<PuzzlePiece>[] PieceField;
+    public GameObject PuzzlePiecePrefab;
+    public GameObject PieceContainer;
     public readonly int PieceSize = 36;
     public readonly Field FieldInfo = new Field(7, 7);
 
     public GameObject SelectedIcon;
+    private Vector2Int matchablePieceAmount = new Vector2Int(3, 5);
     private PuzzlePiece selectedPuzzlePiece;
     private PuzzlePiece swapTargetPuzzlePiece;
 
