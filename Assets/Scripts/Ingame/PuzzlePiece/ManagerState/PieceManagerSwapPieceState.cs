@@ -19,8 +19,8 @@ public partial class PuzzlePieceManager
             selectedIndex = self.selectedPuzzlePiece.MyIndex;
             targetIndex = self.swapTargetPuzzlePiece.MyIndex;
 
-            self.RepositionPiece(self.swapTargetPuzzlePiece, selectedIndex);
-            self.RepositionPiece(self.selectedPuzzlePiece, targetIndex, CheckAtferSwap);
+            self.RepositionPiece(self.swapTargetPuzzlePiece, selectedIndex, null, 0.25f);
+            self.RepositionPiece(self.selectedPuzzlePiece, targetIndex, CheckAtferSwap, 0.25f);
         }
 
         public override void StateExit()
