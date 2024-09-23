@@ -207,5 +207,18 @@ public partial class PuzzlePieceManager : MonoBehaviour
         target.transform.DOMove(pos, 0.5f).onComplete = callback;
     }
     #endregion
+
+    #region Delay
+    private void DelayPlayMethod(Action targetMethod, float delayTime)
+    {
+        StartCoroutine(DelayingPlayMethod(targetMethod, delayTime));
+    }
+
+    private IEnumerator DelayingPlayMethod(Action targetMethod, float delayTime)
+    {
+        yield return new WaitForSeconds(delayTime);
+        targetMethod.Invoke();
+    }
+    #endregion
 }
 
