@@ -2,10 +2,6 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public partial class PuzzlePieceManager : MonoBehaviour
@@ -42,7 +38,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private PuzzlePiece swapTargetPuzzlePiece;
 
     private Queue<PuzzlePiece> repositionedPieceQueue;
-
     private StateController<PuzzlePieceManager> myStateController;
 
     public bool Controllable = false;
@@ -66,7 +61,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
-        repositionedPieceQueue = new Queue<PuzzlePiece>();   
+        repositionedPieceQueue = new();
         myStateController = new StateController<PuzzlePieceManager>(this);
     }
 
@@ -129,7 +124,9 @@ public partial class PuzzlePieceManager : MonoBehaviour
     {
         return IsPlaceAreExist(vectorPos.x, vectorPos.y);
     }
+    #endregion
 
+    #region Get Piece
     public PuzzlePiece[] GetMatchablePieces(PuzzlePiece origin)
     {
         var resultList = new List<PuzzlePiece>();
@@ -187,7 +184,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
         return resultList.ToArray();
     }
 
-
     public PuzzlePiece GetUseablePiece()
     {
         foreach (var piece in PieceList)
@@ -234,5 +230,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
         targetMethod.Invoke();
     }
     #endregion
+
 }
 
