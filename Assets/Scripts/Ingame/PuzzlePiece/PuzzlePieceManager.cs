@@ -212,13 +212,13 @@ public partial class PuzzlePieceManager : MonoBehaviour
         return GetPiecePosition(targetIndex.Item1, targetIndex.Item2);
     }
 
-    private void RepositionPiece(PuzzlePiece target, (int, int) targetIndex, TweenCallback callback = null)
+    private void RepositionPiece(PuzzlePiece target, (int, int) targetIndex, TweenCallback callback = null, float time = 0.5f)
     {
         var pos = GetPiecePosition(targetIndex);
         target.MyIndex = targetIndex;
         PieceField[targetIndex.Item1][targetIndex.Item2] = target;
         target.DOKill();
-        target.transform.DOMove(pos, 0.5f).onComplete = callback;
+        target.transform.DOMove(pos, time).onComplete = callback;
     }
     #endregion
 
