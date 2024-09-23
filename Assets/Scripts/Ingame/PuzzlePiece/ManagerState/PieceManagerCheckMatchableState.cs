@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-
 
 public partial class PuzzlePieceManager
 {
@@ -14,7 +12,6 @@ public partial class PuzzlePieceManager
         {
             delay = 0.1f;
             isRefill = false;
-
         }
 
         public override void StateExit()
@@ -39,7 +36,7 @@ public partial class PuzzlePieceManager
                             {
                                 if (piece.MyIndex != (-1, -1))
                                 {
-                                    self.PieceField[piece.MyIndex.Item1].Remove(piece);
+                                    self.PieceField[piece.MyIndex.Item1][piece.MyIndex.Item2] = null;
                                     piece.MyIndex = (-1, -1);
                                     piece.transform.position = new Vector2(0, -500.0f);
                                 }
@@ -49,10 +46,16 @@ public partial class PuzzlePieceManager
                     }
                 }
 
+                for (int ix = 0; ix < self.FieldInfo.Width; ix++)
+                {
+                    self.PieceField[ix].RemoveAll(elem => elem == null);
+                }
+
                 if (isRefill)
                 {
                     self.repositionedPieceQueue.Clear();
                     stateManager.ChangeState<PieceManagerRefillState>();
+                    return;
                 }
                 else
                 {
