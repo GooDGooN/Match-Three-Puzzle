@@ -70,7 +70,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     private void Start()
     {
-        myStateController.ChangeState<PieceManagerIdleState>();
+        myStateController.ChangeState<PieceManagerGeneratePieceState>();
     }
 
     private void FixedUpdate()
