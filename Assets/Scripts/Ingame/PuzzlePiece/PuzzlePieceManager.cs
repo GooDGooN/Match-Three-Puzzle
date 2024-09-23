@@ -185,6 +185,17 @@ public partial class PuzzlePieceManager : MonoBehaviour
     }
 
 
+    public PuzzlePiece GetUseablePiece()
+    {
+        foreach (var piece in PieceList)
+        {
+            if (piece.MyIndex == (-1, -1))
+            {
+                return piece;
+            }
+        }
+        return null;
+    }
     #endregion
 
     #region Position of Piece
