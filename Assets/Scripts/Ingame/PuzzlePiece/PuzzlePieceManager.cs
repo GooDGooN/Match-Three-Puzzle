@@ -48,6 +48,8 @@ public partial class PuzzlePieceManager : MonoBehaviour
     public bool Controllable = false;
     public bool IsAbleToMove = true;
 
+    public string mystate;
+
     private void Awake()
     {
         PieceField = new List<PuzzlePiece>[FieldInfo.Width];
@@ -79,6 +81,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     }
     private void Update()
     {
+        mystate = myStateController.CurrentState.ToString();
         myStateController.CurrentState.StateUpdate();
     }
     #region Field Check
