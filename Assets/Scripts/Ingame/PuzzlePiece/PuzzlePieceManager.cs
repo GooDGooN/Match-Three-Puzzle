@@ -86,7 +86,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
         {
             if (PieceField[x][y] != null)
             {
-                if (PieceField[x][y].MyType != PieceType.None && PieceField[x][y].MyIndex != (-1, -1))
+                if (PieceField[x][y].MyType != PieceType.None)
                 {
                     return false;
                 }
