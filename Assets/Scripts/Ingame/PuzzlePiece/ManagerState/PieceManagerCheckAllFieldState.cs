@@ -40,11 +40,23 @@ public partial class PuzzlePieceManager
                     {
                         Debug.Log($"matchable is {piece.MyIndex} Piece");
                         stateManager.ChangeState<PieceManagerIdleState>();
+                        return;
                     }
                 }
             }
-            // change to reroll state
+
+            #region Clear all field cause there is no matchable
             Debug.Log("there is nothing to do!!");
+            for (int ix = 0; ix < self.FieldInfo.Width; ix++)
+            {
+                for (int iy = 0; iy < self.FieldInfo.Height; iy++)
+                {
+                    self.PieceField[ix][iy] = null;
+                }
+            }
+            stateManager.ChangeState<PieceManagerGeneratePieceState>();
+            #endregion
+
         }
 
         public override void StateExit()
