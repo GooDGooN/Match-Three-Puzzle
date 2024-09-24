@@ -8,8 +8,10 @@ public partial class PuzzlePieceManager
     {
         private float delay;
         private bool isRefill;
+        private Queue<PuzzlePiece> removePieceQueue;
         public override void StateEnter()
         {
+            removePieceQueue = new();
             delay = 0.1f;
             isRefill = false;
         }
@@ -27,40 +29,34 @@ public partial class PuzzlePieceManager
                 while (self.repositionedPieceQueue.Count > 0)
                 {
                     var target = self.repositionedPieceQueue.Dequeue();
-                    if (target.MyIndex != (-1, -1))
+                    var matchables = self.GetMatchablePieces(target);
+                    if (matchables.Length > 0)
                     {
-                        var matchables = self.GetMatchablePieces(target);
-                        if (matchables.Length > 0)
+                        isRefill = true;
+                        foreach (var piece in matchables)
                         {
-                            foreach (var piece in matchables)
-                            {
-                                if (piece.MyIndex != (-1, -1))
-                                {
-                                    self.PieceField[piece.MyIndex.Item1][piece.MyIndex.Item2] = null;
-                                    piece.MyIndex = (-1, -1);
-                                    piece.transform.position = new Vector2(0, -500.0f);
-                                }
-                                isRefill = true;
-                            }
+                            removePieceQueue.Enqueue(piece);
+                            piece.transform.position = new Vector2(0, -500.0f);
                         }
                     }
                 }
 
-                for (int ix = 0; ix < self.FieldInfo.Width; ix++)
+                while(removePieceQueue.Count > 0)
                 {
-                    self.PieceField[ix].RemoveAll(elem => elem == null);
+                    var piece = removePieceQueue.Dequeue();
+                    if (piece.MyIndex != (-1, -1))
+                    {
+                        self.PieceField[piece.MyIndex.Item1].Remove(piece);
+                        piece.MyIndex = (-1, -1);
+                    }
                 }
 
                 if (isRefill)
                 {
-                    self.repositionedPieceQueue.Clear();
                     stateManager.ChangeState<PieceManagerRefillState>();
                     return;
                 }
-                else
-                {
-                    stateManager.ChangeState<PieceManagerCheckAllFieldState>();
-                }
+                stateManager.ChangeState<PieceManagerCheckAllFieldState>();
             }
         }
 
