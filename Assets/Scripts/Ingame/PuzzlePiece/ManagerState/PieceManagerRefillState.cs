@@ -10,6 +10,7 @@ public partial class PuzzlePieceManager
         private float delay;
         public override void StateEnter()
         {
+            self.repositionedPieceQueue.Clear();
             delay = 0.5f;
         }
 
