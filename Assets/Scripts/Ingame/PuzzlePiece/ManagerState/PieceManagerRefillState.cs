@@ -69,7 +69,7 @@ public partial class PuzzlePieceManager
 
         private void ChangeToMatchable()
         {
-            stateManager.ChangeState<PieceManagerCheckMatchableState>();
+            stateManager.ChangeState<PieceManagerPopMatchableState>();
         }
     }
 }

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class PuzzlePieceManager
 {
-    public class PieceManagerCheckMatchableState : BaseFSM<PuzzlePieceManager>
+    public class PieceManagerPopMatchableState : BaseFSM<PuzzlePieceManager>
     {
         private float delay;
         private bool isRefill;
