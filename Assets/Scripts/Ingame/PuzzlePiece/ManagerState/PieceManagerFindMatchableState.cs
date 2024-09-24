@@ -5,7 +5,7 @@ using UnityEngine;
 
 public partial class PuzzlePieceManager
 {
-    public class PieceManagerCheckAllFieldState : BaseFSM<PuzzlePieceManager>
+    public class PieceManagerFindMatchableState : BaseFSM<PuzzlePieceManager>
     {
         public override void StateEnter()
         {

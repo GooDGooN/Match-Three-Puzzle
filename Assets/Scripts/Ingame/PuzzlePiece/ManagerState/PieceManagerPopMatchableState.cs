@@ -56,7 +56,7 @@ public partial class PuzzlePieceManager
                     stateManager.ChangeState<PieceManagerRefillState>();
                     return;
                 }
-                stateManager.ChangeState<PieceManagerCheckAllFieldState>();
+                stateManager.ChangeState<PieceManagerFindMatchableState>();
             }
         }
 
