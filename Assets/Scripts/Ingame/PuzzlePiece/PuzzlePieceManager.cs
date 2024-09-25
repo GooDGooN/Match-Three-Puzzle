@@ -129,7 +129,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     #endregion
 
     #region Get Piece
-    public PuzzlePiece[] GetMatchablePieces((int, int) posTuple, PieceType pieceType, PuzzlePiece piece = null)
+    public PuzzlePiece[] GetMatchablePieces(PuzzlePiece origin)
     {
         var resultList = new List<PuzzlePiece>();
         var testList = new List<PuzzlePiece>();
@@ -143,15 +143,15 @@ public partial class PuzzlePieceManager : MonoBehaviour
         {
             foreach (var dir in dirs)
             {
-                var nextPos = new Vector2Int(posTuple.Item1 + dir.x, posTuple.Item2 + dir.y);
-                var prevPos = new Vector2Int(posTuple.Item1 - dir.x, posTuple.Item2 - dir.y);
+                var nextPos = new Vector2Int(origin.MyIndex.Item1 + dir.x, origin.MyIndex.Item2 + dir.y);
+                var prevPos = new Vector2Int(origin.MyIndex.Item1 - dir.x, origin.MyIndex.Item2 - dir.y);
                 var lastLength = -1;
                 while (true)
                 {
                     if (IsPlaceAreExist(nextPos) && !IsPlaceEmpty(nextPos))
                     {
                         var nextTarget = PieceField[nextPos.x][nextPos.y];
-                        if (nextTarget.MyType == pieceType)
+                        if (nextTarget.MyType == origin.MyType)
                         {
                             testList.Add(nextTarget);
                             nextPos += dir;
@@ -160,7 +160,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
                     if (IsPlaceAreExist(prevPos) && !IsPlaceEmpty(prevPos))
                     {
                         var prevTarget = PieceField[prevPos.x][prevPos.y];
-                        if (prevTarget.MyType == pieceType)
+                        if (prevTarget.MyType == origin.MyType)
                         {
                             testList.Add(prevTarget);
                             prevPos -= dir;
@@ -181,14 +181,9 @@ public partial class PuzzlePieceManager : MonoBehaviour
         }
         if (resultList.Count > 0)
         {
-            resultList.Add(piece);
+            resultList.Add(origin);
         }
         return resultList.ToArray();
-    }
-
-    public PuzzlePiece[] GetMatchablePieces(PuzzlePiece origin)
-    {
-        return GetMatchablePieces(origin.MyIndex, origin.MyType, origin);
     }
 
     public PuzzlePiece GetUseablePiece()
