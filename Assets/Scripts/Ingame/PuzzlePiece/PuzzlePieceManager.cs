@@ -26,6 +26,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     }
 
     public List<PuzzlePiece> PieceList;
+    public List<PuzzlePiece> HintPieceList;
     public List<PuzzlePiece>[] PieceField;
     public GameObject PuzzlePiecePrefab;
     public GameObject PieceContainer;
@@ -62,6 +63,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
         repositionedPieceQueue = new();
+        HintPieceList = new();
         myStateController = new StateController<PuzzlePieceManager>(this);
     }
 
@@ -188,6 +190,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     {
         return GetMatchablePieces(origin.MyIndex, origin.MyType, origin);
     }
+
     public PuzzlePiece GetUseablePiece()
     {
         foreach (var piece in PieceList)
