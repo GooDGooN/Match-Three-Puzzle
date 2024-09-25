@@ -33,21 +33,19 @@ public class PieceMatrix3x3
 public class MatchablePattern
 {
     /*
-     * 000 | 100 | 000 | 110 | 000 
-     * 011 | 010 | 010 | 000 | 000
-     * 000 | 000 | 100 | 000 | 110 ก่
+     * 000 | 100 | 110 | 000 
+     * 011 | 000 | 000 | 000
+     * 000 | 100 | 000 | 110 ก่
      */
-    public static readonly int[,] MatchablePatternIndexs = new int[5,2] {
+    public static readonly int[,] MatchablePatternIndexs = new int[4, 2] {
         { 4, 5 },
-        { 4, 6 },
-        { 0, 4 },
+        { 0, 6 },
         { 6, 7 },
         { 0, 1 },
     };
-
     public static bool CheckEqual(PieceMatrix3x3 matrix)
     {
-        for(int i = 0; i < 5; i++)
+        for(int i = 0; i < MatchablePatternIndexs.GetLength(0); i++)
         {
             var index1 = MatchablePatternIndexs[i, 0];
             var index2 = MatchablePatternIndexs[i, 1];
