@@ -43,7 +43,7 @@ public class MatchablePattern
         { 6, 7 },
         { 0, 1 },
     };
-    public static bool CheckEqual(PieceMatrix3x3 matrix)
+    public static int GetEqualMatrixIndex(PieceMatrix3x3 matrix)
     {
         for(int i = 0; i < MatchablePatternIndexs.GetLength(0); i++)
         {
@@ -51,9 +51,9 @@ public class MatchablePattern
             var index2 = MatchablePatternIndexs[i, 1];
             if (matrix[index1] == 1 && matrix[index2] == 1)
             {
-                return true;
+                return i;
             }
         }
-        return false;
+        return -1;
     }
 }
