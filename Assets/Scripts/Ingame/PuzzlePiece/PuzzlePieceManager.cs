@@ -151,7 +151,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
                     if (IsPlaceAreExist(nextPos) && !IsPlaceEmpty(nextPos))
                     {
                         var nextTarget = PieceField[nextPos.x][nextPos.y];
-                        if (nextTarget.MyType == origin.MyType)
+                        if (nextTarget.MyType == origin.MyType && nextTarget != origin)
                         {
                             testList.Add(nextTarget);
                             nextPos += dir;
@@ -160,7 +160,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
                     if (IsPlaceAreExist(prevPos) && !IsPlaceEmpty(prevPos))
                     {
                         var prevTarget = PieceField[prevPos.x][prevPos.y];
-                        if (prevTarget.MyType == origin.MyType)
+                        if (prevTarget.MyType == origin.MyType && prevTarget != origin)
                         {
                             testList.Add(prevTarget);
                             prevPos -= dir;
