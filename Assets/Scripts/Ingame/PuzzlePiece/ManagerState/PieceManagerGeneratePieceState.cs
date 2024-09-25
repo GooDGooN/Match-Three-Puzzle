@@ -184,7 +184,7 @@ public partial class PuzzlePieceManager
         private void GererateDone()
         {
             Debug.Log("Piece generate is done!");
-            stateManager.ChangeState<PieceManagerIdleState>();
+            stateManager.ChangeState<PieceManagerFindMatchableState>();
         }
     }
 
