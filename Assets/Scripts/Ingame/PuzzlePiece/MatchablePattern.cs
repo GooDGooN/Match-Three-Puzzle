@@ -33,15 +33,15 @@ public class PieceMatrix3x3
 public class MatchablePattern
 {
     /*
-     * 000 | 100 | 110 | 000 
-     * 011 | 000 | 000 | 000
-     * 000 | 100 | 000 | 110 ก่
+     * 100 | 110 | 000 | 000
+     * 000 | 000 | 000 | 011
+     * 100 | 000 | 110 | 000ก่
      */
     public static readonly int[,] MatchablePatternIndexs = new int[4, 2] {
-        { 4, 5 },
         { 0, 6 },
         { 6, 7 },
         { 0, 1 },
+        { 4, 5 },
     };
     public static int GetEqualMatrixIndex(PieceMatrix3x3 matrix)
     {
