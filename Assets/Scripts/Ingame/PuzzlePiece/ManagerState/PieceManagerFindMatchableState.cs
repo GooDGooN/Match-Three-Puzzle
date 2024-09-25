@@ -9,6 +9,7 @@ public partial class PuzzlePieceManager
     {
         public override void StateEnter()
         {
+            self.HintPieceList.Clear();
             foreach (var piece in self.PieceList)
             {
                 foreach(var dir in Utility.Get4DirTuples())
@@ -38,6 +39,10 @@ public partial class PuzzlePieceManager
                     }
                     if(MatchablePattern.CheckEqual(rightMatrix3x3))
                     {
+                        var posTuple = (piece.MyIndex.Item1 + dir.Item1, piece.MyIndex.Item2 + dir.Item2);
+                        var testType = piece.MyType;
+                        self.HintPieceList.AddRange(self.GetMatchablePieces(posTuple, testType));
+                        self.HintPieceList.Remove(null);
                         Debug.Log($"matchable is {piece.MyIndex} Piece");
                         stateManager.ChangeState<PieceManagerIdleState>();
                         return;
