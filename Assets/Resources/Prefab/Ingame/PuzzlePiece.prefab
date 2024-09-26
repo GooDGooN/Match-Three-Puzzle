@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1751787009658209937}
   - component: {fileID: 1073742749309743135}
   - component: {fileID: -5220611727352001153}
+  - component: {fileID: 5951688932374542030}
   m_Layer: 6
   m_Name: PuzzlePiece
   m_TagString: Untagged
@@ -108,6 +109,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 86d6f8426105c0b4db7e20b4401552c9, type: 3}
   MyType: 0
   MyManager: {fileID: 0}
+  testpos: 0000000000000000
 --- !u!61 &-5220611727352001153
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -153,3 +155,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 32, y: 32}
   m_EdgeRadius: 0
+--- !u!95 &5951688932374542030
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3811725605922888128}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 14010912fc1eb9e4b968b9621ddb896d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

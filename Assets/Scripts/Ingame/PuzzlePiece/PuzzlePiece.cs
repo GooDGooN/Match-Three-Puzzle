@@ -23,6 +23,10 @@ public class PuzzlePiece : MonoBehaviour
     public PieceType MyType;
     public (int, int) MyIndex;
     public PuzzlePieceManager MyManager;
+    public Animator MyAnimator
+    {
+        get => GetComponent<Animator>();
+    }
 
     public int[] testpos = new int[2];
 
@@ -68,6 +72,5 @@ public class PuzzlePiece : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
     }
-
 }
 

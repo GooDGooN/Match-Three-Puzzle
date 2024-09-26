@@ -231,7 +231,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     private void SetHintCountDown(bool stopCoroutine = false)
     {
-        if (stopCoroutine)
+        if (stopCoroutine && hintCountDownCoroutine != null)
         {
             StopCoroutine(hintCountDownCoroutine);
             return;
@@ -241,7 +241,10 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private IEnumerator HintCountDown()
     {
         yield return new WaitForSeconds(4.0f);
-        
+        if(myStateController.CurrentState.GetType() == typeof(PieceManagerIdleState))
+        {
+            HintPieceList.ForEach(piece => piece.MyAnimator.SetBool("Hint", true));
+        }
     }
     #endregion
 

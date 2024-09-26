@@ -16,6 +16,7 @@ public partial class PuzzlePieceManager
         public override void StateExit()
         {
             self.SetHintCountDown(true);
+            self.HintPieceList.ForEach(piece => piece.MyAnimator.SetBool("Hint", false));
         }
 
         public override void StateFixedUpdate()

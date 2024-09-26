@@ -348,6 +348,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 790027102}
+  - {fileID: 1108611487}
   m_Father: {fileID: 1283063413}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &789235811
@@ -363,11 +364,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PieceList: []
+  HintPieceList: []
   PuzzlePiecePrefab: {fileID: 3811725605922888128, guid: 51a585b9111b2b3448e03efe80fce843, type: 3}
   PieceContainer: {fileID: 0}
   SelectedIcon: {fileID: 790027101}
-  Controllable: 0
-  IsAbleToMove: 1
+  mystate: 
 --- !u!1 &790027101
 GameObject:
   m_ObjectHideFlags: 0
@@ -642,7 +643,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1283063413}
+  m_Father: {fileID: 789235810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1108611488
 MonoBehaviour:
@@ -687,7 +688,6 @@ Transform:
   m_Children:
   - {fileID: 1815987408}
   - {fileID: 789235810}
-  - {fileID: 1108611487}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1475967527
