@@ -236,7 +236,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
             StopCoroutine(hintCountDownCoroutine);
             return;
         }
-        StartCoroutine(HintCountDown());
+        hintCountDownCoroutine = StartCoroutine(HintCountDown());
     }
     private IEnumerator HintCountDown()
     {
