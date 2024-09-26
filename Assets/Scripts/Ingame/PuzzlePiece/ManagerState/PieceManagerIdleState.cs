@@ -5,14 +5,17 @@ using UnityEngine;
 
 public partial class PuzzlePieceManager 
 {
+    private Coroutine hintCountDownCoroutine;
     public class PieceManagerIdleState : BaseFSM<PuzzlePieceManager>
     {
         public override void StateEnter()
         {
+            self.SetHintCountDown();
         }
 
         public override void StateExit()
         {
+            self.SetHintCountDown(true);
         }
 
         public override void StateFixedUpdate()

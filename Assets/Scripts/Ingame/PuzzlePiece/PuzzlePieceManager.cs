@@ -41,7 +41,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private Queue<PuzzlePiece> repositionedPieceQueue;
     private StateController<PuzzlePieceManager> myStateController;
 
-
     public string mystate;
 
     private void Awake()
@@ -228,6 +227,21 @@ public partial class PuzzlePieceManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delayTime);
         targetMethod.Invoke();
+    }
+
+    private void SetHintCountDown(bool stopCoroutine = false)
+    {
+        if (stopCoroutine)
+        {
+            StopCoroutine(hintCountDownCoroutine);
+            return;
+        }
+        StartCoroutine(HintCountDown());
+    }
+    private IEnumerator HintCountDown()
+    {
+        yield return new WaitForSeconds(4.0f);
+        
     }
     #endregion
 
