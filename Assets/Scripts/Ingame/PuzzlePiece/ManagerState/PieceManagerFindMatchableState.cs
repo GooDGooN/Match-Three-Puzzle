@@ -13,11 +13,9 @@ public partial class PuzzlePieceManager
             self.HintPieceList.Clear();
             foreach (var piece in self.PieceList)
             {
-                tempPuzzlePieceList.Clear();
                 foreach (var dir in Utility.Get4DirTuples())
                 {
                     var rightMatrix3x3 = new PieceMatrix3x3();
-                    var blockedCount = 0;
                     for (int i = 0; i < rightMatrix3x3.Value.Length; i++)
                     {
                         /*
@@ -34,15 +32,6 @@ public partial class PuzzlePieceManager
                             if (self.PieceField[tx][ty].MyType == piece.MyType)
                             {
                                 rightMatrix3x3[mx, my] = 1;
-                                blockedCount = 0;
-                            }
-                        }
-                        else
-                        {
-                            blockedCount++;
-                            if(blockedCount > 3)
-                            {
-                                break;
                             }
                         }
                     }
@@ -70,14 +59,16 @@ public partial class PuzzlePieceManager
                         }
 
                         piece.MyIndex = testPosTuple;
-                        tempPuzzlePieceList.AddRange(self.GetMatchablePieces(piece));
+                        tempPuzzlePieceList = self.GetMatchablePieces(piece).ToList();
+                        //tempPuzzlePieceList.AddRange(self.GetMatchablePieces(piece));
                         piece.MyIndex = posTupleSave;
+
+                        //tempPuzzlePieceList = tempPuzzlePieceList.Distinct().ToList();
+                        if (self.HintPieceList.Count < tempPuzzlePieceList.Count)
+                        {
+                            self.HintPieceList = tempPuzzlePieceList.ToList();
+                        }
                     }
-                }
-                tempPuzzlePieceList = tempPuzzlePieceList.Distinct().ToList();
-                if (self.HintPieceList.Count < tempPuzzlePieceList.Count)
-                {
-                    self.HintPieceList = tempPuzzlePieceList.ToList();
                 }
             }
 
