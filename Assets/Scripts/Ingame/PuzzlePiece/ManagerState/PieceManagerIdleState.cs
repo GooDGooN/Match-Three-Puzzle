@@ -9,12 +9,10 @@ public partial class PuzzlePieceManager
     {
         public override void StateEnter()
         {
-            self.Controllable = false;
         }
 
         public override void StateExit()
         {
-            self.Controllable = true;
         }
 
         public override void StateFixedUpdate()
@@ -23,7 +21,7 @@ public partial class PuzzlePieceManager
 
         public override void StateUpdate()
         {
-            if (Input.GetMouseButtonDown(0) && !self.Controllable)
+            if (Input.GetMouseButtonDown(0))
             {
                 var pieceObjs = IngameTouchManager.GetMousePointObjects(1 << 6);
                 if (pieceObjs != null)

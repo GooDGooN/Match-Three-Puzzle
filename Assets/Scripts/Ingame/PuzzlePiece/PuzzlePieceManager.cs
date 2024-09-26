@@ -41,8 +41,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private Queue<PuzzlePiece> repositionedPieceQueue;
     private StateController<PuzzlePieceManager> myStateController;
 
-    public bool Controllable = false;
-    public bool IsAbleToMove = true;
 
     public string mystate;
 
