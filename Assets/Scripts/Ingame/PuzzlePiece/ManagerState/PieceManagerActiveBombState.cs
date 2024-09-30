@@ -73,7 +73,6 @@ public partial class PuzzlePieceManager
                 breakable = false;
             }
         }
-        yield return new WaitForSeconds(delayTime);
         selectedPuzzlePiece = null;
         myStateController.ChangeState<PieceManagerRefillState>();
     }
