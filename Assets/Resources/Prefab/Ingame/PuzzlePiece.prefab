@@ -107,7 +107,10 @@ MonoBehaviour:
   - {fileID: 21300000, guid: a130c181ec67ff3439b01aef8c9ae5d0, type: 3}
   - {fileID: 21300000, guid: f3057c3c7f6bedd4f9deca350b4ffb23, type: 3}
   - {fileID: 21300000, guid: 86d6f8426105c0b4db7e20b4401552c9, type: 3}
+  - {fileID: 21300000, guid: dd2730aed86083d428f3be1824dd0633, type: 3}
+  - {fileID: 21300000, guid: 66799ddab13af8f4998618681133b12a, type: 3}
   MyType: 0
+  TargetChangeType: 0
   MyManager: {fileID: 0}
   testpos: 0000000000000000
 --- !u!61 &-5220611727352001153
