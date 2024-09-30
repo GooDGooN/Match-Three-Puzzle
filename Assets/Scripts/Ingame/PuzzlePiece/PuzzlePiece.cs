@@ -15,6 +15,8 @@ public enum PieceType
     Red,
     Sky,
     Yellow,
+    Hbomb,
+    Wbomb,
 }
 
 public class PuzzlePiece : MonoBehaviour
