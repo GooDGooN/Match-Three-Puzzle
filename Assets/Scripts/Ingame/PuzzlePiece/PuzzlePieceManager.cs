@@ -28,6 +28,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     public List<PuzzlePiece> PieceList;
     public List<PuzzlePiece> HintPieceList;
     public List<PuzzlePiece>[] PieceField;
+
     public GameObject PuzzlePiecePrefab;
     public GameObject PieceContainer;
     public readonly int PieceSize = 36;
@@ -42,7 +43,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private Queue<PuzzlePiece> bombPieceQueue;
     private StateController<PuzzlePieceManager> myStateController;
 
-    public readonly int MaxBombGage = 15;
+    public readonly int MaxBombGage = 21;
     public int BombGage;
 
     public string mystate;
