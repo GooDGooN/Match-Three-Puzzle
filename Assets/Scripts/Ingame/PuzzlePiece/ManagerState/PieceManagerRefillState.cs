@@ -41,7 +41,7 @@ public partial class PuzzlePieceManager
                         while (col.Count != self.FieldInfo.Height)
                         {
                             var newPiece = self.GetUseablePiece();
-                            newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(PieceType.None));
+                            newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(PieceType.None, PieceType.Hbomb, PieceType.Wbomb));
                             newPiece.MyIndex = (ix, col.Count);
                             self.PieceField[ix].Add(newPiece);
 
