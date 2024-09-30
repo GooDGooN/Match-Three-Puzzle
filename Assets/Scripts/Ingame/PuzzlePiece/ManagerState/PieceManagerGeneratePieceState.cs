@@ -156,7 +156,7 @@ public partial class PuzzlePieceManager
                     self.RepositionPiece(target, target.MyIndex, null);
                 }
 
-                var enumArr = Utility.GetEnumArray(PieceType.None, PieceType.Hbomb, PieceType.Wbomb);
+                var enumArr = Utility.GetEnumArray(PieceType.None, PieceType.Vbomb, PieceType.Hbomb);
                 if (exceptType != null)
                 {
                     target.MyType = Utility.PickRandom(enumArr, exceptType);

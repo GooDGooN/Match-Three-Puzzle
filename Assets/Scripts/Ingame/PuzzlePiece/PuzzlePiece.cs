@@ -15,6 +15,7 @@ public enum PieceType
     Red,
     Sky,
     Yellow,
+    Vbomb,
     Hbomb,
     Wbomb,
 }
