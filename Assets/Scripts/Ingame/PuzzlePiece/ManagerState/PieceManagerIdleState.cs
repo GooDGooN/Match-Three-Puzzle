@@ -55,4 +55,21 @@ public partial class PuzzlePieceManager
             }
         }
     }
+    private void SetHintCountDown(bool stopCoroutine = false)
+    {
+        if (stopCoroutine && hintCountDownCoroutine != null)
+        {
+            StopCoroutine(hintCountDownCoroutine);
+            return;
+        }
+        hintCountDownCoroutine = StartCoroutine(HintCountDown());
+    }
+    private IEnumerator HintCountDown()
+    {
+        yield return new WaitForSeconds(4.0f);
+        if (myStateController.CurrentState.GetType() == typeof(PieceManagerIdleState))
+        {
+            HintPieceList.ForEach(piece => piece.MyAnimator.SetBool("Hint", true));
+        }
+    }
 }

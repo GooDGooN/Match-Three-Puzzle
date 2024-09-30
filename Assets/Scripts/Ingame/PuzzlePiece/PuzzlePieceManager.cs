@@ -70,8 +70,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
         
         BombGage = 0;
     }
-
-
     private void Start()
     {
         myStateController.ChangeState<PieceManagerGeneratePieceState>();
@@ -225,36 +223,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
     }
     #endregion
 
-    #region Delay
-    private void DelayPlayMethod(Action targetMethod, float delayTime)
-    {
-        StartCoroutine(DelayingPlayMethod(targetMethod, delayTime));
-    }
-
-    private IEnumerator DelayingPlayMethod(Action targetMethod, float delayTime)
-    {
-        yield return new WaitForSeconds(delayTime);
-        targetMethod.Invoke();
-    }
-
-    private void SetHintCountDown(bool stopCoroutine = false)
-    {
-        if (stopCoroutine && hintCountDownCoroutine != null)
-        {
-            StopCoroutine(hintCountDownCoroutine);
-            return;
-        }
-        hintCountDownCoroutine = StartCoroutine(HintCountDown());
-    }
-    private IEnumerator HintCountDown()
-    {
-        yield return new WaitForSeconds(4.0f);
-        if(myStateController.CurrentState.GetType() == typeof(PieceManagerIdleState))
-        {
-            HintPieceList.ForEach(piece => piece.MyAnimator.SetBool("Hint", true));
-        }
-    }
-    #endregion
 
 }
 
