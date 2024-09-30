@@ -11,6 +11,26 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             self.HintPieceList.Clear();
+
+            while (self.BombGage > self.MaxBombGage)
+            {
+                self.BombGage -= self.MaxBombGage;
+                var except = self.PieceList.Where(piece => piece.MyType == PieceType.Vbomb && piece.MyType == PieceType.Hbomb).ToList();
+                except.AddRange(self.HintPieceList);
+                var target = Utility.PickRandom(self.PieceList.ToArray(), except.ToArray());
+                target.TargetChangeType = Utility.Choose(PieceType.Hbomb, PieceType.Vbomb);
+                target.MyAnimator.SetTrigger("ChangeType");
+                self.bombPieceQueue.Enqueue(target);
+            }
+
+            if (self.bombPieceQueue.Count > 0)
+            {
+                self.HintPieceList.Add(self.bombPieceQueue.Dequeue());
+                Debug.Log($"matchable is {self.HintPieceList.Last().MyIndex} Piece");
+                stateManager.ChangeState<PieceManagerIdleState>();
+                return;
+            }
+
             foreach (var piece in self.PieceList)
             {
                 foreach (var dir in Utility.Get4DirTuples())
