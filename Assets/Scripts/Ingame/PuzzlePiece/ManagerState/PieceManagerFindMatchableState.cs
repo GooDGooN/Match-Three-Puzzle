@@ -60,10 +60,8 @@ public partial class PuzzlePieceManager
 
                         piece.MyIndex = testPosTuple;
                         tempPuzzlePieceList = self.GetMatchablePieces(piece).ToList();
-                        //tempPuzzlePieceList.AddRange(self.GetMatchablePieces(piece));
                         piece.MyIndex = posTupleSave;
 
-                        //tempPuzzlePieceList = tempPuzzlePieceList.Distinct().ToList();
                         if (self.HintPieceList.Count < tempPuzzlePieceList.Count)
                         {
                             self.HintPieceList = tempPuzzlePieceList.ToList();

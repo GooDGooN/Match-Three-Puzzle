@@ -74,5 +74,7 @@ public class PuzzlePiece : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
     }
+
+
 }
 
