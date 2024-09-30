@@ -75,6 +75,12 @@ public class PuzzlePiece : MonoBehaviour
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
     }
 
+    public void RemoveSelf()
+    {
+        MyManager.PieceField[MyIndex.Item1].Remove(this);
+        MyIndex = (-1, -1);
+        transform.position = new Vector2(0, -500.0f);
+    }
 
 }
 

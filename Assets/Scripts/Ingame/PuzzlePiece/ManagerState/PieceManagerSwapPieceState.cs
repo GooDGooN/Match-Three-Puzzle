@@ -46,9 +46,7 @@ public partial class PuzzlePieceManager
             {
                 foreach (var piece in matchableList)
                 {
-                    self.PieceField[piece.MyIndex.Item1].Remove(piece);
-                    piece.MyIndex = (-1, -1);
-                    piece.transform.position = new Vector2(0, -500.0f);
+                    piece.RemoveSelf();
                 }
                 stateManager.ChangeState<PieceManagerRefillState>();
             }

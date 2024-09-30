@@ -36,7 +36,6 @@ public partial class PuzzlePieceManager
                         foreach (var piece in matchables)
                         {
                             removePieceQueue.Enqueue(piece);
-                            piece.transform.position = new Vector2(0, -500.0f);
                         }
                     }
                 }
@@ -46,8 +45,7 @@ public partial class PuzzlePieceManager
                     var piece = removePieceQueue.Dequeue();
                     if (piece.MyIndex != (-1, -1))
                     {
-                        self.PieceField[piece.MyIndex.Item1].Remove(piece);
-                        piece.MyIndex = (-1, -1);
+                        piece.RemoveSelf();
                     }
                 }
 
