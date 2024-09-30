@@ -17,13 +17,13 @@ public enum PieceType
     Yellow,
     Vbomb,
     Hbomb,
-    Wbomb,
 }
 
 public class PuzzlePiece : MonoBehaviour
 {
     public Sprite[] PieceSprites;
     public PieceType MyType;
+    public PieceType TargetChangeType;
     public (int, int) MyIndex;
     public PuzzlePieceManager MyManager;
     public Animator MyAnimator
@@ -81,6 +81,13 @@ public class PuzzlePiece : MonoBehaviour
         MyManager.PieceField[MyIndex.Item1].Remove(this);
         MyIndex = (-1, -1);
         transform.position = new Vector2(0, -500.0f);
+        MyManager.BombGage++;
+    }
+
+    public void ChangeToNewType()
+    {
+        MyType = TargetChangeType;
+        TargetChangeType = PieceType.None;
     }
 
 }
