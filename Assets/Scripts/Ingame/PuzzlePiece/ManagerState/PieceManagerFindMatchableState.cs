@@ -12,11 +12,12 @@ public partial class PuzzlePieceManager
         {
             self.HintPieceList.Clear();
 
-            while (self.BombGage > self.MaxBombGage)
+            while (self.BombGage >= self.MaxBombGage)
             {
                 self.BombGage -= self.MaxBombGage;
-                var except = self.PieceList.Where(piece => piece.MyType == PieceType.Vbomb && piece.MyType == PieceType.Hbomb).ToList();
+                var except = self.PieceList.Where(piece => piece.MyType == PieceType.Vbomb || piece.MyType == PieceType.Hbomb).ToList();
                 except.AddRange(self.HintPieceList);
+
                 var target = Utility.PickRandom(self.PieceList.ToArray(), except.ToArray());
                 target.TargetChangeType = Utility.Choose(PieceType.Hbomb, PieceType.Vbomb);
                 target.MyAnimator.SetTrigger("ChangeType");
