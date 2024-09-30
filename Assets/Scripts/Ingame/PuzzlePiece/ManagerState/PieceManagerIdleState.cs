@@ -28,10 +28,18 @@ public partial class PuzzlePieceManager
         {
             if (Input.GetMouseButtonDown(0))
             {
+                // 6 = PuzzlePiece
                 var pieceObjs = IngameTouchManager.GetMousePointObjects(1 << 6);
                 if (pieceObjs != null)
                 {
                     var targetPiece = pieceObjs[0].GetComponent<PuzzlePiece>();
+                    if (targetPiece.MyType == PieceType.Vbomb || targetPiece.MyType == PieceType.Hbomb)
+                    {
+                        self.selectedPuzzlePiece = targetPiece;
+                        stateManager.ChangeState<PieceManagerActiveBombState>();
+                        return;
+                    }
+
                     if (self.selectedPuzzlePiece == null)
                     {
                         self.selectedPuzzlePiece = targetPiece;
