@@ -16,6 +16,7 @@ public partial class PuzzlePieceManager
         public override void StateExit()
         {
             self.SetHintCountDown(true);
+            self.SelectedIcon.SetActive(false);
             self.HintPieceList.ForEach(piece => piece.MyAnimator.SetBool("Hint", false));
         }
 
@@ -46,10 +47,15 @@ public partial class PuzzlePieceManager
                         }
                         else
                         {
-                            self.selectedPuzzlePiece = null;
-                            self.SelectedIcon.SetActive(false);
+                            self.selectedPuzzlePiece = targetPiece;
+                            self.SelectedIcon.transform.position = self.selectedPuzzlePiece.transform.position;
                         }
                     }
+                }
+                else
+                {
+                    self.selectedPuzzlePiece = null;
+                    self.SelectedIcon.SetActive(false);
                 }
 
             }
