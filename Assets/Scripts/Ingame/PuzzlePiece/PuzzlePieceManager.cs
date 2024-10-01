@@ -27,7 +27,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     public List<PuzzlePiece> PieceList;
     public List<PuzzlePiece> HintPieceList;
-    public List<PuzzlePiece>[] PieceField;
+    public List<PuzzlePiece>[] MyPieceField;
 
     public GameObject PuzzlePiecePrefab;
     public GameObject PieceContainer;
@@ -50,15 +50,15 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     private void Awake()
     {
-        PieceField = new List<PuzzlePiece>[FieldInfo.Width];
+        MyPieceField = new List<PuzzlePiece>[FieldInfo.Width];
         SelectedIcon.SetActive(false);
 
-        for (int i = 0; i < PieceField.Length; i++)
+        for (int i = 0; i < MyPieceField.Length; i++)
         {
-            PieceField[i] = new List<PuzzlePiece>();
+            MyPieceField[i] = new List<PuzzlePiece>();
             for (int j = 0; j < FieldInfo.Height; j++)
             {
-                PieceField[i].Add(null);
+                MyPieceField[i].Add(null);
             }
         }
 
@@ -88,11 +88,11 @@ public partial class PuzzlePieceManager : MonoBehaviour
     #region Field Check
     public bool IsPlaceEmpty(int x, int y)
     {
-        if (y < PieceField[x].Count)
+        if (y < MyPieceField[x].Count)
         {
-            if (PieceField[x][y] != null)
+            if (MyPieceField[x][y] != null)
             {
-                if (PieceField[x][y].MyType != PieceType.None)
+                if (MyPieceField[x][y].MyType != PieceType.None)
                 {
                     return false;
                 }
@@ -143,7 +143,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
             new Vector2Int(0, 1)
         };
 
-        if (PieceField != null)
+        if (MyPieceField != null)
         {
             foreach (var dir in dirs)
             {
@@ -154,7 +154,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
                 {
                     if (IsPlaceAreExist(nextPos) && !IsPlaceEmpty(nextPos))
                     {
-                        var nextTarget = PieceField[nextPos.x][nextPos.y];
+                        var nextTarget = MyPieceField[nextPos.x][nextPos.y];
                         if (nextTarget.MyType == origin.MyType && nextTarget != origin)
                         {
                             testList.Add(nextTarget);
@@ -163,7 +163,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
                     }
                     if (IsPlaceAreExist(prevPos) && !IsPlaceEmpty(prevPos))
                     {
-                        var prevTarget = PieceField[prevPos.x][prevPos.y];
+                        var prevTarget = MyPieceField[prevPos.x][prevPos.y];
                         if (prevTarget.MyType == origin.MyType && prevTarget != origin)
                         {
                             testList.Add(prevTarget);
@@ -218,7 +218,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     {
         var pos = GetPiecePosition(targetIndex);
         target.MyIndex = targetIndex;
-        PieceField[targetIndex.Item1][targetIndex.Item2] = target;
+        MyPieceField[targetIndex.Item1][targetIndex.Item2] = target;
         target.DOKill();
         target.transform.DOMove(pos, time).onComplete = callback;
     }

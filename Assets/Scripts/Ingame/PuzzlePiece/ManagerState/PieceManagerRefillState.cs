@@ -23,14 +23,14 @@ public partial class PuzzlePieceManager
             delay -= Time.deltaTime;
             if (delay < 0.0f)
             {
-                for (int ix = 0; ix < self.PieceField.Length; ix++)
+                for (int ix = 0; ix < self.MyPieceField.Length; ix++)
                 {
-                    var col = self.PieceField[ix];
+                    var col = self.MyPieceField[ix];
                     if (col.Count < self.FieldInfo.Height)
                     {
                         for (int iy = 0; iy < col.Count; iy++)
                         {
-                            var targetPiece = self.PieceField[ix][iy];
+                            var targetPiece = self.MyPieceField[ix][iy];
                             if (targetPiece.MyIndex.Item2 > iy)
                             {
                                 self.RepositionPiece(targetPiece, (ix, iy));
@@ -41,11 +41,10 @@ public partial class PuzzlePieceManager
                         while (col.Count != self.FieldInfo.Height)
                         {
                             var newPiece = self.GetUseablePiece();
-                            newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(PieceType.None, PieceType.Vbomb, PieceType.Hbomb));
                             var except = new PieceType[] { PieceType.None, PieceType.Vbomb, PieceType.Hbomb, PieceType.Block };
                             newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(except));
                             newPiece.MyIndex = (ix, col.Count);
-                            self.PieceField[ix].Add(newPiece);
+                            self.MyPieceField[ix].Add(newPiece);
 
                             var pos = self.GetPiecePosition(newPiece.MyIndex) + (Vector3Int.up * 300);
                             newPiece.transform.position = pos;

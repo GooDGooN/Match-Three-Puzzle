@@ -11,7 +11,7 @@ public partial class PuzzlePieceManager
         {
             #region Initialize
             var fieldInfo = self.FieldInfo;
-            var pieceField = self.PieceField;
+            var pieceField = self.MyPieceField;
             var pieceList = self.PieceList;
             var usablePieceIndex = 0;
             #endregion
@@ -155,8 +155,6 @@ public partial class PuzzlePieceManager
                 {
                     self.RepositionPiece(target, target.MyIndex, null);
                 }
-
-                var enumArr = Utility.GetEnumArray(PieceType.None, PieceType.Vbomb, PieceType.Hbomb);
                 var except = new PieceType[] { PieceType.None, PieceType.Vbomb, PieceType.Hbomb, PieceType.Block };
                 var enumArr = Utility.GetEnumArray(except);
                 if (exceptType != null)

@@ -66,7 +66,7 @@ public class PuzzlePiece : MonoBehaviour
             var pos = (dir.Item1 + MyIndex.Item1, dir.Item2 + MyIndex.Item2);
             if (MyManager.IsPlaceAreExist(pos) && !MyManager.IsPlaceEmpty(pos))
             {
-                result.Add(MyManager.PieceField[pos.Item1][pos.Item2]);
+                result.Add(MyManager.MyPieceField[pos.Item1][pos.Item2]);
             }
         }
         return result.ToArray();
@@ -79,7 +79,7 @@ public class PuzzlePiece : MonoBehaviour
 
     public void RemoveSelf()
     {
-        MyManager.PieceField[MyIndex.Item1].Remove(this);
+        MyManager.MyPieceField[MyIndex.Item1].Remove(this);
         MyIndex = (-1, -1);
         transform.position = new Vector2(0, -500.0f);
         MyManager.BombGage++;

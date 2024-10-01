@@ -50,7 +50,7 @@ public partial class PuzzlePieceManager
 
                         if (self.IsPlaceAreExist(tx, ty))
                         {
-                            if (self.PieceField[tx][ty].MyType == piece.MyType)
+                            if (self.MyPieceField[tx][ty].MyType == piece.MyType)
                             {
                                 rightMatrix3x3[mx, my] = 1;
                             }
@@ -105,7 +105,7 @@ public partial class PuzzlePieceManager
             {
                 for (int iy = 0; iy < self.FieldInfo.Height; iy++)
                 {
-                    self.PieceField[ix][iy] = null;
+                    self.MyPieceField[ix][iy] = null;
                 }
             }
             stateManager.ChangeState<PieceManagerGeneratePieceState>();

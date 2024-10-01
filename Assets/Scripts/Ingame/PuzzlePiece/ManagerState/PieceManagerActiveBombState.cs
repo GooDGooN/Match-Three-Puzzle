@@ -58,13 +58,13 @@ public partial class PuzzlePieceManager
             yield return new WaitForSeconds(delayTime);
             if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
             {
-                PieceField[increasedTuple.Item1][increasedTuple.Item2].RemoveSelf();
+                MyPieceField[increasedTuple.Item1][increasedTuple.Item2].RemoveSelf();
                 increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2);
                 breakable = false;
             }
             if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
             {
-                PieceField[decreasedTuple.Item1][decreasedTuple.Item2].RemoveSelf();
+                MyPieceField[decreasedTuple.Item1][decreasedTuple.Item2].RemoveSelf();
                 decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
                 if (selectedPuzzlePiece.MyType == PieceType.Vbomb)
                 {
