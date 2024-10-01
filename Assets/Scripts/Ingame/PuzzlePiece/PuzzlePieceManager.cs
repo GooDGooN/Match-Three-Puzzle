@@ -25,6 +25,51 @@ public partial class PuzzlePieceManager : MonoBehaviour
         }
     }
 
+    public class PieceField
+    {
+        public PuzzlePiece[][] Pieces
+        {
+            get;
+            private set;
+        }
+
+        public PieceField(int width, int height)
+        {
+            Pieces = new PuzzlePiece[width][];
+            for(int i = 0; i < Pieces.Length; i++)
+            {
+                Pieces[i] = new PuzzlePiece[height];
+            }
+        }
+       
+        public PuzzlePiece this[int x, int y]
+        {
+            set
+            {
+                if (value == null)
+                {
+                    var nullPos = y;
+                    
+                    for(;y < Pieces[x].Length; y++)
+                    {
+                        if(Pieces[x][y] != null && (Pieces[x][y].MyType != PieceType.None || Pieces[x][y].MyType != PieceType.Block))
+                        {
+                            var temp = Pieces[x][y];
+                            Pieces[x][y] = Pieces[x][nullPos];
+                            Pieces[x][nullPos] = temp;
+                            nullPos = y;
+                        }
+                    }
+                }
+                else
+                {
+                    Pieces[x][y] = value;
+                }
+            }
+        }
+
+    }
+
     public List<PuzzlePiece> PieceList;
     public List<PuzzlePiece> HintPieceList;
     public List<PuzzlePiece>[] MyPieceField;
