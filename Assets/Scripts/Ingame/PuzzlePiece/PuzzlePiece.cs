@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
 
@@ -66,7 +67,7 @@ public class PuzzlePiece : MonoBehaviour
             var pos = (dir.Item1 + MyIndex.Item1, dir.Item2 + MyIndex.Item2);
             if (MyManager.IsPlaceAreExist(pos) && !MyManager.IsPlaceEmpty(pos))
             {
-                result.Add(MyManager.MyPieceField[pos.Item1][pos.Item2]);
+                result.Add(MyManager.MyPieceField[pos.Item1, pos.Item2]);
             }
         }
         return result.ToArray();
@@ -79,7 +80,8 @@ public class PuzzlePiece : MonoBehaviour
 
     public void RemoveSelf()
     {
-        MyManager.MyPieceField[MyIndex.Item1].Remove(this);
+        var ty = MyManager.MyPieceField[MyIndex.Item1].GetIndex(this);
+        MyManager.MyPieceField[MyIndex.Item1, ty] = null;
         MyIndex = (-1, -1);
         transform.position = new Vector2(0, -500.0f);
         MyManager.BombGage++;

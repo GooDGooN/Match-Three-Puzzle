@@ -2,6 +2,7 @@ using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public partial class PuzzlePieceManager : MonoBehaviour
@@ -90,7 +91,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     public List<PuzzlePiece> PieceList;
     public List<PuzzlePiece> HintPieceList;
-    public List<PuzzlePiece>[] MyPieceField;
     public PieceField MyPieceField;
 
     public GameObject PuzzlePiecePrefab;
@@ -114,17 +114,8 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     private void Awake()
     {
-        MyPieceField = new List<PuzzlePiece>[FieldInfo.Width];
+        MyPieceField = new PieceField(FieldInfo.Width, FieldInfo.Height);
         SelectedIcon.SetActive(false);
-
-        for (int i = 0; i < MyPieceField.Length; i++)
-        {
-            MyPieceField[i] = new List<PuzzlePiece>();
-            for (int j = 0; j < FieldInfo.Height; j++)
-            {
-                MyPieceField[i].Add(null);
-            }
-        }
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
@@ -152,14 +143,11 @@ public partial class PuzzlePieceManager : MonoBehaviour
     #region Field Check
     public bool IsPlaceEmpty(int x, int y)
     {
-        if (y < MyPieceField[x].Count)
+        if (MyPieceField[x][y] != null && (MyPieceField[x][y].MyType != PieceType.None || MyPieceField[x][y].MyType != PieceType.Block))
         {
-            if (MyPieceField[x][y] != null)
+            if (MyPieceField[x][y].MyType != PieceType.None)
             {
-                if (MyPieceField[x][y].MyType != PieceType.None)
-                {
-                    return false;
-                }
+                return false;
             }
         }
         return true;

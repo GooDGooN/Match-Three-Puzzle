@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public partial class PuzzlePieceManager
@@ -23,39 +24,45 @@ public partial class PuzzlePieceManager
             delay -= Time.deltaTime;
             if (delay < 0.0f)
             {
-                for (int ix = 0; ix < self.MyPieceField.Length; ix++)
+                for (int ix = 0; ix < self.FieldInfo.Width; ix++)
                 {
                     var col = self.MyPieceField[ix];
-                    if (col.Count < self.FieldInfo.Height)
+                    var nullCount = col.Count(piece => piece == null);
+                    if (nullCount > 0)
                     {
-                        for (int iy = 0; iy < col.Count; iy++)
+                        for (int iy = 0; iy < col.Length; iy++)
                         {
-                            var targetPiece = self.MyPieceField[ix][iy];
-                            if (targetPiece.MyIndex.Item2 > iy)
+                            var targetPiece = self.MyPieceField[ix, iy];
+                            if(targetPiece != null)
                             {
-                                self.RepositionPiece(targetPiece, (ix, iy));
-                                self.repositionedPieceQueue.Enqueue(targetPiece);
+                                if (targetPiece.MyIndex.Item2 > iy)
+                                {
+                                    self.RepositionPiece(targetPiece, (ix, iy));
+                                    self.repositionedPieceQueue.Enqueue(targetPiece);
+                                }
                             }
                         }
 
-                        while (col.Count != self.FieldInfo.Height)
+                        var nullYpos = self.MyPieceField.GetNullYPos(ix);
+                        while (nullYpos != -1)
                         {
                             var newPiece = self.GetUseablePiece();
                             var except = new PieceType[] { PieceType.None, PieceType.Vbomb, PieceType.Hbomb, PieceType.Block };
                             newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(except));
-                            newPiece.MyIndex = (ix, col.Count);
-                            self.MyPieceField[ix].Add(newPiece);
+                            newPiece.MyIndex = (ix, nullYpos);
+                            self.MyPieceField[ix, nullYpos] = newPiece;
 
                             var pos = self.GetPiecePosition(newPiece.MyIndex) + (Vector3Int.up * 300);
                             newPiece.transform.position = pos;
 
-                            if (col.Count < self.FieldInfo.Height)
+                            nullYpos = self.MyPieceField.GetNullYPos(ix);
+                            if (nullYpos == -1)
                             {
-                                self.RepositionPiece(newPiece, newPiece.MyIndex);
+                                self.RepositionPiece(newPiece, newPiece.MyIndex, ChangeToMatchable);
                             }
                             else
                             {
-                                self.RepositionPiece(newPiece, newPiece.MyIndex, ChangeToMatchable);
+                                self.RepositionPiece(newPiece, newPiece.MyIndex);
                             }
                             self.repositionedPieceQueue.Enqueue(newPiece);
                         }
