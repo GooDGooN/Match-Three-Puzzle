@@ -50,7 +50,7 @@ public partial class PuzzlePieceManager
         {
             repeatTime = pieceTuple.Item1 > FieldInfo.Width / 2 ? pieceTuple.Item1 : FieldInfo.Width - pieceTuple.Item1;
         }
-        var delayTime = 0.25f / repeatTime;
+        var delayTime = 0.15f / repeatTime;
 
         while (!breakable)
         {
