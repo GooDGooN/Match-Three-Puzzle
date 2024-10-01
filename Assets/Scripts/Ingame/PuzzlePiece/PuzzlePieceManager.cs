@@ -48,31 +48,50 @@ public partial class PuzzlePieceManager : MonoBehaviour
             {
                 if (value == null)
                 {
-                    var nullPos = y;
-                    
+                    var ty = y++;
                     for(;y < Pieces[x].Length; y++)
                     {
-                        if(Pieces[x][y] != null && (Pieces[x][y].MyType != PieceType.None || Pieces[x][y].MyType != PieceType.Block))
+                        if(Pieces[x][y] != null && (Pieces[x][y].MyType == PieceType.None || Pieces[x][y].MyType == PieceType.Block))
                         {
-                            var temp = Pieces[x][y];
-                            Pieces[x][y] = Pieces[x][nullPos];
-                            Pieces[x][nullPos] = temp;
-                            nullPos = y;
+                            ty = y + 1;
+                            continue;
                         }
+                        Pieces[x][ty] = Pieces[x][y];
+                        ty = y;
                     }
+                    Pieces[x][ty] = null;
                 }
                 else
                 {
                     Pieces[x][y] = value;
                 }
             }
+
+            get => Pieces[x][y];
         }
 
+        public PuzzlePiece[] this[int x]
+        {
+            get => Pieces[x];
+        }
+
+        public int GetNullYPos(int x)
+        {
+            for(int y = 0; y < Pieces[x].Length; y++)
+            {
+                if (Pieces[x][y] == null)
+                {
+                    return y;
+                }
+            }
+            return -1;
+        }
     }
 
     public List<PuzzlePiece> PieceList;
     public List<PuzzlePiece> HintPieceList;
     public List<PuzzlePiece>[] MyPieceField;
+    public PieceField MyPieceField;
 
     public GameObject PuzzlePiecePrefab;
     public GameObject PieceContainer;
