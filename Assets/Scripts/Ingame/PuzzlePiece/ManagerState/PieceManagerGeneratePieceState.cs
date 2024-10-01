@@ -157,6 +157,8 @@ public partial class PuzzlePieceManager
                 }
 
                 var enumArr = Utility.GetEnumArray(PieceType.None, PieceType.Vbomb, PieceType.Hbomb);
+                var except = new PieceType[] { PieceType.None, PieceType.Vbomb, PieceType.Hbomb, PieceType.Block };
+                var enumArr = Utility.GetEnumArray(except);
                 if (exceptType != null)
                 {
                     target.MyType = Utility.PickRandom(enumArr, exceptType);

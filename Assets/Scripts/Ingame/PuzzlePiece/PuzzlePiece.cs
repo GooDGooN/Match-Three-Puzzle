@@ -7,7 +7,8 @@ using UnityEngine;
 
 public enum PieceType
 {
-    None = -1,
+    None = -2,
+    Block,
     Blue,
     Green,
     Orange,
