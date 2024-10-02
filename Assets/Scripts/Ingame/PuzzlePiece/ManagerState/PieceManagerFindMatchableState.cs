@@ -57,6 +57,10 @@ public partial class PuzzlePieceManager
                         }
                     }
 
+                    if(rightMatrix3x3[3] == 1)
+                    {
+                        continue;
+                    }
 
                     var matrixIndex = MatchablePattern.GetEqualMatrixIndex(rightMatrix3x3);
                     if (matrixIndex != -1)
