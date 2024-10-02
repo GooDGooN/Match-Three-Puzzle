@@ -89,6 +89,13 @@ public partial class PuzzlePieceManager : MonoBehaviour
         }
     }
 
+    public enum PieceRepositionType
+    {
+        Generate,
+        Swap,
+        Refill,
+    }
+
     public List<PuzzlePiece> PieceList;
     public List<PuzzlePiece> HintPieceList;
     public PieceField MyPieceField;
@@ -266,13 +273,25 @@ public partial class PuzzlePieceManager : MonoBehaviour
         return GetPiecePosition(targetIndex.Item1, targetIndex.Item2);
     }
 
-    private void RepositionPiece(PuzzlePiece target, (int, int) targetIndex, TweenCallback callback = null, float time = 0.5f)
+    private void RepositionPiece(PuzzlePiece target, (int, int) targetIndex, PieceRepositionType repositionType, TweenCallback callback = null)
     {
         var pos = GetPiecePosition(targetIndex);
         target.MyIndex = targetIndex;
         MyPieceField[targetIndex.Item1][targetIndex.Item2] = target;
         target.DOKill();
-        target.transform.DOMove(pos, time).onComplete = callback;
+
+        switch(repositionType)
+        {
+            case PieceRepositionType.Generate:
+                target.transform.DOMove(pos, 0.5f).SetEase(Ease.InOutSine).onComplete = callback;
+                break;
+            case PieceRepositionType.Swap:
+                target.transform.DOMove(pos, 0.25f).SetEase(Ease.InOutSine).onComplete = callback;
+                break;
+            case PieceRepositionType.Refill:
+                target.transform.DOMove(pos, 0.75f).SetEase(Ease.InCubic).onComplete = callback;
+                break;
+        }
     }
     #endregion
 

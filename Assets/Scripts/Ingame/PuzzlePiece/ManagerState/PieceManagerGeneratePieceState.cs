@@ -149,11 +149,11 @@ public partial class PuzzlePieceManager
 
                 if (x == self.FieldInfo.Width - 1 && y == self.FieldInfo.Height - 1)
                 {
-                    self.RepositionPiece(target, target.MyIndex, GererateDone);
+                    self.RepositionPiece(target, target.MyIndex, PieceRepositionType.Generate, GererateDone);
                 }
                 else
                 {
-                    self.RepositionPiece(target, target.MyIndex, null);
+                    self.RepositionPiece(target, target.MyIndex, PieceRepositionType.Generate, null);
                 }
                 var except = new PieceType[] { PieceType.None, PieceType.Vbomb, PieceType.Hbomb, PieceType.Block };
                 var enumArr = Utility.GetEnumArray(except);

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,8 @@ public partial class PuzzlePieceManager
             selectedIndex = self.selectedPuzzlePiece.MyIndex;
             targetIndex = self.swapTargetPuzzlePiece.MyIndex;
 
-            self.RepositionPiece(self.swapTargetPuzzlePiece, selectedIndex, null, 0.25f);
-            self.RepositionPiece(self.selectedPuzzlePiece, targetIndex, CheckAtferSwap, 0.25f);
+            self.RepositionPiece(self.swapTargetPuzzlePiece, selectedIndex, PieceRepositionType.Swap);
+            self.RepositionPiece(self.selectedPuzzlePiece, targetIndex, PieceRepositionType.Swap, CheckAtferSwap);
         }
 
         public override void StateExit()
@@ -52,8 +53,8 @@ public partial class PuzzlePieceManager
             }
             else
             {
-                self.RepositionPiece(self.swapTargetPuzzlePiece, targetIndex);
-                self.RepositionPiece(self.selectedPuzzlePiece, selectedIndex, GoBackAtferSwap);
+                self.RepositionPiece(self.swapTargetPuzzlePiece, targetIndex, PieceRepositionType.Swap);
+                self.RepositionPiece(self.selectedPuzzlePiece, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
             }
         }
         private void GoBackAtferSwap()

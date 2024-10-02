@@ -12,7 +12,7 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             self.repositionedPieceQueue.Clear();
-            delay = 0.5f;
+            delay = 0.25f;
         }
 
         public override void StateExit()
@@ -37,7 +37,7 @@ public partial class PuzzlePieceManager
                             {
                                 if (targetPiece.MyIndex.Item2 > iy)
                                 {
-                                    self.RepositionPiece(targetPiece, (ix, iy));
+                                    self.RepositionPiece(targetPiece, (ix, iy), PieceRepositionType.Refill);
                                     self.repositionedPieceQueue.Enqueue(targetPiece);
                                 }
                             }
@@ -58,11 +58,11 @@ public partial class PuzzlePieceManager
                             nullYpos = self.MyPieceField.GetNullYPos(ix);
                             if (nullYpos == -1)
                             {
-                                self.RepositionPiece(newPiece, newPiece.MyIndex, ChangeToMatchable);
+                                self.RepositionPiece(newPiece, newPiece.MyIndex, PieceRepositionType.Refill, ChangeToMatchable);
                             }
                             else
                             {
-                                self.RepositionPiece(newPiece, newPiece.MyIndex);
+                                self.RepositionPiece(newPiece, newPiece.MyIndex, PieceRepositionType.Refill);
                             }
                             self.repositionedPieceQueue.Enqueue(newPiece);
                         }
