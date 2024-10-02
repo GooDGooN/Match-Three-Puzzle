@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a87daf7c2c8a4434c8d575f0954a5802
+guid: dab7bb03307bf1f4aae63ff87a0a6dd1
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: brownStone_0
+      name: creamStone_0
       rect:
         serializedVersion: 2
         x: 0
@@ -150,14 +150,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a39e83354d201ac48848ea0a1d823857
-      internalID: 1109803263
+      spriteID: 455659b821055f045a20b1f8a58ac2a6
+      internalID: 1152869221
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_1
+      name: creamStone_1
       rect:
         serializedVersion: 2
         x: 170
@@ -171,14 +171,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 946dbc4a4298418438bcd12f3382a14a
-      internalID: -2058717323
+      spriteID: a394b6813e70bb0419896ab312c1dd47
+      internalID: -1012335747
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_2
+      name: creamStone_2
       rect:
         serializedVersion: 2
         x: 340
@@ -192,14 +192,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 397a5dffb859f1845b148609c5e84645
-      internalID: 1364391545
+      spriteID: 622d2287014daca4cb0bd7c0d4f4e363
+      internalID: 415272927
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_3
+      name: creamStone_3
       rect:
         serializedVersion: 2
         x: 0
@@ -213,14 +213,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c80c5342544cd949993d4aeec6d7b3f
-      internalID: 393529036
+      spriteID: a980d53411a858149a4bff2cb3340e75
+      internalID: 489428557
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_4
+      name: creamStone_4
       rect:
         serializedVersion: 2
         x: 170
@@ -234,14 +234,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1c183cd3b44cfc47ad8c783ca38a419
-      internalID: 1663183351
+      spriteID: e26bc7d19db45d54798985b9bea39d1d
+      internalID: 422013871
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_5
+      name: creamStone_5
       rect:
         serializedVersion: 2
         x: 340
@@ -255,14 +255,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1cf303cc6953d9741a378794c179c9ee
-      internalID: -295286214
+      spriteID: 67614e289c3eac24188819546662b804
+      internalID: -366713052
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_6
+      name: creamStone_6
       rect:
         serializedVersion: 2
         x: 0
@@ -276,14 +276,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc6cedc99554c4145ada67fca5252d69
-      internalID: 1071035685
+      spriteID: 625eb0d691d41784cb2705706715b3d3
+      internalID: 1098837949
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_7
+      name: creamStone_7
       rect:
         serializedVersion: 2
         x: 170
@@ -297,14 +297,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 326312df04b0bda4da350f3a2f9cfac8
-      internalID: -1300904692
+      spriteID: 27e8ef4f78017cc47b8345fef129b106
+      internalID: 29021017
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_8
+      name: creamStone_8
       rect:
         serializedVersion: 2
         x: 340
@@ -318,8 +318,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7922850099393a94686d65c88f9a80d8
-      internalID: -1569724444
+      spriteID: f5a93ebaf6d1132408990b86a6c2f90f
+      internalID: -1844381322
       vertices: []
       indices: 
       edges: []
@@ -335,15 +335,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      brownStone_0: 1109803263
-      brownStone_1: -2058717323
-      brownStone_2: 1364391545
-      brownStone_3: 393529036
-      brownStone_4: 1663183351
-      brownStone_5: -295286214
-      brownStone_6: 1071035685
-      brownStone_7: -1300904692
-      brownStone_8: -1569724444
+      creamStone_0: 1152869221
+      creamStone_1: -1012335747
+      creamStone_2: 415272927
+      creamStone_3: 489428557
+      creamStone_4: 422013871
+      creamStone_5: -366713052
+      creamStone_6: 1098837949
+      creamStone_7: 29021017
+      creamStone_8: -1844381322
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

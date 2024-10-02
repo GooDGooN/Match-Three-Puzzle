@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: a87daf7c2c8a4434c8d575f0954a5802
+guid: e5064ab11d903d640a3f08b65fe22c08
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -136,7 +136,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: brownStone_0
+      name: orangeStone_0
       rect:
         serializedVersion: 2
         x: 0
@@ -150,14 +150,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a39e83354d201ac48848ea0a1d823857
-      internalID: 1109803263
+      spriteID: d4d507492c3b8ce48869f6f62ff1c27a
+      internalID: -1577455863
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_1
+      name: orangeStone_1
       rect:
         serializedVersion: 2
         x: 170
@@ -171,14 +171,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 946dbc4a4298418438bcd12f3382a14a
-      internalID: -2058717323
+      spriteID: a594591415482a6438720dda8e24a2a9
+      internalID: -171188100
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_2
+      name: orangeStone_2
       rect:
         serializedVersion: 2
         x: 340
@@ -192,14 +192,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 397a5dffb859f1845b148609c5e84645
-      internalID: 1364391545
+      spriteID: d116179175b181e4fbe68dfd20ceb1b9
+      internalID: 723434455
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_3
+      name: orangeStone_3
       rect:
         serializedVersion: 2
         x: 0
@@ -213,14 +213,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1c80c5342544cd949993d4aeec6d7b3f
-      internalID: 393529036
+      spriteID: 12d2c985855a0884d8c79454f9700f3f
+      internalID: -1847946413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_4
+      name: orangeStone_4
       rect:
         serializedVersion: 2
         x: 170
@@ -234,14 +234,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f1c183cd3b44cfc47ad8c783ca38a419
-      internalID: 1663183351
+      spriteID: 8ca88b65e0c4c8845a265415f1ced332
+      internalID: -1277481904
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_5
+      name: orangeStone_5
       rect:
         serializedVersion: 2
         x: 340
@@ -255,14 +255,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 1cf303cc6953d9741a378794c179c9ee
-      internalID: -295286214
+      spriteID: efb04a5a87ca34d42a4b09a9e8bcdee1
+      internalID: -2064839462
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_6
+      name: orangeStone_6
       rect:
         serializedVersion: 2
         x: 0
@@ -276,14 +276,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bc6cedc99554c4145ada67fca5252d69
-      internalID: 1071035685
+      spriteID: f70807a813376fb4db48d0e026c36331
+      internalID: -1304868135
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_7
+      name: orangeStone_7
       rect:
         serializedVersion: 2
         x: 170
@@ -297,14 +297,14 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 326312df04b0bda4da350f3a2f9cfac8
-      internalID: -1300904692
+      spriteID: fc8ee91301622b948993d7e5e4bc1ad2
+      internalID: -571663123
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: brownStone_8
+      name: orangeStone_8
       rect:
         serializedVersion: 2
         x: 340
@@ -318,8 +318,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7922850099393a94686d65c88f9a80d8
-      internalID: -1569724444
+      spriteID: 5c4a53b1a9a23254e8f688d8285f0bab
+      internalID: 1369862431
       vertices: []
       indices: 
       edges: []
@@ -335,15 +335,15 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      brownStone_0: 1109803263
-      brownStone_1: -2058717323
-      brownStone_2: 1364391545
-      brownStone_3: 393529036
-      brownStone_4: 1663183351
-      brownStone_5: -295286214
-      brownStone_6: 1071035685
-      brownStone_7: -1300904692
-      brownStone_8: -1569724444
+      orangeStone_0: -1577455863
+      orangeStone_1: -171188100
+      orangeStone_2: 723434455
+      orangeStone_3: -1847946413
+      orangeStone_4: -1277481904
+      orangeStone_5: -2064839462
+      orangeStone_6: -1304868135
+      orangeStone_7: -571663123
+      orangeStone_8: 1369862431
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

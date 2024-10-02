@@ -102,7 +102,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     public GameObject PuzzlePiecePrefab;
     public GameObject PieceContainer;
-    public readonly int PieceSize = 36;
+    public readonly int PieceSize = 40;
     public readonly Field FieldInfo = new Field(7, 7);
 
     public GameObject SelectedIcon;
