@@ -10,6 +10,7 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             self.StartBombardment();
+            self.bombPieceList.Remove(self.selectedPuzzlePiece);
         }
 
         public override void StateExit()

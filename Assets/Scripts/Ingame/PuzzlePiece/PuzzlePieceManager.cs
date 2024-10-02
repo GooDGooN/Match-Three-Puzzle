@@ -111,7 +111,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private PuzzlePiece swapTargetPuzzlePiece;
 
     private Queue<PuzzlePiece> repositionedPieceQueue;
-    private Queue<PuzzlePiece> bombPieceQueue;
+    private List<PuzzlePiece> bombPieceList;
     private StateController<PuzzlePieceManager> myStateController;
 
     public readonly int MaxBombGage = 21;
@@ -127,7 +127,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
         repositionedPieceQueue = new();
-        bombPieceQueue = new();
+        bombPieceList = new();
         HintPieceList = new();
         myStateController = new StateController<PuzzlePieceManager>(this);
         

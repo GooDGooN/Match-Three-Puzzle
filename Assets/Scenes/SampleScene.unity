@@ -368,6 +368,7 @@ MonoBehaviour:
   PuzzlePiecePrefab: {fileID: 3811725605922888128, guid: 51a585b9111b2b3448e03efe80fce843, type: 3}
   PieceContainer: {fileID: 0}
   SelectedIcon: {fileID: 790027101}
+  BombGage: 0
   mystate: 
 --- !u!1 &790027101
 GameObject:

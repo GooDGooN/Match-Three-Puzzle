@@ -21,12 +21,12 @@ public partial class PuzzlePieceManager
                 var target = Utility.PickRandom(self.PieceList.ToArray(), except.ToArray());
                 target.TargetChangeType = Utility.Choose(PieceType.Hbomb, PieceType.Vbomb);
                 target.MyAnimator.SetTrigger("ChangeType");
-                self.bombPieceQueue.Enqueue(target);
+                self.bombPieceList.Add(target);
             }
 
-            if (self.bombPieceQueue.Count > 0)
+            if (self.bombPieceList.Count > 0)
             {
-                self.HintPieceList.Add(self.bombPieceQueue.Dequeue());
+                self.HintPieceList.Add(self.bombPieceList[0]);
                 Debug.Log($"matchable is {self.HintPieceList.Last().MyIndex} Piece");
                 stateManager.ChangeState<PieceManagerIdleState>();
                 return;
@@ -56,6 +56,7 @@ public partial class PuzzlePieceManager
                             }
                         }
                     }
+
 
                     var matrixIndex = MatchablePattern.GetEqualMatrixIndex(rightMatrix3x3);
                     if (matrixIndex != -1)
