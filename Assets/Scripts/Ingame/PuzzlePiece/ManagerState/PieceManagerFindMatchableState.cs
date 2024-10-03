@@ -36,55 +36,15 @@ public partial class PuzzlePieceManager
             {
                 foreach (var dir in Utility.Get4DirTuples())
                 {
-                    var rightMatrix3x3 = new PieceMatrix3x3();
-                    for (int i = 0; i < rightMatrix3x3.Value.Length; i++)
-                    {
-                        /*
-                        * tx = (mx + 1) * cos(dir) - (my - 1) * sin(dir)
-                        * ty = (mx + 1) * sin(dir) + (my - 1) * cos(dir)
-                        */
-                        var mx = (i % 3);
-                        var my = (i / 3);
-                        var tx = piece.MyIndex.Item1 + ((mx + 1) * dir.Item1) - ((my - 1) * dir.Item2);
-                        var ty = piece.MyIndex.Item2 + ((mx + 1) * dir.Item2) + ((my - 1) * dir.Item1);
 
-                        if (self.IsPlaceAreExist(tx, ty))
-                        {
-                            if (self.MyPieceField[tx][ty].MyType == piece.MyType)
-                            {
-                                rightMatrix3x3[mx, my] = 1;
-                            }
-                        }
-                    }
+                    var tx = piece.MyIndex.Item1 + dir.Item1;
+                    var ty = piece.MyIndex.Item2 + dir.Item2;
 
-                    if(rightMatrix3x3[3] == 1)
+                    if (self.IsPlaceAreExist(tx, ty) && self.MyPieceField[tx,ty].MyType != piece.MyType)
                     {
-                        continue;
-                    }
-
-                    var matrixIndex = MatchablePattern.GetEqualMatrixIndex(rightMatrix3x3);
-                    if (matrixIndex != -1)
-                    {
-                        // save hint
                         var posTupleSave = piece.MyIndex;
-                        var testPosTuple = piece.MyIndex;
-                        switch(matrixIndex)
-                        {
-                            case 1:
-                                testPosTuple.Item1 += -dir.Item2;
-                                testPosTuple.Item2 += dir.Item1;
-                                break;
-                            case 2:
-                                testPosTuple.Item1 += dir.Item2;
-                                testPosTuple.Item2 += -dir.Item1;
-                                break;
-                            default:
-                                testPosTuple.Item1 += dir.Item1;
-                                testPosTuple.Item2 += dir.Item2;
-                                break;
-                        }
 
-                        piece.MyIndex = testPosTuple;
+                        piece.MyIndex = (tx, ty);
                         tempPuzzlePieceList = self.GetMatchablePieces(piece).ToList();
                         piece.MyIndex = posTupleSave;
 
