@@ -1,16 +1,23 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public partial class PuzzlePieceManager
 {
+    private List<PuzzlePiece> removeTargetList = new();
     public class PieceManagerActiveBombState : BaseFSM<PuzzlePieceManager>
     {
+        private int count;
+        private float delay;
         public override void StateEnter()
         {
-            self.StartBombardment();
-            self.bombPieceList.Remove(self.selectedPuzzlePiece);
+            count = 0;
+            delay = 0.25f;
+
+            self.removeTargetList.Clear();
+            self.StartActiveBomb(self.selectedPuzzlePiece);
         }
 
         public override void StateExit()
@@ -23,58 +30,107 @@ public partial class PuzzlePieceManager
 
         public override void StateUpdate()
         {
+            delay -= Time.deltaTime;
+            if(count < self.removeTargetList.Count)
+            {
+                count = self.removeTargetList.Count;
+                delay = 0.15f;
+            }
+
+            if(delay < 0)
+            {
+                foreach(PuzzlePiece piece in self.removeTargetList)
+                {
+                    if(piece.MyIndex != (-1, -1))
+                    {
+                        piece.RemoveSelf();
+                    }
+                }
+                stateManager.ChangeState<PieceManagerRefillState>();
+            }
         }
     }
 
-    private void StartBombardment()
+    private void StartActiveBomb(PuzzlePiece target)
     {
-        StartCoroutine(Bombardment());
+        StartCoroutine(ActiveBomb(target));
     }
 
-    private IEnumerator Bombardment()
+    private IEnumerator ActiveBomb(PuzzlePiece targetPiece)
     {
-        var addTuple = (selectedPuzzlePiece.MyType == PieceType.Vbomb) ? (0, 1) : (1, 0);
-        var pieceTuple = selectedPuzzlePiece.MyIndex;
-        
-        selectedPuzzlePiece.RemoveSelf();
+        var addTuple = (targetPiece.MyType == PieceType.Vbomb) ? (0, 1) : (1, 0);
+        var targetTuple = targetPiece.MyIndex;
 
-        var increasedTuple = (pieceTuple.Item1 + addTuple.Item1, pieceTuple.Item2);
-        var decreasedTuple = (pieceTuple.Item1 - addTuple.Item1, pieceTuple.Item2 - addTuple.Item2);
-        var breakable = false;
+        var increasedTuple = (targetTuple.Item1 + addTuple.Item1, targetTuple.Item2 + addTuple.Item2);
+        var decreasedTuple = (targetTuple.Item1 - addTuple.Item1, targetTuple.Item2 - addTuple.Item2);
         var repeatTime = 0;
 
-        if (selectedPuzzlePiece.MyType == PieceType.Vbomb)
+        if (targetPiece.MyType == PieceType.Vbomb)
         {
-            repeatTime = pieceTuple.Item2 > FieldInfo.Height / 2 ? pieceTuple.Item2 : FieldInfo.Height - pieceTuple.Item2;
+            repeatTime = targetTuple.Item2 > FieldInfo.Height / 2 ? targetTuple.Item2 : FieldInfo.Height - targetTuple.Item2;
         }
         else
         {
-            repeatTime = pieceTuple.Item1 > FieldInfo.Width / 2 ? pieceTuple.Item1 : FieldInfo.Width - pieceTuple.Item1;
+            repeatTime = targetTuple.Item1 > FieldInfo.Width / 2 ? targetTuple.Item1 : FieldInfo.Width - targetTuple.Item1;
         }
         var delayTime = 0.15f / repeatTime;
+        AddTargetToRemoveList(targetPiece);
 
-        while (!breakable)
-        {
-            breakable = true;
-            yield return new WaitForSeconds(delayTime);
-            if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
+        while (repeatTime-- > 0)
+        {   
+            // check right or up
+            if (IsPlaceAreExist(increasedTuple))
             {
-                MyPieceField[increasedTuple.Item1, increasedTuple.Item2].RemoveSelf();
-                increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2);
-                breakable = false;
-            }
-            if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
-            {
-                MyPieceField[decreasedTuple.Item1, decreasedTuple.Item2].RemoveSelf();
-                decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
-                if (selectedPuzzlePiece.MyType == PieceType.Vbomb)
+                if(!IsPlaceEmpty(increasedTuple))
                 {
-                    increasedTuple.Item2 -= 1;
+                    var target = MyPieceField[increasedTuple.Item1, increasedTuple.Item2];
+                    var targetType = target.MyType;
+                    if (targetPiece.MyType == targetType)
+                    {
+                        AddTargetToRemoveList(target);
+                    }
+                    else if (targetType == PieceType.Vbomb || targetType == PieceType.Hbomb)
+                    {
+                        StartActiveBomb(target);
+                    }
+                    else
+                    {
+                        AddTargetToRemoveList(target);
+                    }
                 }
-                breakable = false;
+                increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2 + addTuple.Item2);
             }
+
+            // check left or down
+            if (IsPlaceAreExist(decreasedTuple))
+            {
+                if(!IsPlaceEmpty(decreasedTuple))
+                {
+                    var target = MyPieceField[decreasedTuple.Item1, decreasedTuple.Item2];
+                    var targetType = target.MyType;
+                    if (targetPiece.MyType == targetType)
+                    {
+                        AddTargetToRemoveList(target);
+                    }
+                    else if (targetType == PieceType.Vbomb || targetType == PieceType.Hbomb)
+                    {
+                        StartActiveBomb(target);
+                    }
+                    else
+                    {
+                        AddTargetToRemoveList(target);
+                    }
+                }
+                decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
+            }
+            yield return new WaitForSeconds(delayTime);
         }
-        selectedPuzzlePiece = null;
-        myStateController.ChangeState<PieceManagerRefillState>();
+        targetPiece = null;
+
+        void AddTargetToRemoveList(PuzzlePiece target)
+        {
+            target.transform.position = new Vector2(0, -500.0f);
+            removeTargetList.Add(target);
+        }
     }
 }
