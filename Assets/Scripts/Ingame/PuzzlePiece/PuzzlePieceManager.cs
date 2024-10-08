@@ -150,9 +150,9 @@ public partial class PuzzlePieceManager : MonoBehaviour
     #region Field Check
     public bool IsPlaceEmpty(int x, int y)
     {
-        if (MyPieceField[x][y] != null && (MyPieceField[x][y].MyType != PieceType.None || MyPieceField[x][y].MyType != PieceType.Block))
+        if (MyPieceField[x][y] != null)
         {
-            if (MyPieceField[x][y].MyType != PieceType.None)
+            if (MyPieceField[x][y].MyType != PieceType.None || MyPieceField[x][y].MyType != PieceType.None || MyPieceField[x][y].MyType != PieceType.Block)
             {
                 return false;
             }
