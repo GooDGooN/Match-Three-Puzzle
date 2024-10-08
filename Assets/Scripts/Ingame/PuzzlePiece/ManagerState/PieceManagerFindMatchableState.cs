@@ -21,12 +21,12 @@ public partial class PuzzlePieceManager
                 var target = Utility.PickRandom(self.PieceList.ToArray(), except.ToArray());
                 target.TargetChangeType = Utility.Choose(PieceType.Hbomb, PieceType.Vbomb);
                 target.MyAnimator.SetTrigger("ChangeType");
-                self.bombPieceList.Add(target);
+                self.BombPieceList.Add(target);
             }
 
-            if (self.bombPieceList.Count > 0)
+            if (self.BombPieceList.Count > 0)
             {
-                self.HintPieceList.Add(self.bombPieceList[0]);
+                self.HintPieceList.Add(self.BombPieceList[0]);
                 Debug.Log($"matchable is {self.HintPieceList.Last().MyIndex} Piece");
                 stateManager.ChangeState<PieceManagerIdleState>();
                 return;
