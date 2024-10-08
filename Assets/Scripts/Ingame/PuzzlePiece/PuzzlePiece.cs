@@ -80,6 +80,7 @@ public class PuzzlePiece : MonoBehaviour
 
     public void RemoveSelf()
     {
+        MyManager.BombPieceList.Remove(this);
         var ty = MyManager.MyPieceField[MyIndex.Item1].GetIndex(this);
         MyManager.MyPieceField[MyIndex.Item1, ty] = null;
         MyIndex = (-1, -1);
