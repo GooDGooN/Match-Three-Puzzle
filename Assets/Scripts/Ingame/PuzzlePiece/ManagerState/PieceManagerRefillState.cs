@@ -47,7 +47,7 @@ public partial class PuzzlePieceManager
                         while (nullYpos != -1)
                         {
                             var newPiece = self.GetUseablePiece();
-                            var except = new PieceType[] { PieceType.None, PieceType.Vbomb, PieceType.Hbomb, PieceType.Block };
+                            var except = new PieceType[] { PieceType.None, PieceType.Block, PieceType.Rainbow };
                             newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(except));
                             newPiece.MyIndex = (ix, nullYpos);
                             self.MyPieceField[ix, nullYpos] = newPiece;

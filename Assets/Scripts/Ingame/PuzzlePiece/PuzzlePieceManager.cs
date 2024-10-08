@@ -114,7 +114,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private Queue<PuzzlePiece> repositionedPieceQueue;
     private StateController<PuzzlePieceManager> myStateController;
 
-    public readonly int MaxBombGage = 21;
+    public readonly int MaxBombGage = 3;
     public int BombGage;
 
     public string mystate;

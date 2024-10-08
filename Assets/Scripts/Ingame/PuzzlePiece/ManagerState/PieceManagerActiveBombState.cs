@@ -17,7 +17,7 @@ public partial class PuzzlePieceManager
             delay = 0.25f;
 
             self.removeTargetList.Clear();
-            self.StartActiveBomb(self.selectedPuzzlePiece);
+/*            !!TEST!! self.StartActiveBomb(self.selectedPuzzlePiece);*/
         }
 
         public override void StateExit()
@@ -51,7 +51,8 @@ public partial class PuzzlePieceManager
         }
     }
 
-    private void StartActiveBomb(PuzzlePiece target)
+/*    !!TEST!!
+ *    private void StartActiveBomb(PuzzlePiece target)
     {
         StartCoroutine(ActiveBomb(target));
     }
@@ -91,7 +92,10 @@ public partial class PuzzlePieceManager
                     }
                     else if (targetType == PieceType.Vbomb || targetType == PieceType.Hbomb)
                     {
-                        StartActiveBomb(target);
+                        if(target.MyIndex != (-1, -1))
+                        {
+                            StartActiveBomb(target);
+                        }
                     }
                     else
                     {
@@ -114,7 +118,10 @@ public partial class PuzzlePieceManager
                     }
                     else if (targetType == PieceType.Vbomb || targetType == PieceType.Hbomb)
                     {
-                        StartActiveBomb(target);
+                        if (target.MyIndex != (-1, -1))
+                        {
+                            StartActiveBomb(target);
+                        }
                     }
                     else
                     {
@@ -132,5 +139,5 @@ public partial class PuzzlePieceManager
             target.transform.position = new Vector2(0, -500.0f);
             removeTargetList.Add(target);
         }
-    }
+    }*/
 }

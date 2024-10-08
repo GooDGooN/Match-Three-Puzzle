@@ -11,7 +11,8 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             self.HintPieceList.Clear();
-
+/*
+ * !!TEST!!
             while (self.BombGage >= self.MaxBombGage)
             {
                 self.BombGage -= self.MaxBombGage;
@@ -31,7 +32,7 @@ public partial class PuzzlePieceManager
                 stateManager.ChangeState<PieceManagerIdleState>();
                 return;
             }
-
+*/
             foreach (var piece in self.PieceList)
             {
                 foreach (var dir in Utility.Get4DirTuples())

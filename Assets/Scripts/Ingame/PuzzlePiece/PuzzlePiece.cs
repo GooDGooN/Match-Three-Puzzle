@@ -17,6 +17,12 @@ public enum PieceType
     Red,
     Sky,
     Yellow,
+    Rainbow,
+}
+
+public enum PieceSubType
+{
+    None,
     Vbomb,
     Hbomb,
 }
@@ -24,6 +30,7 @@ public enum PieceType
 public class PuzzlePiece : MonoBehaviour
 {
     public Sprite[] PieceSprites;
+    public Sprite[] SpecialPieceSprites;
     public PieceType MyType;
     public PieceType TargetChangeType;
     public (int, int) MyIndex;

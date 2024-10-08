@@ -155,7 +155,7 @@ public partial class PuzzlePieceManager
                 {
                     self.RepositionPiece(target, target.MyIndex, PieceRepositionType.Generate, null);
                 }
-                var except = new PieceType[] { PieceType.None, PieceType.Vbomb, PieceType.Hbomb, PieceType.Block };
+                var except = new PieceType[] { PieceType.None, PieceType.Block, PieceType.Rainbow};
                 var enumArr = Utility.GetEnumArray(except);
                 if (exceptType != null)
                 {
