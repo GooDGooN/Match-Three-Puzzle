@@ -98,6 +98,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
     public List<PuzzlePiece> PieceList;
     public List<PuzzlePiece> HintPieceList;
+    public List<PuzzlePiece> BombPieceList;
     public PieceField MyPieceField;
 
     public GameObject PuzzlePiecePrefab;
@@ -111,7 +112,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private PuzzlePiece swapTargetPuzzlePiece;
 
     private Queue<PuzzlePiece> repositionedPieceQueue;
-    private List<PuzzlePiece> bombPieceList;
     private StateController<PuzzlePieceManager> myStateController;
 
     public readonly int MaxBombGage = 21;
@@ -127,7 +127,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
         repositionedPieceQueue = new();
-        bombPieceList = new();
+        BombPieceList = new();
         HintPieceList = new();
         myStateController = new StateController<PuzzlePieceManager>(this);
         
