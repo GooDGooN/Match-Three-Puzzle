@@ -41,21 +41,39 @@ public partial class PuzzlePieceManager
 
         private void CheckAtferSwap()
         {
-            var matchableList = self.GetMatchablePieces(self.selectedPuzzlePiece).ToList();
-            matchableList.AddRange(self.GetMatchablePieces(self.swapTargetPuzzlePiece));
-            if (matchableList.Count > 0)
+            if(self.GetMatchablePieces(self.selectedPuzzlePiece).Length > 0)
             {
-                foreach (var piece in matchableList)
-                {
-                    piece.RemoveSelf();
-                }
-                stateManager.ChangeState<PieceManagerRefillState>();
+                self.repositionedPieceQueue.Enqueue(self.selectedPuzzlePiece);
+            }
+            if (self.GetMatchablePieces(self.swapTargetPuzzlePiece).Length > 0)
+            {
+                self.repositionedPieceQueue.Enqueue(self.swapTargetPuzzlePiece);
+            }
+
+            if(self.repositionedPieceQueue.Count > 0)
+            {
+                stateManager.ChangeState<PieceManagerPopMatchableState>();
             }
             else
             {
                 self.RepositionPiece(self.swapTargetPuzzlePiece, targetIndex, PieceRepositionType.Swap);
                 self.RepositionPiece(self.selectedPuzzlePiece, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
             }
+            /*            var matchableList = self.GetMatchablePieces(self.selectedPuzzlePiece).ToList();
+                        matchableList.AddRange(self.GetMatchablePieces(self.swapTargetPuzzlePiece));
+                        if (matchableList.Count > 0)
+                        {
+                            foreach (var piece in matchableList)
+                            {
+                                piece.RemoveSelf();
+                            }
+                            stateManager.ChangeState<PieceManagerRefillState>();
+                        }
+                        else
+                        {
+                            self.RepositionPiece(self.swapTargetPuzzlePiece, targetIndex, PieceRepositionType.Swap);
+                            self.RepositionPiece(self.selectedPuzzlePiece, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
+                        }*/
         }
         private void GoBackAtferSwap()
         {
