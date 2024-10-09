@@ -25,6 +25,7 @@ public enum PieceSubType
     None,
     Vbomb,
     Hbomb,
+    CrossBomb,
 }
 
 public class PuzzlePiece : MonoBehaviour
