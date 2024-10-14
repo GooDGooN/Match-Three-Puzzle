@@ -22,6 +22,7 @@ public partial class PuzzlePieceManager
         public override void StateFixedUpdate()
         {
             delay -= Time.deltaTime;
+            var played = false;
             if (delay < 0.0f)
             {
                 for (int ix = 0; ix < self.FieldInfo.Width; ix++)
@@ -56,9 +57,10 @@ public partial class PuzzlePieceManager
                             newPiece.transform.position = pos;
 
                             nullYpos = self.MyPieceField.GetNullYPos(ix);
-                            if (nullYpos == -1)
+                            if (!played)
                             {
-                                self.RepositionPiece(newPiece, newPiece.MyIndex, PieceRepositionType.Refill, ChangeToMatchable);
+                                self.RepositionPiece(newPiece, newPiece.MyIndex, PieceRepositionType.Refill, ChangeToPop);
+                                played = true;
                             }
                             else
                             {
