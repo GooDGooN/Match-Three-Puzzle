@@ -22,7 +22,7 @@ public enum PieceType
 
 public enum PieceSubType
 {
-    None,
+    None = -1,
     Vbomb,
     Hbomb,
     CrossBomb,
@@ -30,10 +30,22 @@ public enum PieceSubType
 
 public class PuzzlePiece : MonoBehaviour
 {
+    private Color[] specialTypeColors = new Color[] {
+        new Color(0, 0, 225),
+        new Color(0, 225, 0),
+        new Color(225, 125, 0),
+        new Color(225, 0, 225),
+        new Color(225, 0, 0),
+        new Color(0, 225, 225),
+        new Color(225, 225, 0),
+    };
+
     public Sprite[] PieceSprites;
     public Sprite[] SpecialPieceSprites;
     public PieceType MyType;
     public PieceType TargetChangeType;
+    public PieceSubType MySubType;
+    public PieceSubType TargetChangeSubType;
     public (int, int) MyIndex;
     public PuzzlePieceManager MyManager;
     public Animator MyAnimator
@@ -46,12 +58,22 @@ public class PuzzlePiece : MonoBehaviour
     private void Start()
     {
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
+        MySubType = PieceSubType.None;
     }
 
 
     void Update()
     {
-        GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
+        if (MySubType == PieceSubType.None)
+        {
+            GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
+            GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        else
+        {
+            GetComponent<SpriteRenderer>().color = specialTypeColors[(int)MyType];
+            GetComponent<SpriteRenderer>().sprite = SpecialPieceSprites[(int)MySubType];
+        }    
         testpos[0] = MyIndex.Item1;
         testpos[1] = MyIndex.Item2;
     }
@@ -81,11 +103,6 @@ public class PuzzlePiece : MonoBehaviour
         return result.ToArray();
     }
 
-    public void RefreshSprite()
-    {
-        GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
-    }
-
     public void RemoveSelf()
     {
         MyManager.BombPieceList.Remove(this);
@@ -93,6 +110,7 @@ public class PuzzlePiece : MonoBehaviour
         MyManager.MyPieceField[MyIndex.Item1, ty] = null;
         MyIndex = (-1, -1);
         transform.position = new Vector2(0, -500.0f);
+        MySubType = PieceSubType.None;
         MyManager.BombGage++;
     }
 
@@ -100,6 +118,8 @@ public class PuzzlePiece : MonoBehaviour
     {
         MyType = TargetChangeType;
         TargetChangeType = PieceType.None;
+        MySubType = TargetChangeSubType;
+        TargetChangeSubType = PieceSubType.None;
     }
 
 }
