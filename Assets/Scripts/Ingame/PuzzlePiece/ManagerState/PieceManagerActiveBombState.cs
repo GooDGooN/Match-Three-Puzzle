@@ -6,7 +6,6 @@ using UnityEngine;
 
 public partial class PuzzlePieceManager
 {
-    private List<PuzzlePiece> removeTargetList = new();
     public class PieceManagerActiveBombState : BaseFSM<PuzzlePieceManager>
     {
         private int count;
