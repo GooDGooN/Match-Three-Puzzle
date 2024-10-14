@@ -24,6 +24,7 @@ public class StateController<T>
             state.stateManager = this;
         }
         CurrentState = state;
+        Debug.Log(CurrentState?.ToString()); // !!TEST!!
         CurrentState.StateEnter();
     }
 }
