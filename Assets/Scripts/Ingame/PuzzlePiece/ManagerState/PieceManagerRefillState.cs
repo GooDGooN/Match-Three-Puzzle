@@ -75,7 +75,7 @@ public partial class PuzzlePieceManager
         {
         }
 
-        private void ChangeToMatchable()
+        private void ChangeToPop()
         {
             stateManager.ChangeState<PieceManagerPopMatchableState>();
         }
