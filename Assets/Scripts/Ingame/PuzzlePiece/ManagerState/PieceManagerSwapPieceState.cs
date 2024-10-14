@@ -27,8 +27,6 @@ public partial class PuzzlePieceManager
         public override void StateExit()
         {
             self.SelectedIcon.SetActive(false);
-            self.swapTargetPuzzlePiece = null;
-            self.selectedPuzzlePiece = null;
         }
 
         public override void StateFixedUpdate()
@@ -41,13 +39,25 @@ public partial class PuzzlePieceManager
 
         private void CheckAtferSwap()
         {
-            if(self.GetMatchablePieces(self.selectedPuzzlePiece).Length > 0)
+            var selected = self.selectedPuzzlePiece;
+            var swapTarget = self.swapTargetPuzzlePiece;
+
+            if (self.GetMatchablePieces(self.selectedPuzzlePiece).Length > 0)
             {
                 self.repositionedPieceQueue.Enqueue(self.selectedPuzzlePiece);
             }
+            else
+            {
+                self.selectedPuzzlePiece = null;
+            }
+
             if (self.GetMatchablePieces(self.swapTargetPuzzlePiece).Length > 0)
             {
                 self.repositionedPieceQueue.Enqueue(self.swapTargetPuzzlePiece);
+            }
+            else
+            {
+                self.swapTargetPuzzlePiece = null;
             }
 
             if(self.repositionedPieceQueue.Count > 0)
@@ -56,24 +66,9 @@ public partial class PuzzlePieceManager
             }
             else
             {
-                self.RepositionPiece(self.swapTargetPuzzlePiece, targetIndex, PieceRepositionType.Swap);
-                self.RepositionPiece(self.selectedPuzzlePiece, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
+                self.RepositionPiece(swapTarget, targetIndex, PieceRepositionType.Swap);
+                self.RepositionPiece(selected, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
             }
-            /*            var matchableList = self.GetMatchablePieces(self.selectedPuzzlePiece).ToList();
-                        matchableList.AddRange(self.GetMatchablePieces(self.swapTargetPuzzlePiece));
-                        if (matchableList.Count > 0)
-                        {
-                            foreach (var piece in matchableList)
-                            {
-                                piece.RemoveSelf();
-                            }
-                            stateManager.ChangeState<PieceManagerRefillState>();
-                        }
-                        else
-                        {
-                            self.RepositionPiece(self.swapTargetPuzzlePiece, targetIndex, PieceRepositionType.Swap);
-                            self.RepositionPiece(self.selectedPuzzlePiece, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
-                        }*/
         }
         private void GoBackAtferSwap()
         {
