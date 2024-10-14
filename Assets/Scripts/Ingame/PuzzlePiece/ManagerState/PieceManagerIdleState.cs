@@ -11,6 +11,8 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             self.SetHintCountDown();
+            self.selectedPuzzlePiece = null;
+            self.swapTargetPuzzlePiece = null;
         }
 
         public override void StateExit()
