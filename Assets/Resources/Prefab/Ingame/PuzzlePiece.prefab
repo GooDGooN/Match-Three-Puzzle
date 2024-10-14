@@ -109,11 +109,12 @@ MonoBehaviour:
   - {fileID: 21300000, guid: b52e3d5233afc6241a953a68fa449a2d, type: 3}
   - {fileID: 21300000, guid: 80f13898bb875a84d9622dad0969e03b, type: 3}
   SpecialPieceSprites:
-  - {fileID: 21300000, guid: ca32d2be44cca184d9ce4f8380d745f5, type: 3}
-  - {fileID: 21300000, guid: 6948b22d6d29ae349a4480710406fc67, type: 3}
   - {fileID: 21300000, guid: 1212477c5c70a6845941cda7dbbda723, type: 3}
+  - {fileID: 21300000, guid: 6948b22d6d29ae349a4480710406fc67, type: 3}
+  - {fileID: 21300000, guid: ca32d2be44cca184d9ce4f8380d745f5, type: 3}
   MyType: 0
   TargetChangeType: 0
+  MySubType: 0
   MyManager: {fileID: 0}
   testpos: 0000000000000000
 --- !u!61 &-5220611727352001153
