@@ -14,7 +14,7 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             removePiecesList = new();
-            self.stateChangeDelay = 0.0f;
+            self.stateChangeDelay = 0.1f;
             isRefill = false;
 
             while (self.repositionedPieceQueue.Count > 0)
