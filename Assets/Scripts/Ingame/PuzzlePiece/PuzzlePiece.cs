@@ -31,13 +31,13 @@ public enum PieceSubType
 public class PuzzlePiece : MonoBehaviour
 {
     private Color[] specialTypeColors = new Color[] {
-        new Color(0, 0, 225),
-        new Color(0, 225, 0),
-        new Color(225, 125, 0),
-        new Color(225, 0, 225),
-        new Color(225, 0, 0),
-        new Color(0, 225, 225),
-        new Color(225, 225, 0),
+        new Color(0, 0, 0.8f),
+        new Color(0, 0.8f, 0),
+        new Color(0.8f, 0.5f, 0),
+        new Color(0.8f, 0, 0.8f),
+        new Color(0.8f, 0, 0),
+        new Color(0, 0.8f, 0.8f),
+        new Color(0.8f, 0.8f, 0),
     };
 
     public Sprite[] PieceSprites;
