@@ -62,6 +62,7 @@ public partial class PuzzlePieceManager
                             matchables.Count(piece => piece.MyIndex.Item2 == matchables[0].MyIndex.Item2) == 5)
                         {
                             specialPiece.TargetChangeType = PieceType.Rainbow;
+                            Debug.Log("rainbow");
                         }
                         else
                         {
