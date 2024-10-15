@@ -88,9 +88,21 @@ public partial class PuzzlePieceManager
                 {
                     if (piece != specialPiece && piece.MyIndex != (-1, -1))
                     {
+                        if (piece.MySubType != PieceSubType.None)
+                        {
+                            self.StartActiveBomb(piece);
+                        }
+                        else if (piece.MyType == PieceType.Rainbow)
+                        {
+                            piece.RemoveSelf();
+                        }
+                        else
+                        {
+                            piece.RemoveSelf();
+                        }
                         isRefill = true;
-                        piece.RemoveSelf();
                     }
+
                 }
             }
         }
@@ -119,7 +131,9 @@ public partial class PuzzlePieceManager
             }
         }
     }
-
+    /// <summary>
+    /// Using for in PieceManagerPopMatchableState only
+    /// </summary>
     private void StartActiveBomb(PuzzlePiece target)
     {
         switch(target.MySubType)
@@ -135,10 +149,13 @@ public partial class PuzzlePieceManager
                 StartCoroutine(ActiveHorizontalBomb(target));
                 break;
         }
-        stateChangeDelay = 0.16f;
         target.RemoveSelf();
+        stateChangeDelay = 0.16f;
     }
 
+    /// <summary>
+    /// Using for in PieceManagerPopMatchableState only
+    /// </summary>
     private IEnumerator ActiveHorizontalBomb(PuzzlePiece targetPiece)
     {
         var targetTuple = targetPiece.MyIndex;
@@ -147,8 +164,10 @@ public partial class PuzzlePieceManager
         var decreasedTuple = (targetTuple.Item1 - 1, targetTuple.Item2);
         var repeatTime = targetTuple.Item1 > FieldInfo.Width / 2 ? targetTuple.Item1 : FieldInfo.Width - targetTuple.Item1;
         var delayTime = 0.15f / repeatTime;
+
         while (repeatTime-- > 0)
         {
+            yield return new WaitForSeconds(delayTime);
             // check right
             if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
             {
@@ -192,10 +211,12 @@ public partial class PuzzlePieceManager
                 }
                 decreasedTuple = (decreasedTuple.Item1 - 1, decreasedTuple.Item2);
             }
-            yield return new WaitForSeconds(delayTime);
         }
     }
 
+    /// <summary>
+    /// Using for in PieceManagerPopMatchableState only
+    /// </summary>
     private IEnumerator ActiveVerticalBomb(PuzzlePiece targetPiece)
     {
         var targetTuple = targetPiece.MyIndex;
@@ -206,50 +227,47 @@ public partial class PuzzlePieceManager
         var delayTime = 0.15f / repeatTime;
         while (repeatTime-- > 0)
         {
-            // check up
-            if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
-            {
-                var target = MyPieceField[increasedTuple.Item1, increasedTuple.Item2];
-                if (target.MyIndex == increasedTuple)
-                {
-                    var targetSubType = target.MySubType;
-                    if (targetSubType == PieceSubType.Hbomb)
-                    {
-                        if (target.MyIndex != (-1, -1))
-                        {
-                            StartActiveBomb(target);
-                        }
-                    }
-                    else
-                    {
-                        target.RemoveSelf();
-                    }
-                }
-            }
-
+            Debug.Log(increasedTuple);
+            Debug.Log(decreasedTuple);
+            yield return new WaitForSeconds(delayTime);
             // check down
             if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
             {
                 var target = MyPieceField[decreasedTuple.Item1, decreasedTuple.Item2];
-                if (target.MyIndex == decreasedTuple)
+                var targetSubType = target.MySubType;
+                if (targetSubType == PieceSubType.Hbomb)
                 {
-                    var targetSubType = target.MySubType;
-                    if (targetSubType == PieceSubType.Hbomb)
+                    if (target.MyIndex != (-1, -1))
                     {
-                        if (target.MyIndex != (-1, -1))
-                        {
-                            StartActiveBomb(target);
-                        }
-                    }
-                    else
-                    {
-                        target.RemoveSelf();
+                        StartActiveBomb(target);
                     }
                 }
+                else
+                {
+                    target.RemoveSelf();
+                }
                 decreasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 - 1);
+            }
+
+            // check up
+            if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
+            {
+                var target = MyPieceField[increasedTuple.Item1, increasedTuple.Item2];
+                var targetSubType = target.MySubType;
+                if (targetSubType == PieceSubType.Hbomb)
+                {
+                    if (target.MyIndex != (-1, -1))
+                    {
+                        StartActiveBomb(target);
+                    }
+                }
+                else
+                {
+                    target.RemoveSelf();
+                }
                 increasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 + 1);
             }
-            yield return new WaitForSeconds(delayTime);
+
         }
     }
 }
