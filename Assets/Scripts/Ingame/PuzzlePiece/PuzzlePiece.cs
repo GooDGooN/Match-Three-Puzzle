@@ -105,6 +105,7 @@ public class PuzzlePiece : MonoBehaviour
 
     public void RemoveSelf()
     {
+        transform.DOKill();
         MyManager.BombPieceList.Remove(this);
         var ty = MyManager.MyPieceField[MyIndex.Item1].GetIndex(this);
         MyManager.MyPieceField[MyIndex.Item1, ty] = null;
