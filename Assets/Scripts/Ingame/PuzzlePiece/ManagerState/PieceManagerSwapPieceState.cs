@@ -62,7 +62,7 @@ public partial class PuzzlePieceManager
 
             if(self.repositionedPieceQueue.Count > 0)
             {
-                stateManager.ChangeState<PieceManagerPopMatchableState>();
+                stateManager.ChangeState<PieceManagerPopMatchedState>();
             }
             else
             {

@@ -7,7 +7,7 @@ public partial class PuzzlePieceManager
 {
     private List<PuzzlePiece> removeTargetList = new();
     private float stateChangeDelay;
-    public class PieceManagerPopMatchableState : BaseFSM<PuzzlePieceManager>
+    public class PieceManagerPopMatchedState : BaseFSM<PuzzlePieceManager>
     {
         private bool isRefill;
         private List<PuzzlePiece[]> removePiecesList;
