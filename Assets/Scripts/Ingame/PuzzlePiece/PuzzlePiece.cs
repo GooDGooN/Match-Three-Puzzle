@@ -59,6 +59,7 @@ public class PuzzlePiece : MonoBehaviour
     {
         GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
         MySubType = PieceSubType.None;
+        TargetChangeSubType = PieceSubType.None;
     }
 
 
