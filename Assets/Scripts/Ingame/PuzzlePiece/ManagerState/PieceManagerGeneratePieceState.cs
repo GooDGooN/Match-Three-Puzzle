@@ -171,6 +171,7 @@ public partial class PuzzlePieceManager
 
         public override void StateExit()
         {
+            TestGenerate();
         }
 
         public override void StateFixedUpdate()
@@ -179,6 +180,33 @@ public partial class PuzzlePieceManager
 
         public override void StateUpdate()
         {
+        }
+
+        List<PuzzlePiece> testList = new();
+        private void TestGenerate()
+        {
+            testList.Clear();
+            /*
+             *�ۡۡۡۡۡ� 
+             *�ۡܡۡۡۡ� 
+             *�ܡۡܡܡۡ� 
+             *�ۡܡۡۡۡ� 
+             *�ۡܡۡۡۡ� 
+             */
+            testList.Add(self.MyPieceField[1, 3]);
+            testList.Add(self.MyPieceField[1, 1]);
+            testList.Add(self.MyPieceField[1, 0]);
+            testList.Add(self.MyPieceField[0, 2]);
+            testList.Add(self.MyPieceField[2, 2]);
+            testList.Add(self.MyPieceField[3, 2]);
+
+            foreach (var piece in testList)
+            {
+                piece.TargetChangeType = PieceType.Blue;
+                piece.ChangeToNewType();
+            }
+
+            //only works in 5x5 or above\
         }
 
         private void GererateDone()
