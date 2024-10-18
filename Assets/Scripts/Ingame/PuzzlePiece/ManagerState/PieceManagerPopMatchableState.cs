@@ -67,6 +67,7 @@ public partial class PuzzlePieceManager
                         else
                         {
                             specialPiece.TargetChangeSubType = PieceSubType.CrossBomb;
+                            specialPiece.TargetChangeType = specialPiece.MyType;
                         }
                     }
                     else if (matchLength == 4)
@@ -75,12 +76,12 @@ public partial class PuzzlePieceManager
                         {
                             specialPiece.TargetChangeSubType = PieceSubType.Hbomb;
                         }
-                        else if (matchables[0].MyIndex.Item2 == matchables[1].MyIndex.Item2)
+                        else
                         {
                             specialPiece.TargetChangeSubType = PieceSubType.Vbomb;
                         }
+                        specialPiece.TargetChangeType = specialPiece.MyType;
                     }
-                    specialPiece.TargetChangeType = specialPiece.MyType;
                 }
 
                 specialPiece?.MyAnimator.SetTrigger("ChangeType");
