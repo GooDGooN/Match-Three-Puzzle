@@ -17,6 +17,7 @@ public partial class PuzzlePieceManager
             self.stateChangeDelay = 0.1f;
             isRefill = false;
 
+            #region Normal Remove
             while (self.repositionedPieceQueue.Count > 0)
             {
                 var target = self.repositionedPieceQueue.Dequeue();
@@ -84,6 +85,7 @@ public partial class PuzzlePieceManager
                     }
                 }
 
+                // remove
                 specialPiece?.MyAnimator.SetTrigger("ChangeType");
                 foreach (var piece in matchables)
                 {
@@ -103,9 +105,9 @@ public partial class PuzzlePieceManager
                         }
                         isRefill = true;
                     }
-
                 }
             }
+            #endregion
         }
 
         public override void StateExit()
@@ -271,4 +273,6 @@ public partial class PuzzlePieceManager
 
         }
     }
+
+
 }
