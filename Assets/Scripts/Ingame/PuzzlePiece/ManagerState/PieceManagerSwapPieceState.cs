@@ -39,35 +39,30 @@ public partial class PuzzlePieceManager
 
         private void CheckAtferSwap()
         {
-            var selected = self.selectedPuzzlePiece;
-            var swapTarget = self.swapTargetPuzzlePiece;
+            if(self.selectedPuzzlePiece.MyType == PieceType.Rainbow ^ self.swapTargetPuzzlePiece.MyType == PieceType.Rainbow)
+            {
+                stateManager.ChangeState<PieceManagerPopMatchedState>();
+                return;
+            }
 
             if (self.GetMatchablePieces(self.selectedPuzzlePiece).Length > 0)
             {
                 self.repositionedPieceQueue.Enqueue(self.selectedPuzzlePiece);
-            }
-            else
-            {
-                self.selectedPuzzlePiece = null;
             }
 
             if (self.GetMatchablePieces(self.swapTargetPuzzlePiece).Length > 0)
             {
                 self.repositionedPieceQueue.Enqueue(self.swapTargetPuzzlePiece);
             }
-            else
-            {
-                self.swapTargetPuzzlePiece = null;
-            }
 
-            if(self.repositionedPieceQueue.Count > 0)
+            if (self.repositionedPieceQueue.Count > 0)
             {
                 stateManager.ChangeState<PieceManagerPopMatchedState>();
             }
             else
             {
-                self.RepositionPiece(swapTarget, targetIndex, PieceRepositionType.Swap);
-                self.RepositionPiece(selected, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
+                self.RepositionPiece(self.swapTargetPuzzlePiece, targetIndex, PieceRepositionType.Swap);
+                self.RepositionPiece(self.selectedPuzzlePiece, selectedIndex, PieceRepositionType.Swap, GoBackAtferSwap);
             }
         }
         private void GoBackAtferSwap()
