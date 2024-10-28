@@ -263,7 +263,7 @@ public partial class PuzzlePieceManager
         sameTypePieceList.Clear();
         foreach (var piece in PieceList)
         {
-            if (piece.MyType == targetType)
+            if (piece.MyType == targetType && piece.MyIndex != (-1, -1))
             {
                 sameTypePieceList.Add(piece);
             }
@@ -273,7 +273,10 @@ public partial class PuzzlePieceManager
         var delay = 0.5f / sameTypePieceList.Count;
         while (sameTypePieceList.Count > 0)
         {
-            sameTypePieceList[0].RemoveSelf();
+            if(sameTypePieceList[0] != null)
+            {
+                sameTypePieceList[0].RemoveSelf();
+            }
             sameTypePieceList.RemoveAt(0);
             stateChangeDelay = 0.16f;
             yield return new WaitForSeconds(delay);
