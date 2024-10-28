@@ -5,6 +5,7 @@ using UnityEngine;
 
 public partial class PuzzlePieceManager
 {
+    private List<PuzzlePiece> sameTypePieceList = new();
     private List<PuzzlePiece> removeTargetList = new();
     private float stateChangeDelay;
     public class PieceManagerPopMatchedState : BaseFSM<PuzzlePieceManager>
@@ -17,97 +18,104 @@ public partial class PuzzlePieceManager
             self.stateChangeDelay = 0.1f;
             isRefill = false;
 
-            #region Normal Remove
-            while (self.repositionedPieceQueue.Count > 0)
+            if (self.selectedPuzzlePiece != null && self.selectedPuzzlePiece.MyType == PieceType.Rainbow)
             {
-                var target = self.repositionedPieceQueue.Dequeue();
-                var matchables = self.GetMatchablePieces(target);
-                if (matchables.Length > 0)
-                {
-                    removePiecesList.Add(matchables);
-                }
+                self.StartActiveRainbowBomb(self.selectedPuzzlePiece, self.swapTargetPuzzlePiece.MyType);
             }
-
-            removePiecesList = removePiecesList.OrderBy(arr => arr.Length).ToList();
-            PuzzlePiece specialPiece = null;
-
-            foreach (var matchables in removePiecesList)
+            else if (self.swapTargetPuzzlePiece != null && self.swapTargetPuzzlePiece.MyType == PieceType.Rainbow)
             {
-
-                specialPiece = null;
-                var matchLength = matchables.Length;
-                if (matchLength > 3 && matchables.Count(arr => arr.MyIndex == (-1, -1)) == 0)
+                self.StartActiveRainbowBomb(self.swapTargetPuzzlePiece, self.selectedPuzzlePiece.MyType);
+            }
+            else
+            {
+                #region Normal Remove
+                while (self.repositionedPieceQueue.Count > 0)
                 {
-                    // set the special piece
-                    if (matchables.Contains(self.selectedPuzzlePiece))
+                    var target = self.repositionedPieceQueue.Dequeue();
+                    var matchables = self.GetMatchablePieces(target);
+                    if (matchables.Length > 0)
                     {
-                        specialPiece = self.selectedPuzzlePiece;
+                        removePiecesList.Add(matchables);
                     }
-                    else if (matchables.Contains(self.swapTargetPuzzlePiece))
-                    {
-                        specialPiece = self.swapTargetPuzzlePiece;
-                    }
-                    else
-                    {
-                        specialPiece = matchables[Random.Range(0, matchables.Length)];
-                    }
+                }
 
-                    // set special piece type
-                    if (matchLength >= 6)
+                removePiecesList = removePiecesList.OrderBy(arr => arr.Length).ToList();
+                PuzzlePiece specialPiece = null;
+
+                foreach (var matchables in removePiecesList)
+                {
+                    specialPiece = null;
+                    var matchLength = matchables.Length;
+                    if (matchLength > 3 && matchables.Count(arr => arr.MyIndex == (-1, -1)) == 0)
                     {
-                        specialPiece.TargetChangeType = PieceType.Rainbow;
-                    }
-                    else if (matchLength == 5)
-                    {
-                        if (matchables.Count(piece => piece.MyIndex.Item1 == matchables[0].MyIndex.Item1) == 5 ||
-                            matchables.Count(piece => piece.MyIndex.Item2 == matchables[0].MyIndex.Item2) == 5)
+                        // set the special piece
+                        if (matchables.Contains(self.selectedPuzzlePiece))
                         {
-                            specialPiece.TargetChangeType = PieceType.Rainbow;
-                            Debug.Log("rainbow");
+                            specialPiece = self.selectedPuzzlePiece;
+                        }
+                        else if (matchables.Contains(self.swapTargetPuzzlePiece))
+                        {
+                            specialPiece = self.swapTargetPuzzlePiece;
                         }
                         else
                         {
-                            specialPiece.TargetChangeSubType = PieceSubType.CrossBomb;
+                            specialPiece = matchables[Random.Range(0, matchables.Length)];
+                        }
+
+                        // set special piece type
+                        if (matchLength >= 6)
+                        {
+                            specialPiece.TargetChangeType = PieceType.Rainbow;
+                        }
+                        else if (matchLength == 5)
+                        {
+                            if (matchables.Count(piece => piece.MyIndex.Item1 == matchables[0].MyIndex.Item1) == 5 ||
+                                matchables.Count(piece => piece.MyIndex.Item2 == matchables[0].MyIndex.Item2) == 5)
+                            {
+                                specialPiece.TargetChangeType = PieceType.Rainbow;
+                                Debug.Log("rainbow");
+                            }
+                            else
+                            {
+                                specialPiece.TargetChangeSubType = PieceSubType.CrossBomb;
+                                specialPiece.TargetChangeType = specialPiece.MyType;
+                            }
+                        }
+                        else if (matchLength == 4)
+                        {
+                            if (matchables[0].MyIndex.Item1 == matchables[1].MyIndex.Item1)
+                            {
+                                specialPiece.TargetChangeSubType = PieceSubType.Hbomb;
+                            }
+                            else
+                            {
+                                specialPiece.TargetChangeSubType = PieceSubType.Vbomb;
+                            }
                             specialPiece.TargetChangeType = specialPiece.MyType;
                         }
                     }
-                    else if (matchLength == 4)
-                    {
-                        if (matchables[0].MyIndex.Item1 == matchables[1].MyIndex.Item1)
-                        {
-                            specialPiece.TargetChangeSubType = PieceSubType.Hbomb;
-                        }
-                        else
-                        {
-                            specialPiece.TargetChangeSubType = PieceSubType.Vbomb;
-                        }
-                        specialPiece.TargetChangeType = specialPiece.MyType;
-                    }
-                }
 
-                // remove
-                specialPiece?.MyAnimator.SetTrigger("ChangeType");
-                foreach (var piece in matchables)
-                {
-                    if (piece != specialPiece && piece.MyIndex != (-1, -1))
+                    // remove
+                    specialPiece?.MyAnimator.SetTrigger("ChangeType");
+                    foreach (var piece in matchables)
                     {
-                        if (piece.MySubType != PieceSubType.None)
+                        if (piece != specialPiece && piece.MyIndex != (-1, -1))
                         {
-                            self.StartActiveBomb(piece);
+                            if (piece.MySubType != PieceSubType.None)
+                            {
+                                self.StartActiveBomb(piece);
+                            }
+                            else
+                            {
+                                piece.RemoveSelf();
+                            }
+                            isRefill = true;
                         }
-                        else if (piece.MyType == PieceType.Rainbow)
-                        {
-                            piece.RemoveSelf();
-                        }
-                        else
-                        {
-                            piece.RemoveSelf();
-                        }
-                        isRefill = true;
                     }
                 }
+                #endregion
             }
-            #endregion
+
         }
 
         public override void StateExit()
@@ -156,6 +164,10 @@ public partial class PuzzlePieceManager
         stateChangeDelay = 0.16f;
     }
 
+    private void StartActiveRainbowBomb(PuzzlePiece target, PieceType targetType)
+    {
+        StartCoroutine(ActiveRainbowBomb(target, targetType));
+    }
     /// <summary>
     /// Using for in PieceManagerPopMatchableState only
     /// </summary>
@@ -272,6 +284,54 @@ public partial class PuzzlePieceManager
             }
 
         }
+    }
+
+    private void RemovePieceByBomb((int, int) testTuple, PieceType bombType)
+    {
+        var target = MyPieceField[testTuple.Item1, testTuple.Item2];
+        var targetSubType = target.MySubType;
+        if (targetSubType == PieceSubType.Hbomb)
+        {
+            if (target.MyIndex != (-1, -1))
+            {
+                StartActiveBomb(target);
+            }
+        }
+        else if (target.MyType == PieceType.Rainbow)
+        {
+            if (target.MyIndex != (-1, -1))
+            {
+                StartActiveRainbowBomb(target, bombType);
+            }
+        }
+        else
+        {
+            target.RemoveSelf();
+        }
+    }
+
+    private IEnumerator ActiveRainbowBomb(PuzzlePiece target, PieceType targetType)
+    {
+        sameTypePieceList.Clear();
+        foreach (var piece in PieceList)
+        {
+            if (piece.MyType == targetType)
+            {
+                sameTypePieceList.Add(piece);
+            }
+        }
+        sameTypePieceList = sameTypePieceList.OrderBy(piece => Vector3.Distance(target.transform.position, piece.transform.position)).ToList();
+        target.RemoveSelf();
+        var delay = 0.5f / sameTypePieceList.Count;
+        while (sameTypePieceList.Count > 0)
+        {
+            sameTypePieceList[0].RemoveSelf();
+            sameTypePieceList.RemoveAt(0);
+            stateChangeDelay = 0.16f;
+            yield return new WaitForSeconds(delay);
+        }
+
+        myStateController.ChangeState<PieceManagerRefillState>();
     }
 
 
