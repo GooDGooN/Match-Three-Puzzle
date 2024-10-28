@@ -58,7 +58,7 @@ public partial class PuzzlePieceManager
             }
 
             // Some piece is matchable
-            if(self.HintPieceList.Count > 0)
+            if(self.HintPieceList.Count > 0 || self.PieceList.Count(piece => piece.MyType == PieceType.Rainbow) > 0)
             {
                 Debug.Log($"matchable is {self.HintPieceList.Last().MyIndex} Piece");
                 stateManager.ChangeState<PieceManagerIdleState>();
