@@ -35,13 +35,6 @@ public partial class PuzzlePieceManager
                 if (pieceObjs != null)
                 {
                     var targetPiece = pieceObjs[0].GetComponent<PuzzlePiece>();
-/*                    //!!TEST!!//
-                    if (targetPiece.MyType == PieceType.Vbomb || targetPiece.MyType == PieceType.Hbomb)
-                    {
-                        self.selectedPuzzlePiece = targetPiece;
-                        stateManager.ChangeState<PieceManagerActiveBombState>();
-                        return;
-                    }*/
 
                     if (self.selectedPuzzlePiece == null)
                     {
