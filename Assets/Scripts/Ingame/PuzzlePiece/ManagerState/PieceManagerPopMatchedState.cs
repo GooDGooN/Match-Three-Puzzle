@@ -147,7 +147,7 @@ public partial class PuzzlePieceManager
     /// </summary>
     private void StartActiveBomb(PuzzlePiece target)
     {
-        switch(target.MySubType)
+        switch (target.MySubType)
         {
             case PieceSubType.Vbomb:
                 StartCoroutine(ActiveVerticalBomb(target));
@@ -168,16 +168,18 @@ public partial class PuzzlePieceManager
     {
         StartCoroutine(ActiveRainbowBomb(target, targetType));
     }
+
     /// <summary>
     /// Using for in PieceManagerPopMatchableState only
     /// </summary>
-    private IEnumerator ActiveHorizontalBomb(PuzzlePiece targetPiece)
+    private IEnumerator ActiveHorizontalBomb(PuzzlePiece bombPiece)
     {
-        var targetTuple = targetPiece.MyIndex;
+        var bombTuple = bombPiece.MyIndex;
+        var bombType = bombPiece.MyType;
 
-        var increasedTuple = (targetTuple.Item1 + 1, targetTuple.Item2);
-        var decreasedTuple = (targetTuple.Item1 - 1, targetTuple.Item2);
-        var repeatTime = targetTuple.Item1 > FieldInfo.Width / 2 ? targetTuple.Item1 : FieldInfo.Width - targetTuple.Item1;
+        var increasedTuple = (bombTuple.Item1 + 1, bombTuple.Item2);
+        var decreasedTuple = (bombTuple.Item1 - 1, bombTuple.Item2);
+        var repeatTime = bombTuple.Item1 > FieldInfo.Width / 2 ? bombTuple.Item1 : FieldInfo.Width - bombTuple.Item1;
         var delayTime = 0.15f / repeatTime;
 
         while (repeatTime-- > 0)
@@ -186,44 +188,14 @@ public partial class PuzzlePieceManager
             // check right
             if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
             {
-                var target = MyPieceField[increasedTuple.Item1, increasedTuple.Item2];
-                if (target.MyIndex == increasedTuple)
-                {
-                    var targetSubType = target.MySubType;
-                    if (targetSubType == PieceSubType.Vbomb)
-                    {
-                        if (target.MyIndex != (-1, -1))
-                        {
-                            StartActiveBomb(target);
-                        }
-                    }
-                    else
-                    {
-                        target.RemoveSelf();
-                    }
-                }
+                RemovePieceByBomb(increasedTuple, bombType);
                 increasedTuple = (increasedTuple.Item1 + 1, increasedTuple.Item2);
             }
 
             // check left
             if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
             {
-                var target = MyPieceField[decreasedTuple.Item1, decreasedTuple.Item2];
-                if (target.MyIndex == decreasedTuple)
-                {
-                    var targetSubType = target.MySubType;
-                    if (targetSubType == PieceSubType.Vbomb)
-                    {
-                        if (target.MyIndex != (-1, -1))
-                        {
-                            StartActiveBomb(target);
-                        }
-                    }
-                    else
-                    {
-                        target.RemoveSelf();
-                    }
-                }
+                RemovePieceByBomb(decreasedTuple, bombType);
                 decreasedTuple = (decreasedTuple.Item1 - 1, decreasedTuple.Item2);
             }
         }
@@ -232,54 +204,30 @@ public partial class PuzzlePieceManager
     /// <summary>
     /// Using for in PieceManagerPopMatchableState only
     /// </summary>
-    private IEnumerator ActiveVerticalBomb(PuzzlePiece targetPiece)
+    private IEnumerator ActiveVerticalBomb(PuzzlePiece bombPiece)
     {
-        var targetTuple = targetPiece.MyIndex;
+        var bombTuple = bombPiece.MyIndex;
+        var bombType = bombPiece.MyType;
 
-        var increasedTuple = (targetTuple.Item1, targetTuple.Item2);
-        var decreasedTuple = (targetTuple.Item1, targetTuple.Item2 - 1);
-        var repeatTime = targetTuple.Item2 > FieldInfo.Height / 2 ? targetTuple.Item2 : FieldInfo.Height - targetTuple.Item2;
+        var increasedTuple = (bombTuple.Item1, bombTuple.Item2);
+        var decreasedTuple = (bombTuple.Item1, bombTuple.Item2 - 1);
+        var repeatTime = bombTuple.Item2 > FieldInfo.Height / 2 ? bombTuple.Item2 : FieldInfo.Height - bombTuple.Item2;
         var delayTime = 0.15f / repeatTime;
+
         while (repeatTime-- > 0)
         {
-            Debug.Log(increasedTuple);
-            Debug.Log(decreasedTuple);
             yield return new WaitForSeconds(delayTime);
             // check down
             if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
             {
-                var target = MyPieceField[decreasedTuple.Item1, decreasedTuple.Item2];
-                var targetSubType = target.MySubType;
-                if (targetSubType == PieceSubType.Hbomb)
-                {
-                    if (target.MyIndex != (-1, -1))
-                    {
-                        StartActiveBomb(target);
-                    }
-                }
-                else
-                {
-                    target.RemoveSelf();
-                }
+                RemovePieceByBomb(decreasedTuple, bombType);
                 decreasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 - 1);
             }
 
             // check up
             if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
             {
-                var target = MyPieceField[increasedTuple.Item1, increasedTuple.Item2];
-                var targetSubType = target.MySubType;
-                if (targetSubType == PieceSubType.Hbomb)
-                {
-                    if (target.MyIndex != (-1, -1))
-                    {
-                        StartActiveBomb(target);
-                    }
-                }
-                else
-                {
-                    target.RemoveSelf();
-                }
+                RemovePieceByBomb(increasedTuple, bombType);
                 increasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 + 1);
             }
 
