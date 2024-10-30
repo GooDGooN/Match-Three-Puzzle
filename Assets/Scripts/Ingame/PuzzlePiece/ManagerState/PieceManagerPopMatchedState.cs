@@ -175,7 +175,8 @@ public partial class PuzzlePieceManager
     private IEnumerator ActiveHorizontalBomb(PuzzlePiece bombPiece)
     {
         var bombTuple = bombPiece.MyIndex;
-        var bombType = bombPiece.MyType;
+        var bombPieceType = bombPiece.MyType;
+        var bombPieceSubType = bombPiece.MySubType;
 
         var increasedTuple = (bombTuple.Item1 + 1, bombTuple.Item2);
         var decreasedTuple = (bombTuple.Item1 - 1, bombTuple.Item2);
@@ -188,14 +189,14 @@ public partial class PuzzlePieceManager
             // check right
             if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
             {
-                RemovePieceByBomb(increasedTuple, bombType);
+                RemovePieceByBomb(increasedTuple, bombPieceType, bombPieceSubType);
                 increasedTuple = (increasedTuple.Item1 + 1, increasedTuple.Item2);
             }
 
             // check left
             if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
             {
-                RemovePieceByBomb(decreasedTuple, bombType);
+                RemovePieceByBomb(decreasedTuple, bombPieceType, bombPieceSubType);
                 decreasedTuple = (decreasedTuple.Item1 - 1, decreasedTuple.Item2);
             }
         }
@@ -207,7 +208,8 @@ public partial class PuzzlePieceManager
     private IEnumerator ActiveVerticalBomb(PuzzlePiece bombPiece)
     {
         var bombTuple = bombPiece.MyIndex;
-        var bombType = bombPiece.MyType;
+        var bombPieceType = bombPiece.MyType;
+        var bombPieceSubType = bombPiece.MySubType;
 
         var increasedTuple = (bombTuple.Item1, bombTuple.Item2);
         var decreasedTuple = (bombTuple.Item1, bombTuple.Item2 - 1);
@@ -220,21 +222,21 @@ public partial class PuzzlePieceManager
             // check down
             if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
             {
-                RemovePieceByBomb(decreasedTuple, bombType);
+                RemovePieceByBomb(decreasedTuple, bombPieceType, bombPieceSubType);
                 decreasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 - 1);
             }
 
             // check up
             if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
             {
-                RemovePieceByBomb(increasedTuple, bombType);
+                RemovePieceByBomb(increasedTuple, bombPieceType, bombPieceSubType);
                 increasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 + 1);
             }
 
         }
     }
 
-    private void RemovePieceByBomb((int, int) testTuple, PieceType bombPieceType)
+    private void RemovePieceByBomb((int, int) testTuple, PieceType bombPieceType, PieceSubType bombType)
     {
         var target = MyPieceField[testTuple.Item1, testTuple.Item2];
         var targetSubType = target.MySubType;
@@ -254,7 +256,17 @@ public partial class PuzzlePieceManager
         }
         else
         {
-            target.RemoveSelf();
+            if(bombType == PieceSubType.Hbomb)
+            {
+                if (target.MyIndex.Item2 == testTuple.Item2)
+                {
+                    target.RemoveSelf();
+                }
+            }
+            else
+            {
+                target.RemoveSelf();
+            }
         }
     }
 
