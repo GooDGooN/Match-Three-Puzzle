@@ -234,7 +234,7 @@ public partial class PuzzlePieceManager
         }
     }
 
-    private void RemovePieceByBomb((int, int) testTuple, PieceType bombType)
+    private void RemovePieceByBomb((int, int) testTuple, PieceType bombPieceType)
     {
         var target = MyPieceField[testTuple.Item1, testTuple.Item2];
         var targetSubType = target.MySubType;
@@ -249,7 +249,7 @@ public partial class PuzzlePieceManager
         {
             if (target.MyIndex != (-1, -1))
             {
-                StartActiveRainbowBomb(target, bombType);
+                StartActiveRainbowBomb(target, bombPieceType);
             }
         }
         else
