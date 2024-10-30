@@ -238,7 +238,7 @@ public partial class PuzzlePieceManager
     {
         var target = MyPieceField[testTuple.Item1, testTuple.Item2];
         var targetSubType = target.MySubType;
-        if (targetSubType == PieceSubType.Hbomb)
+        if (targetSubType == PieceSubType.Hbomb || targetSubType == PieceSubType.Vbomb)
         {
             if (target.MyIndex != (-1, -1))
             {
