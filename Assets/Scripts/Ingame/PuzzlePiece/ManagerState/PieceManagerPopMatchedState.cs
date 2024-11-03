@@ -6,15 +6,15 @@ using UnityEngine;
 public partial class PuzzlePieceManager
 {
     private List<PuzzlePiece> sameTypePieceList = new();
-    private List<PuzzlePiece> removeTargetList = new();
+    private List<PuzzlePiece> popPieceList = new();
     private float stateChangeDelay;
     public class PieceManagerPopMatchedState : BaseFSM<PuzzlePieceManager>
     {
         private bool isRefill;
-        private List<PuzzlePiece[]> removePiecesList;
+        private List<PuzzlePiece[]> matchablePiecesList;
         public override void StateEnter()
         {
-            removePiecesList = new();
+            matchablePiecesList = new();
             self.stateChangeDelay = 0.1f;
             isRefill = false;
 
@@ -35,17 +35,18 @@ public partial class PuzzlePieceManager
                     var matchables = self.GetMatchablePieces(target);
                     if (matchables.Length > 0)
                     {
-                        removePiecesList.Add(matchables);
+                        matchablePiecesList.Add(matchables);
                     }
                 }
 
-                removePiecesList = removePiecesList.OrderBy(arr => arr.Length).ToList();
+                matchablePiecesList = matchablePiecesList.OrderBy(arr => arr.Length).ToList();
                 PuzzlePiece specialPiece = null;
 
-                foreach (var matchables in removePiecesList)
+                foreach (var matchables in matchablePiecesList)
                 {
                     specialPiece = null;
                     var matchLength = matchables.Length;
+                    #region Create special piece
                     if (matchLength > 3 && matchables.Count(arr => arr.MyIndex == (-1, -1)) == 0)
                     {
                         // set the special piece
@@ -94,6 +95,7 @@ public partial class PuzzlePieceManager
                             specialPiece.TargetChangeType = specialPiece.MyType;
                         }
                     }
+                    #endregion
 
                     // remove
                     specialPiece?.MyAnimator.SetTrigger("ChangeType");
