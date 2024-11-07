@@ -35,11 +35,9 @@ public partial class PuzzlePieceManager
 
                 for (int ix = 0; ix < self.FieldInfo.Width; ix++)
                 {
-                    var col = self.MyPieceField[ix];
-                    var nullCount = col.Count(piece => piece == null);
-                    if (nullCount > 0)
+                    if (self.MyPieceField.GetNullYPos(ix) != -1)
                     {
-                        for (int iy = 0; iy < col.Length; iy++)
+                        for (int iy = 0; iy < self.MyPieceField[ix].Length; iy++)
                         {
                             var targetPiece = self.MyPieceField[ix, iy];
                             if(targetPiece != null)
