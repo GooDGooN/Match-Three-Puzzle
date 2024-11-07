@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,8 +7,7 @@ using UnityEngine;
 public partial class PuzzlePieceManager
 {
     private List<PuzzlePiece> sameTypePieceList = new();
-    private List<PuzzlePiece> popPieceList = new();
-    private float stateChangeDelay;
+    private float popStateChangeDelay;
     public class PieceManagerPopMatchedState : BaseFSM<PuzzlePieceManager>
     {
         private bool isRefill;
@@ -15,7 +15,7 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             matchablePiecesList = new();
-            self.stateChangeDelay = 0.1f;
+            self.popStateChangeDelay = 0.1f;
             isRefill = false;
 
             if (self.selectedPuzzlePiece != null && self.selectedPuzzlePiece.MyType == PieceType.Rainbow)
@@ -74,7 +74,6 @@ public partial class PuzzlePieceManager
                                 matchables.Count(piece => piece.MyIndex.Item2 == matchables[0].MyIndex.Item2) == 5)
                             {
                                 specialPiece.TargetChangeType = PieceType.Rainbow;
-                                Debug.Log("rainbow");
                             }
                             else
                             {
@@ -109,7 +108,7 @@ public partial class PuzzlePieceManager
                             }
                             else
                             {
-                                piece.RemoveSelf();
+                                self.PopPiece(piece);
                             }
                             isRefill = true;
                         }
@@ -132,11 +131,12 @@ public partial class PuzzlePieceManager
 
         public override void StateUpdate()
         {
-            self.stateChangeDelay -= Time.deltaTime;
-            if (self.stateChangeDelay < 0.0f)
+            self.popStateChangeDelay -= Time.deltaTime;
+            if (self.popStateChangeDelay < 0.0f)
             {
                 if (isRefill)
                 {
+                    self.MyPieceField.RepositionNulls();
                     stateManager.ChangeState<PieceManagerRefillState>();
                     return;
                 }
@@ -144,135 +144,98 @@ public partial class PuzzlePieceManager
             }
         }
     }
+
+    private void PopPiece(PuzzlePiece piece)
+    {
+        piece.transform.DOKill();
+        BombPieceList.Remove(piece);
+        BombGage++;
+        MyPieceField[piece.MyIndex.Item1, piece.MyIndex.Item2] = null;
+        piece.MyIndex = (-1, -1);
+        piece.transform.position = new Vector2(0, -500.0f);
+        piece.MySubType = PieceSubType.None;
+    }
+
     /// <summary>
     /// Using for in PieceManagerPopMatchableState only
     /// </summary>
-    private void StartActiveBomb(PuzzlePiece target)
+    private void StartActiveBomb(PuzzlePiece bombPiece)
     {
-        switch (target.MySubType)
+        StartCoroutine(ActiveLineBomb(bombPiece));
+        PopPiece(bombPiece);
+        popStateChangeDelay = 0.16f;
+    }
+
+    private void StartActiveRainbowBomb(PuzzlePiece bombPiece, PieceType targetType)
+    {
+        StartCoroutine(ActiveRainbowBomb(bombPiece, targetType));
+    }
+
+    private IEnumerator ActiveLineBomb(PuzzlePiece bombPiece)
+    {
+        var bombTuple = bombPiece.MyIndex;
+        var bombPieceType = bombPiece.MyType;
+        var bombPieceSubType = bombPiece.MySubType;
+        var addTuple = (0, 0);
+        var repeatTime = 0;
+
+        switch(bombPieceSubType)
         {
-            case PieceSubType.Vbomb:
-                StartCoroutine(ActiveVerticalBomb(target));
-                break;
             case PieceSubType.Hbomb:
-                StartCoroutine(ActiveHorizontalBomb(target));
+                addTuple.Item1 = 1;
+                repeatTime = Mathf.Max(bombTuple.Item1, FieldInfo.Width - bombTuple.Item1);
                 break;
-            case PieceSubType.CrossBomb:
-                StartCoroutine(ActiveVerticalBomb(target));
-                StartCoroutine(ActiveHorizontalBomb(target));
+            case PieceSubType.Vbomb:
+                addTuple.Item2 = 1;
+                repeatTime = Mathf.Max(bombTuple.Item1, FieldInfo.Height - bombTuple.Item1);
                 break;
         }
-        target.RemoveSelf();
-        stateChangeDelay = 0.16f;
-    }
 
-    private void StartActiveRainbowBomb(PuzzlePiece target, PieceType targetType)
-    {
-        StartCoroutine(ActiveRainbowBomb(target, targetType));
-    }
-
-    /// <summary>
-    /// Using for in PieceManagerPopMatchableState only
-    /// </summary>
-    private IEnumerator ActiveHorizontalBomb(PuzzlePiece bombPiece)
-    {
-        var bombTuple = bombPiece.MyIndex;
-        var bombPieceType = bombPiece.MyType;
-        var bombPieceSubType = bombPiece.MySubType;
-
-        var increasedTuple = (bombTuple.Item1 + 1, bombTuple.Item2);
-        var decreasedTuple = (bombTuple.Item1 - 1, bombTuple.Item2);
-        var repeatTime = bombTuple.Item1 > FieldInfo.Width / 2 ? bombTuple.Item1 : FieldInfo.Width - bombTuple.Item1;
+        var increasedTuple = (bombTuple.Item1 + addTuple.Item1, bombTuple.Item2 + addTuple.Item2);
+        var decreasedTuple = (bombTuple.Item1 - addTuple.Item1, bombTuple.Item2 - addTuple.Item2);
         var delayTime = 0.15f / repeatTime;
+
 
         while (repeatTime-- > 0)
         {
             yield return new WaitForSeconds(delayTime);
-            // check right
-            if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
+            popStateChangeDelay = 0.16f;
+            TryRemovePiece(increasedTuple, bombPieceType);
+            TryRemovePiece(decreasedTuple, bombPieceType);
+            increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2 + addTuple.Item2);
+            decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
+
+            if(bombPieceSubType == PieceSubType.CrossBomb)
             {
-                RemovePieceByBomb(increasedTuple, bombPieceType, bombPieceSubType);
-                increasedTuple = (increasedTuple.Item1 + 1, increasedTuple.Item2);
+                var testIncreasedPiece = (increasedTuple.Item2, increasedTuple.Item1);
+                var testDecreasedPiece = (decreasedTuple.Item2, decreasedTuple.Item1);
+                TryRemovePiece(testIncreasedPiece, bombPieceType);
+                TryRemovePiece(testDecreasedPiece, bombPieceType);
             }
 
-            // check left
-            if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
+            void TryRemovePiece((int, int) testTuple, PieceType bombPieceType)
             {
-                RemovePieceByBomb(decreasedTuple, bombPieceType, bombPieceSubType);
-                decreasedTuple = (decreasedTuple.Item1 - 1, decreasedTuple.Item2);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Using for in PieceManagerPopMatchableState only
-    /// </summary>
-    private IEnumerator ActiveVerticalBomb(PuzzlePiece bombPiece)
-    {
-        var bombTuple = bombPiece.MyIndex;
-        var bombPieceType = bombPiece.MyType;
-        var bombPieceSubType = bombPiece.MySubType;
-
-        var increasedTuple = (bombTuple.Item1, bombTuple.Item2);
-        var decreasedTuple = (bombTuple.Item1, bombTuple.Item2 - 1);
-        var repeatTime = bombTuple.Item2 > FieldInfo.Height / 2 ? bombTuple.Item2 : FieldInfo.Height - bombTuple.Item2;
-        var delayTime = 0.15f / repeatTime;
-
-        while (repeatTime-- > 0)
-        {
-            yield return new WaitForSeconds(delayTime);
-            // check down
-            if (IsPlaceAreExist(decreasedTuple) && !IsPlaceEmpty(decreasedTuple))
-            {
-                RemovePieceByBomb(decreasedTuple, bombPieceType, bombPieceSubType);
-                decreasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 - 1);
-            }
-
-            // check up
-            if (IsPlaceAreExist(increasedTuple) && !IsPlaceEmpty(increasedTuple))
-            {
-                RemovePieceByBomb(increasedTuple, bombPieceType, bombPieceSubType);
-                increasedTuple = (decreasedTuple.Item1, decreasedTuple.Item2 + 1);
-            }
-
-        }
-    }
-
-    private void RemovePieceByBomb((int, int) testTuple, PieceType bombPieceType, PieceSubType bombType)
-    {
-        var target = MyPieceField[testTuple.Item1, testTuple.Item2];
-        var targetSubType = target.MySubType;
-        if (targetSubType == PieceSubType.Hbomb || targetSubType == PieceSubType.Vbomb)
-        {
-            if (target.MyIndex != (-1, -1))
-            {
-                StartActiveBomb(target);
-            }
-        }
-        else if (target.MyType == PieceType.Rainbow)
-        {
-            if (target.MyIndex != (-1, -1))
-            {
-                StartActiveRainbowBomb(target, bombPieceType);
-            }
-        }
-        else
-        {
-            if(bombType == PieceSubType.Hbomb)
-            {
-                if (target.MyIndex.Item2 == testTuple.Item2)
+                if (IsPlaceAreExist(testTuple) && !IsPlaceEmpty(testTuple))
                 {
-                    target.RemoveSelf();
+                    var targetPiece = MyPieceField[testTuple.Item1, testTuple.Item2];
+                    var targetSubType = targetPiece.MySubType;
+                    if (targetSubType == PieceSubType.Hbomb || targetSubType == PieceSubType.Vbomb)
+                    {
+                        StartActiveBomb(targetPiece);
+                    }
+                    else if (targetPiece.MyType == PieceType.Rainbow)
+                    {
+                        StartActiveRainbowBomb(targetPiece, bombPieceType);
+                    }
+                    else
+                    {
+                        PopPiece(targetPiece);
+                    }
                 }
             }
-            else
-            {
-                target.RemoveSelf();
-            }
         }
     }
-
-    private IEnumerator ActiveRainbowBomb(PuzzlePiece target, PieceType targetType)
+    private IEnumerator ActiveRainbowBomb(PuzzlePiece bombPiece, PieceType targetType)
     {
         sameTypePieceList.Clear();
         foreach (var piece in PieceList)
@@ -282,17 +245,17 @@ public partial class PuzzlePieceManager
                 sameTypePieceList.Add(piece);
             }
         }
-        sameTypePieceList = sameTypePieceList.OrderBy(piece => Vector3.Distance(target.transform.position, piece.transform.position)).ToList();
-        target.RemoveSelf();
+        sameTypePieceList = sameTypePieceList.OrderBy(piece => Vector3.Distance(bombPiece.transform.position, piece.transform.position)).ToList();
+        PopPiece(bombPiece);
         var delay = 0.5f / sameTypePieceList.Count;
         while (sameTypePieceList.Count > 0)
         {
             if(sameTypePieceList[0] != null)
             {
-                sameTypePieceList[0].RemoveSelf();
+                PopPiece(sameTypePieceList[0]);
             }
             sameTypePieceList.RemoveAt(0);
-            stateChangeDelay = 0.16f;
+            popStateChangeDelay = 0.16f;
             yield return new WaitForSeconds(delay);
         }
 

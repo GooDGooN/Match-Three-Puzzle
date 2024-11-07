@@ -45,35 +45,35 @@ public partial class PuzzlePieceManager : MonoBehaviour
        
         public PuzzlePiece this[int x, int y]
         {
-            set
-            {
-                if (value == null)
-                {
-                    var ty = y++;
-                    for(;y < Pieces[x].Length; y++)
-                    {
-                        if(Pieces[x][y] != null && (Pieces[x][y].MyType == PieceType.None || Pieces[x][y].MyType == PieceType.Block))
-                        {
-                            ty = y + 1;
-                            continue;
-                        }
-                        Pieces[x][ty] = Pieces[x][y];
-                        ty = y;
-                    }
-                    Pieces[x][ty] = null;
-                }
-                else
-                {
-                    Pieces[x][y] = value;
-                }
-            }
-
             get => Pieces[x][y];
+            set => Pieces[x][y] = value;
         }
 
         public PuzzlePiece[] this[int x]
         {
             get => Pieces[x];
+        }
+
+        public void RepositionNulls()
+        {
+            for(int x = 0; x < Pieces.Length; x++)
+            {
+                var ty = -1;
+                for (int y = 0; y < Pieces[x].Length; y++)
+                {
+                    if(Pieces[x][y] == null && ty == -1)
+                    {
+                        ty = y;
+                    }
+                    else if (Pieces[x][y] != null && ty != -1)
+                    {
+                        Pieces[x][ty] = Pieces[x][y];
+                        Pieces[x][y] = null;
+                        y = ty;
+                        ty = -1;
+                    }
+                }
+            }
         }
 
         public int GetNullYPos(int x)
