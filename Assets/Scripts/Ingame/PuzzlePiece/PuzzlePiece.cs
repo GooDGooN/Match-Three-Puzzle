@@ -104,18 +104,6 @@ public class PuzzlePiece : MonoBehaviour
         return result.ToArray();
     }
 
-    public void RemoveSelf()
-    {
-        transform.DOKill();
-        MyManager.BombPieceList.Remove(this);
-        var ty = MyManager.MyPieceField[MyIndex.Item1].GetIndex(this);
-        MyManager.MyPieceField[MyIndex.Item1, ty] = null;
-        MyIndex = (-1, -1);
-        transform.position = new Vector2(0, -500.0f);
-        MySubType = PieceSubType.None;
-        MyManager.BombGage++;
-    }
-
     public void ChangeToNewType()
     {
         MyType = TargetChangeType;
