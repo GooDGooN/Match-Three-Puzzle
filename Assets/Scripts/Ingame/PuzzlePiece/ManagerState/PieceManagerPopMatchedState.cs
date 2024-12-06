@@ -29,7 +29,6 @@ public partial class PuzzlePieceManager
             }
             else
             {
-                #region Normal Remove
                 while (self.repositionedPieceQueue.Count > 0)
                 {
                     var target = self.repositionedPieceQueue.Dequeue();
@@ -50,52 +49,57 @@ public partial class PuzzlePieceManager
                     #region Create special piece
                     if (matchLength > 3 && matchables.Count(arr => arr.MyIndex == (-1, -1)) == 0)
                     {
-                        // set the special piece
-                        if (matchables.Contains(self.selectedPuzzlePiece))
+                        if(matchables.Count(piece => piece.MySubType != PieceSubType.None) == 0)
                         {
-                            specialPiece = self.selectedPuzzlePiece;
-                        }
-                        else if (matchables.Contains(self.swapTargetPuzzlePiece))
-                        {
-                            specialPiece = self.swapTargetPuzzlePiece;
-                        }
-                        else
-                        {
-                            specialPiece = matchables[Random.Range(0, matchables.Length)];
-                        }
+                            #region set the special piece
+                            if (matchables.Contains(self.selectedPuzzlePiece))
+                            {
+                                specialPiece = self.selectedPuzzlePiece;
+                            }
+                            else if (matchables.Contains(self.swapTargetPuzzlePiece))
+                            {
+                                specialPiece = self.swapTargetPuzzlePiece;
+                            }
+                            else
+                            {
+                                specialPiece = matchables[Random.Range(0, matchables.Length)];
+                            }
+                            #endregion
 
-                        // set special piece type
-                        if (matchLength >= 6)
-                        {
-                            specialPiece.TargetChangeType = PieceType.Rainbow;
-                        }
-                        else if (matchLength == 5)
-                        {
-                            if (matchables.Count(piece => piece.MyIndex.Item1 == matchables[0].MyIndex.Item1) == 5 ||
-                                matchables.Count(piece => piece.MyIndex.Item2 == matchables[0].MyIndex.Item2) == 5)
+                            #region set special piece type
+                            if (matchLength >= 6)
                             {
                                 specialPiece.TargetChangeType = PieceType.Rainbow;
                             }
-                            else
+                            else if (matchLength == 5)
                             {
-                                specialPiece.TargetChangeSubType = PieceSubType.CrossBomb;
+                                if (matchables.Count(piece => piece.MyIndex.Item1 == matchables[0].MyIndex.Item1) == 5 ||
+                                    matchables.Count(piece => piece.MyIndex.Item2 == matchables[0].MyIndex.Item2) == 5)
+                                {
+                                    specialPiece.TargetChangeType = PieceType.Rainbow;
+                                }
+                                else
+                                {
+                                    specialPiece.TargetChangeSubType = PieceSubType.CrossBomb;
+                                    specialPiece.TargetChangeType = specialPiece.MyType;
+                                }
+                            }
+                            else if (matchLength == 4)
+                            {
+                                if (matchables[0].MyIndex.Item1 == matchables[1].MyIndex.Item1)
+                                {
+                                    specialPiece.TargetChangeSubType = PieceSubType.Hbomb;
+                                }
+                                else
+                                {
+                                    specialPiece.TargetChangeSubType = PieceSubType.Vbomb;
+                                }
                                 specialPiece.TargetChangeType = specialPiece.MyType;
                             }
+                            #endregion
                         }
-                        else if (matchLength == 4)
-                        {
-                            if (matchables[0].MyIndex.Item1 == matchables[1].MyIndex.Item1)
-                            {
-                                specialPiece.TargetChangeSubType = PieceSubType.Hbomb;
-                            }
-                            else
-                            {
-                                specialPiece.TargetChangeSubType = PieceSubType.Vbomb;
-                            }
-                            specialPiece.TargetChangeType = specialPiece.MyType;
-                        }
+
                     }
-                    #endregion
 
                     // remove
                     specialPiece?.MyAnimator.SetTrigger("ChangeType");
