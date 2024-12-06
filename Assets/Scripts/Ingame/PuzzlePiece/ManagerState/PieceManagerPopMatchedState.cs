@@ -8,7 +8,7 @@ public partial class PuzzlePieceManager
 {
     private List<PuzzlePiece> sameTypePieceList = new();
     private float popStateChangeDelay;
-    private const float popDelayValue = 0.05f;
+    private const float popDelayValue = 0.1f;
     public class PieceManagerPopMatchedState : BaseFSM<PuzzlePieceManager>
     {
         private bool isRefill;
