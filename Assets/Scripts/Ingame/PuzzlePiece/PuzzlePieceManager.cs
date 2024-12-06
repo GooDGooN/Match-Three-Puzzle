@@ -289,7 +289,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
                 target.transform.DOMove(pos, 0.25f).SetEase(Ease.InOutSine).onComplete = callback;
                 break;
             case PieceRepositionType.Refill:
-                target.transform.DOMove(pos, 0.75f).SetEase(Ease.InCubic).onComplete = callback;
+                target.transform.DOMove(pos, 0.5f).SetEase(Ease.InCubic).onComplete = callback;
                 break;
         }
     }
