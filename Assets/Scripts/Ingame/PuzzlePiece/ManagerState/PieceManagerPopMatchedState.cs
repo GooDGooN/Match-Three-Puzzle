@@ -8,6 +8,7 @@ public partial class PuzzlePieceManager
 {
     private List<PuzzlePiece> sameTypePieceList = new();
     private float popStateChangeDelay;
+    private const float popDelayValue = 0.05f;
     public class PieceManagerPopMatchedState : BaseFSM<PuzzlePieceManager>
     {
         private bool isRefill;
@@ -15,7 +16,7 @@ public partial class PuzzlePieceManager
         public override void StateEnter()
         {
             matchablePiecesList = new();
-            self.popStateChangeDelay = 0.1f;
+            self.popStateChangeDelay = popDelayValue;
             isRefill = false;
 
             if (self.selectedPuzzlePiece != null && self.selectedPuzzlePiece.MyType == PieceType.Rainbow)
@@ -163,7 +164,7 @@ public partial class PuzzlePieceManager
     {
         StartCoroutine(ActiveLineBomb(bombPiece));
         PopPiece(bombPiece);
-        popStateChangeDelay = 0.16f;
+        popStateChangeDelay = popDelayValue;
     }
 
     private void StartActiveRainbowBomb(PuzzlePiece bombPiece, PieceType targetType)
@@ -205,16 +206,15 @@ public partial class PuzzlePieceManager
 
         var increasedTuple = (bombTuple.Item1 + addTuple.Item1, bombTuple.Item2 + addTuple.Item2);
         var decreasedTuple = (bombTuple.Item1 - addTuple.Item1, bombTuple.Item2 - addTuple.Item2);
-        var delayTime = 0.15f / repeatTime;
+        var delayTime = popDelayValue / repeatTime;
 
 
         while (repeatTime-- > 0)
         {
             yield return new WaitForSeconds(delayTime);
-            popStateChangeDelay = 0.16f;
+            popStateChangeDelay = popDelayValue;
             TryRemovePiece(increasedTuple, bombPieceType);
             TryRemovePiece(decreasedTuple, bombPieceType);
-            increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2 + addTuple.Item2);
 
             if(bombPieceSubType == PieceSubType.CrossBomb)
             {
@@ -269,7 +269,7 @@ public partial class PuzzlePieceManager
                 PopPiece(sameTypePieceList[0]);
             }
             sameTypePieceList.RemoveAt(0);
-            popStateChangeDelay = 0.16f;
+            popStateChangeDelay = popDelayValue;
             yield return new WaitForSeconds(delay);
         }
 
