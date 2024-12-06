@@ -186,27 +186,20 @@ public partial class PuzzlePieceManager
         private void TestGenerate()
         {
             testList.Clear();
-            /*
-             *�ۡۡۡۡۡ� 
-             *�ۡܡۡۡۡ� 
-             *�ܡۡܡܡۡ� 
-             *�ۡܡۡۡۡ� 
-             *�ۡܡۡۡۡ� 
-             */
-            testList.Add(self.MyPieceField[1, 3]);
-            testList.Add(self.MyPieceField[1, 1]);
-            testList.Add(self.MyPieceField[1, 0]);
-            testList.Add(self.MyPieceField[0, 2]);
-            testList.Add(self.MyPieceField[2, 2]);
-            testList.Add(self.MyPieceField[3, 2]);
+            testList.Add(self.MyPieceField[3, 3]);
+            testList.Add(self.MyPieceField[4, 3]);
+            testList.Add(self.MyPieceField[5, 4]);
+            testList.Add(self.MyPieceField[6, 3]);
 
             foreach (var piece in testList)
             {
                 piece.TargetChangeType = PieceType.Blue;
                 piece.ChangeToNewType();
             }
+            self.MyPieceField[4, 3].TargetChangeType = PieceType.Blue;
+            self.MyPieceField[4, 3].TargetChangeSubType = PieceSubType.Hbomb;
+            self.MyPieceField[4, 3].ChangeToNewType();
 
-            //only works in 5x5 or above\
         }
 
         private void GererateDone()

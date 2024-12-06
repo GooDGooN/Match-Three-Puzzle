@@ -44,7 +44,12 @@ public partial class PuzzlePieceManager
                     }
                     else
                     {
-                        if (self.selectedPuzzlePiece.GetNearPieces().Contains(targetPiece))
+                        if (targetPiece == self.selectedPuzzlePiece)
+                        {
+                            self.selectedPuzzlePiece = null;
+                            self.SelectedIcon.SetActive(false);
+                        }
+                        else if (self.selectedPuzzlePiece.GetNearPieces().Contains(targetPiece))
                         {
                             self.swapTargetPuzzlePiece = targetPiece;
                             stateManager.ChangeState<PieceManagerSwapPieceState>();
