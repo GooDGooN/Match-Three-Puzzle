@@ -40,7 +40,7 @@ public partial class PuzzlePieceManager
                     }
                 }
 
-                matchablePiecesList = matchablePiecesList.OrderBy(arr => arr.Length).ToList();
+                matchablePiecesList = matchablePiecesList.OrderByDescending(arr => arr.Length).ToList();
                 PuzzlePiece specialPiece = null;
 
                 foreach (var matchables in matchablePiecesList)
