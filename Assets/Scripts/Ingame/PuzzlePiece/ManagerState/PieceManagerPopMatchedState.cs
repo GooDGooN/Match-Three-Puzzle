@@ -189,6 +189,18 @@ public partial class PuzzlePieceManager
                 addTuple.Item2 = 1;
                 repeatTime = Mathf.Max(bombTuple.Item1, FieldInfo.Height - bombTuple.Item1);
                 break;
+            case PieceSubType.CrossBomb:
+                addTuple.Item2 = 1;
+                var heightTime = Mathf.Max(bombTuple.Item1, FieldInfo.Height - bombTuple.Item1);
+                var widthTime = Mathf.Max(bombTuple.Item1, FieldInfo.Width - bombTuple.Item1);
+                if (widthTime < heightTime)
+                {
+                    repeatTime = heightTime;
+                    break;
+                }
+                repeatTime = widthTime;
+
+                break;
         }
 
         var increasedTuple = (bombTuple.Item1 + addTuple.Item1, bombTuple.Item2 + addTuple.Item2);
@@ -203,15 +215,17 @@ public partial class PuzzlePieceManager
             TryRemovePiece(increasedTuple, bombPieceType);
             TryRemovePiece(decreasedTuple, bombPieceType);
             increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2 + addTuple.Item2);
-            decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
 
             if(bombPieceSubType == PieceSubType.CrossBomb)
             {
-                var testIncreasedPiece = (increasedTuple.Item2, increasedTuple.Item1);
-                var testDecreasedPiece = (decreasedTuple.Item2, decreasedTuple.Item1);
+                var testIncreasedPiece = (increasedTuple.Item2, bombTuple.Item2);
+                var testDecreasedPiece = (decreasedTuple.Item2, bombTuple.Item2);
                 TryRemovePiece(testIncreasedPiece, bombPieceType);
                 TryRemovePiece(testDecreasedPiece, bombPieceType);
             }
+
+            increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2 + addTuple.Item2);
+            decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
 
             void TryRemovePiece((int, int) testTuple, PieceType bombPieceType)
             {
