@@ -237,7 +237,7 @@ public partial class PuzzlePieceManager
                 {
                     var targetPiece = MyPieceField[testTuple.Item1, testTuple.Item2];
                     var targetSubType = targetPiece.MySubType;
-                    if (targetSubType == PieceSubType.Hbomb || targetSubType == PieceSubType.Vbomb)
+                    if (targetSubType != PieceSubType.None)
                     {
                         StartActiveBomb(targetPiece);
                     }
