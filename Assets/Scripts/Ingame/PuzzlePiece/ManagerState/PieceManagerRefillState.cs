@@ -14,7 +14,7 @@ public partial class PuzzlePieceManager
         {
             isStateChange = false;
             self.repositionedPieceQueue.Clear();
-            delay = 0.25f;
+            delay = 0.01f;
         }
 
         public override void StateExit()
