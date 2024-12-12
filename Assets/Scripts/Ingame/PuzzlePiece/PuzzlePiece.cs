@@ -17,7 +17,6 @@ public enum PieceType
     Red,
     Sky,
     Yellow,
-    Rainbow,
 }
 
 public enum PieceSubType
@@ -26,6 +25,7 @@ public enum PieceSubType
     Vbomb,
     Hbomb,
     CrossBomb,
+    Rainbow,
 }
 
 public class PuzzlePiece : MonoBehaviour
@@ -106,11 +106,25 @@ public class PuzzlePiece : MonoBehaviour
 
     public void ChangeToNewType()
     {
-        MyType = TargetChangeType;
-        TargetChangeType = PieceType.None;
-        MySubType = TargetChangeSubType;
-        TargetChangeSubType = PieceSubType.None;
+        if(TargetChangeType != PieceType.None)
+        {
+            MyType = TargetChangeType;
+            TargetChangeType = PieceType.None;
+        }
+
+        if(TargetChangeSubType != PieceSubType.None)
+        {
+            MySubType = TargetChangeSubType;
+            TargetChangeSubType = PieceSubType.None;
+        }
     }
 
+    public void ResetPiece((int, int) tuple)
+    {
+        var except = new PieceType[] { PieceType.None, PieceType.Block };
+        MyType = Utility.PickRandom(Utility.GetEnumArray(except));
+        MyIndex = tuple;
+        transform.position = MyManager.GetPiecePosition(MyIndex) + (Vector3Int.up * 300);
+    }
 }
 

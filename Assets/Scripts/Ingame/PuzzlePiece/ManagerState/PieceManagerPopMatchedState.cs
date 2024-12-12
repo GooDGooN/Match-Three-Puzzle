@@ -19,13 +19,15 @@ public partial class PuzzlePieceManager
             self.popStateChangeDelay = popDelayValue;
             isRefill = false;
 
-            if (self.selectedPuzzlePiece != null && self.selectedPuzzlePiece.MyType == PieceType.Rainbow)
+            if (self.selectedPuzzlePiece != null && self.selectedPuzzlePiece.MySubType == PieceSubType.Rainbow)
             {
                 self.StartActiveRainbowBomb(self.selectedPuzzlePiece, self.swapTargetPuzzlePiece.MyType);
+                isRefill = true;
             }
-            else if (self.swapTargetPuzzlePiece != null && self.swapTargetPuzzlePiece.MyType == PieceType.Rainbow)
+            else if (self.swapTargetPuzzlePiece != null && self.swapTargetPuzzlePiece.MySubType == PieceSubType.Rainbow)
             {
                 self.StartActiveRainbowBomb(self.swapTargetPuzzlePiece, self.selectedPuzzlePiece.MyType);
+                isRefill = true;
             }
             else
             {
@@ -69,14 +71,14 @@ public partial class PuzzlePieceManager
                             #region set special piece type
                             if (matchLength >= 6)
                             {
-                                specialPiece.TargetChangeType = PieceType.Rainbow;
+                                specialPiece.TargetChangeSubType = PieceSubType.Rainbow;
                             }
                             else if (matchLength == 5)
                             {
                                 if (matchables.Count(piece => piece.MyIndex.Item1 == matchables[0].MyIndex.Item1) == 5 ||
                                     matchables.Count(piece => piece.MyIndex.Item2 == matchables[0].MyIndex.Item2) == 5)
                                 {
-                                    specialPiece.TargetChangeType = PieceType.Rainbow;
+                                    specialPiece.TargetChangeSubType = PieceSubType.Rainbow;
                                 }
                                 else
                                 {
@@ -237,12 +239,12 @@ public partial class PuzzlePieceManager
                 {
                     var targetPiece = MyPieceField[testTuple.Item1, testTuple.Item2];
                     var targetSubType = targetPiece.MySubType;
-                    if (targetSubType != PieceSubType.None)
+                    if (targetPiece.MySubType == PieceSubType.Rainbow)
                     {
                         StartActiveBomb(targetPiece);
                     }
-                    else if (targetPiece.MyType == PieceType.Rainbow)
-                    {
+                    else if (targetSubType != PieceSubType.None)
+                        {
                         StartActiveRainbowBomb(targetPiece, bombPieceType);
                     }
                     else
@@ -268,7 +270,7 @@ public partial class PuzzlePieceManager
         var delay = 0.5f / sameTypePieceList.Count;
         while (sameTypePieceList.Count > 0)
         {
-            if(sameTypePieceList[0] != null)
+            if (sameTypePieceList[0] != null)
             {
                 PopPiece(sameTypePieceList[0]);
             }
@@ -276,8 +278,6 @@ public partial class PuzzlePieceManager
             popStateChangeDelay = popDelayValue;
             yield return new WaitForSeconds(delay);
         }
-
-        myStateController.ChangeState<PieceManagerRefillState>();
     }
 
 

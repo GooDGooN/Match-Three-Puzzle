@@ -39,7 +39,7 @@ public partial class PuzzlePieceManager
 
         private void CheckAtferSwap()
         {
-            if(self.selectedPuzzlePiece.MyType == PieceType.Rainbow ^ self.swapTargetPuzzlePiece.MyType == PieceType.Rainbow)
+            if(self.selectedPuzzlePiece.MySubType == PieceSubType.Rainbow ^ self.swapTargetPuzzlePiece.MySubType == PieceSubType.Rainbow)
             {
                 stateManager.ChangeState<PieceManagerPopMatchedState>();
                 return;

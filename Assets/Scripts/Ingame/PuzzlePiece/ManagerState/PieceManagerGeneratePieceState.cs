@@ -155,7 +155,7 @@ public partial class PuzzlePieceManager
                 {
                     self.RepositionPiece(target, target.MyIndex, PieceRepositionType.Generate, null);
                 }
-                var except = new PieceType[] { PieceType.None, PieceType.Block, PieceType.Rainbow};
+                var except = new PieceType[] { PieceType.None, PieceType.Block };
                 var enumArr = Utility.GetEnumArray(except);
                 if (exceptType != null)
                 {
@@ -185,21 +185,32 @@ public partial class PuzzlePieceManager
         List<PuzzlePiece> testList = new();
         private void TestGenerate()
         {
-            testList.Clear();
-            testList.Add(self.MyPieceField[3, 3]);
-            testList.Add(self.MyPieceField[4, 3]);
-            testList.Add(self.MyPieceField[5, 4]);
-            testList.Add(self.MyPieceField[6, 3]);
-
+            // blue
+            testList.Add(self.MyPieceField[0, 0]);
+            testList.Add(self.MyPieceField[2, 0]);
+            testList.Add(self.MyPieceField[3, 0]);
+            testList.Add(self.MyPieceField[1, 1]);
             foreach (var piece in testList)
             {
                 piece.TargetChangeType = PieceType.Blue;
                 piece.ChangeToNewType();
             }
-            self.MyPieceField[4, 3].TargetChangeType = PieceType.Blue;
-            self.MyPieceField[4, 3].TargetChangeSubType = PieceSubType.Hbomb;
-            self.MyPieceField[4, 3].ChangeToNewType();
+            self.MyPieceField[1, 1].TargetChangeType = PieceType.Blue;
+            self.MyPieceField[1, 1].TargetChangeSubType = PieceSubType.Rainbow;         
+            self.MyPieceField[1, 1].ChangeToNewType();
+            testList.Clear();
 
+            // red
+            testList.Add(self.MyPieceField[1, 0]);
+            testList.Add(self.MyPieceField[0, 1]);
+            testList.Add(self.MyPieceField[2, 1]);
+            testList.Add(self.MyPieceField[3, 1]);
+            foreach (var piece in testList)
+            {
+                piece.TargetChangeType = PieceType.Red;
+                piece.ChangeToNewType();
+            }
+            testList.Clear();
         }
 
         private void GererateDone()
