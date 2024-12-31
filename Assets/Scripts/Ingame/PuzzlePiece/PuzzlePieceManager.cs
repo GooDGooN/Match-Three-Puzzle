@@ -214,19 +214,25 @@ public partial class PuzzlePieceManager : MonoBehaviour
                     if (IsPlaceAreExist(nextPos) && !IsPlaceEmpty(nextPos))
                     {
                         var nextTarget = MyPieceField[nextPos.x][nextPos.y];
-                        if (nextTarget.MyType == origin.MyType && nextTarget != origin)
+                        if(nextTarget.MySubType != PieceSubType.Rainbow)
                         {
-                            testList.Add(nextTarget);
-                            nextPos += dir;
+                            if (nextTarget.MyType == origin.MyType && nextTarget != origin)
+                            {
+                                testList.Add(nextTarget);
+                                nextPos += dir;
+                            }
                         }
                     }
                     if (IsPlaceAreExist(prevPos) && !IsPlaceEmpty(prevPos))
                     {
                         var prevTarget = MyPieceField[prevPos.x][prevPos.y];
-                        if (prevTarget.MyType == origin.MyType && prevTarget != origin)
+                        if (prevTarget.MySubType != PieceSubType.Rainbow) 
                         {
-                            testList.Add(prevTarget);
-                            prevPos -= dir;
+                            if (prevTarget.MyType == origin.MyType && prevTarget != origin)
+                            {
+                                testList.Add(prevTarget);
+                                prevPos -= dir;
+                            }
                         }
                     }
                     if (lastLength == testList.Count)
