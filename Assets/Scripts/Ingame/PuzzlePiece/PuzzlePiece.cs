@@ -30,18 +30,35 @@ public enum PieceSubType
 
 public class PuzzlePiece : MonoBehaviour
 {
-    private Color[] specialTypeColors = new Color[] {
-        new Color(0, 0, 0.8f),
-        new Color(0, 0.8f, 0),
-        new Color(0.8f, 0.5f, 0),
-        new Color(0.8f, 0, 0.8f),
-        new Color(0.8f, 0, 0),
-        new Color(0, 0.8f, 0.8f),
-        new Color(0.8f, 0.8f, 0),
+    private Color32[] pieceColors = new Color32[] 
+    {
+        new Color32(60, 118, 255, 255), // blue
+        new Color32(45, 255, 107, 255), // green
+        new Color32(255, 163, 60, 255), // orange
+        new Color32(255, 85, 225, 255), // pink
+        new Color32(255, 55, 55, 255), // red
+        new Color32(0, 232, 251, 255), // lightblue
+        new Color32(255, 209, 51, 255), // yellow  
+    };
+
+    private Color32[] pieceBackgroundColors = new Color32[]
+    {
+        new Color32(182, 203, 255, 255), // blue
+        new Color32(177, 255, 199, 255), // green
+        new Color32(255, 220, 182, 255), // orange
+        new Color32(255, 191, 243, 255), // pink
+        new Color32(255, 197, 197, 255), // red
+        new Color32(179, 248, 255, 255), // lightblue
+        new Color32(255, 237, 178, 255), // yellow  
     };
 
     public Sprite[] PieceSprites;
     public Sprite[] SpecialPieceSprites;
+    public SpriteRenderer BackgroundSpriteRenderer
+    {
+        get => transform.GetChild(0).GetComponent<SpriteRenderer>();
+    }
+
     public PieceType MyType;
     public PieceType TargetChangeType;
     public PieceSubType MySubType;
@@ -65,15 +82,17 @@ public class PuzzlePiece : MonoBehaviour
 
     void Update()
     {
+        BackgroundSpriteRenderer.color = pieceBackgroundColors[(int)MyType];
+        GetComponent<SpriteRenderer>().color = pieceColors[(int)MyType];
+
         if (MySubType == PieceSubType.None)
         {
             GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
-            GetComponent<SpriteRenderer>().color = Color.white;
         }
         else
         {
-            GetComponent<SpriteRenderer>().color = specialTypeColors[(int)MyType];
             GetComponent<SpriteRenderer>().sprite = SpecialPieceSprites[(int)MySubType];
+            BackgroundSpriteRenderer.color = Color.clear;
         }    
         testpos[0] = MyIndex.Item1;
         testpos[1] = MyIndex.Item2;

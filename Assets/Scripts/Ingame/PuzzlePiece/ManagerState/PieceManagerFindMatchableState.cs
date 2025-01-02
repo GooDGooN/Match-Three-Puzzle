@@ -16,7 +16,6 @@ public partial class PuzzlePieceManager
             {
                 foreach (var dir in Utility.Get4DirTuples())
                 {
-
                     var tx = piece.MyIndex.Item1 + dir.Item1;
                     var ty = piece.MyIndex.Item2 + dir.Item2;
 
