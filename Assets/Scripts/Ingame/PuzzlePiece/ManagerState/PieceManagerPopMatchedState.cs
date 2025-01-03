@@ -48,8 +48,9 @@ public partial class PuzzlePieceManager
                 {
                     specialPiece = null;
                     var matchLength = matchables.Length;
+                    var emptyCount = matchables.Count(arr => arr.MyIndex == (-1, -1));
                     #region Create special piece
-                    if (matchLength > 3 && matchables.Count(arr => arr.MyIndex == (-1, -1)) == 0)
+                    if (matchLength > 3 && emptyCount == 0)
                     {
                         if(matchables.Count(piece => piece.MySubType != PieceSubType.None) == 0)
                         {
@@ -104,20 +105,23 @@ public partial class PuzzlePieceManager
                     }
 
                     // remove
-                    specialPiece?.MyAnimator.SetTrigger("ChangeType");
-                    foreach (var piece in matchables)
+                    if(emptyCount == 0)
                     {
-                        if (piece != specialPiece && piece.MyIndex != (-1, -1))
+                        specialPiece?.MyAnimator.SetTrigger("ChangeType");
+                        foreach (var piece in matchables)
                         {
-                            if (piece.MySubType != PieceSubType.None)
+                            if (piece != specialPiece && piece.MyIndex != (-1, -1))
                             {
-                                self.StartActiveBomb(piece);
+                                if (piece.MySubType != PieceSubType.None)
+                                {
+                                    self.StartActiveBomb(piece);
+                                }
+                                else
+                                {
+                                    self.PopPiece(piece);
+                                }
+                                isRefill = true;
                             }
-                            else
-                            {
-                                self.PopPiece(piece);
-                            }
-                            isRefill = true;
                         }
                     }
                 }
@@ -260,7 +264,7 @@ public partial class PuzzlePieceManager
         sameTypePieceList.Clear();
         foreach (var piece in PieceList)
         {
-            if (piece.MyType == targetType && piece.MyIndex != (-1, -1))
+            if (piece.MyType == targetType && piece.MyIndex != (-1, -1) && piece != bombPiece)
             {
                 sameTypePieceList.Add(piece);
             }
