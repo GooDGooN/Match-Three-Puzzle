@@ -36,9 +36,15 @@ public partial class PuzzlePieceManager
             }
 
             // Some piece is matchable
-            if(self.HintPieceList.Count > 0 || self.PieceList.Count(piece => piece.MySubType == PieceSubType.Rainbow) > 0)
+            var rainbowPiece = self.PieceList.Find(piece => piece.MySubType == PieceSubType.Rainbow);
+            if (rainbowPiece != null)
             {
-                Debug.Log($"matchable is {self.HintPieceList.Last().MyIndex} Piece");
+                self.HintPieceList = new List<PuzzlePiece> { rainbowPiece };
+                stateManager.ChangeState<PieceManagerIdleState>();
+                return;
+            }
+            else if (self.HintPieceList.Count > 0)
+            {
                 stateManager.ChangeState<PieceManagerIdleState>();
                 return;
             }
