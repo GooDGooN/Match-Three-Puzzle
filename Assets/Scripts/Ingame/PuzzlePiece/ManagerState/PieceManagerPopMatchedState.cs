@@ -245,11 +245,11 @@ public partial class PuzzlePieceManager
                     var targetSubType = targetPiece.MySubType;
                     if (targetPiece.MySubType == PieceSubType.Rainbow)
                     {
-                        StartActiveBomb(targetPiece);
+                        StartActiveRainbowBomb(targetPiece, bombPieceType);
                     }
                     else if (targetSubType != PieceSubType.None)
-                        {
-                        StartActiveRainbowBomb(targetPiece, bombPieceType);
+                    {
+                        StartActiveBomb(targetPiece);
                     }
                     else
                     {
