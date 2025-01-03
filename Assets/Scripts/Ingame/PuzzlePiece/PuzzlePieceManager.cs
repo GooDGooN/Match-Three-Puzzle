@@ -202,7 +202,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
             new Vector2Int(0, 1)
         };
 
-        if (MyPieceField != null)
+        if (MyPieceField != null && origin.MySubType != PieceSubType.Rainbow)
         {
             foreach (var dir in dirs)
             {
