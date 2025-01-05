@@ -34,18 +34,22 @@ public class GameManager : Singleton<GameManager>
     }
 
 
-    public void AddScore(int amount)
+    public void AddScore(int amount, int bombMultiply = 1)
     {
-        var basicScore = amount * PieceScore;
+        Debug.Log($"{amount} {bombMultiply}");
+        var basicScore = amount * PieceScore * bombMultiply;
         var comboMultiply = Mathf.Clamp(Combo, 0, 5) * 0.1f;
-        if (amount == 4)
+        if (bombMultiply == 1)
         {
-            basicScore *= 2;
+            if (amount == 4)
+            {
+                basicScore *= 2;
+            }
+            if (amount > 4)
+            {
+                basicScore *= 3;
+            }
         }
-        if(amount > 4)
-        {
-            basicScore *= 3;
-        }
-        TotalScore += basicScore + (int)(comboMultiply * basicScore);
+        TotalScore += (basicScore) + (int)(comboMultiply * basicScore);
     }
 }

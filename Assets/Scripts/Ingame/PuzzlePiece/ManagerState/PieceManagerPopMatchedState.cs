@@ -18,6 +18,7 @@ public partial class PuzzlePieceManager
             matchablePiecesList = new();
             self.popStateChangeDelay = popDelayValue;
             isRefill = false;
+            
 
             if (self.selectedPuzzlePiece != null && self.selectedPuzzlePiece.MySubType == PieceSubType.Rainbow)
             {
@@ -164,32 +165,32 @@ public partial class PuzzlePieceManager
         BombPieceList.Remove(piece);
         MyPieceField[piece.MyIndex.Item1, piece.MyIndex.Item2] = null;
         piece.MyIndex = (-1, -1);
-        //piece.transform.position = new Vector2(0, -500.0f);
         piece.MyAnimator.SetTrigger("Pop");
     }
 
     /// <summary>
     /// Using for in PieceManagerPopMatchableState only
     /// </summary>
-    private void StartActiveBomb(PuzzlePiece bombPiece)
+    private void StartActiveBomb(PuzzlePiece bombPiece, int scoreMultiply = 2)
     {
-        StartCoroutine(ActiveLineBomb(bombPiece));
+        StartCoroutine(ActiveLineBomb(bombPiece, scoreMultiply));
         PopPiece(bombPiece);
         popStateChangeDelay = popDelayValue;
     }
 
-    private void StartActiveRainbowBomb(PuzzlePiece bombPiece, PieceType targetType)
+    private void StartActiveRainbowBomb(PuzzlePiece bombPiece, PieceType targetType, int scoreMultiply = 3)
     {
-        StartCoroutine(ActiveRainbowBomb(bombPiece, targetType));
+        StartCoroutine(ActiveRainbowBomb(bombPiece, targetType, scoreMultiply));
     }
 
-    private IEnumerator ActiveLineBomb(PuzzlePiece bombPiece)
+    private IEnumerator ActiveLineBomb(PuzzlePiece bombPiece, int scoreMultiply)
     {
         var bombTuple = bombPiece.MyIndex;
         var bombPieceType = bombPiece.MyType;
         var bombPieceSubType = bombPiece.MySubType;
         var addTuple = (0, 0);
         var repeatTime = 0;
+        var amount = 0;
 
         switch(bombPieceSubType)
         {
@@ -246,21 +247,24 @@ public partial class PuzzlePieceManager
                     var targetSubType = targetPiece.MySubType;
                     if (targetPiece.MySubType == PieceSubType.Rainbow)
                     {
-                        StartActiveRainbowBomb(targetPiece, bombPieceType);
+                        StartActiveRainbowBomb(targetPiece, bombPieceType, 4);
                     }
                     else if (targetSubType != PieceSubType.None)
                     {
-                        StartActiveBomb(targetPiece);
+                        StartActiveBomb(targetPiece, 3);
                     }
                     else
                     {
                         PopPiece(targetPiece);
                     }
+                    amount++;
                 }
             }
         }
+
+        GameManager.Instance.AddScore(amount, scoreMultiply);
     }
-    private IEnumerator ActiveRainbowBomb(PuzzlePiece bombPiece, PieceType targetType)
+    private IEnumerator ActiveRainbowBomb(PuzzlePiece bombPiece, PieceType targetType, int scoreMultiply)
     {
         sameTypePieceList.Clear();
         foreach (var piece in PieceList)
@@ -272,6 +276,7 @@ public partial class PuzzlePieceManager
         }
         sameTypePieceList = sameTypePieceList.OrderBy(piece => Vector3.Distance(bombPiece.transform.position, piece.transform.position)).ToList();
         PopPiece(bombPiece);
+        var amount = sameTypePieceList.Count;
         var delay = 0.5f / sameTypePieceList.Count;
         while (sameTypePieceList.Count > 0)
         {
@@ -283,6 +288,8 @@ public partial class PuzzlePieceManager
             popStateChangeDelay = popDelayValue;
             yield return new WaitForSeconds(delay);
         }
+
+        GameManager.Instance.AddScore(amount, scoreMultiply);
     }
 
 
