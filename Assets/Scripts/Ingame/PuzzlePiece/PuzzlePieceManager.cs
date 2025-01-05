@@ -104,7 +104,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
     public GameObject PuzzlePiecePrefab;
     public GameObject PieceContainer;
     public readonly int PieceSize = 40;
-    public readonly Field FieldInfo = new Field(7, 7);
+    public readonly Field FieldInfo = new Field(8, 8);
 
     public GameObject SelectedIcon;
     private Vector2Int matchablePieceAmount = new Vector2Int(3, 5);
@@ -266,7 +266,10 @@ public partial class PuzzlePieceManager : MonoBehaviour
     #region Position of Piece
     public Vector3Int GetPiecePosition(int x, int y)
     {
-        return (new Vector3Int(x, y) - (FieldInfo.Size / 2)) * PieceSize;
+        var delta = FieldInfo.Size.x % 2 == 0 ? 20 : 0;
+        var result = (new Vector3Int(x, y) - (FieldInfo.Size / 2)) * PieceSize;
+        result.x += delta;
+        return result;
     }
 
     public Vector3Int GetPiecePosition((int, int) targetIndex)
