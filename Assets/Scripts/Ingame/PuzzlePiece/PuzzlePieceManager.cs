@@ -114,9 +114,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
     private Queue<PuzzlePiece> repositionedPieceQueue;
     private StateController<PuzzlePieceManager> myStateController;
 
-    public readonly int MaxBombGage = 3;
-    public int BombGage;
-
     public string mystate;
 
     private void Awake()
@@ -130,8 +127,6 @@ public partial class PuzzlePieceManager : MonoBehaviour
         BombPieceList = new();
         HintPieceList = new();
         myStateController = new StateController<PuzzlePieceManager>(this);
-        
-        BombGage = 0;
     }
     private void Start()
     {
