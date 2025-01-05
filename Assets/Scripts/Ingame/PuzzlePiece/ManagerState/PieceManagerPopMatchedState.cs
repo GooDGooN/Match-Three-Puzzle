@@ -8,7 +8,7 @@ public partial class PuzzlePieceManager
 {
     private List<PuzzlePiece> sameTypePieceList = new();
     private float popStateChangeDelay;
-    private const float popDelayValue = 0.1f;
+    private const float popDelayValue = 0.3f;
     public class PieceManagerPopMatchedState : BaseFSM<PuzzlePieceManager>
     {
         private bool isRefill;
@@ -123,6 +123,7 @@ public partial class PuzzlePieceManager
                                 isRefill = true;
                             }
                         }
+                        GameManager.Instance.AddScore(matchLength);
                     }
                 }
                 #endregion
@@ -132,6 +133,7 @@ public partial class PuzzlePieceManager
 
         public override void StateExit()
         {
+            GameManager.Instance.Combo++;
             self.swapTargetPuzzlePiece = null;
             self.selectedPuzzlePiece = null;
         }
@@ -160,11 +162,10 @@ public partial class PuzzlePieceManager
     {
         piece.transform.DOKill();
         BombPieceList.Remove(piece);
-        BombGage++;
         MyPieceField[piece.MyIndex.Item1, piece.MyIndex.Item2] = null;
         piece.MyIndex = (-1, -1);
-        piece.transform.position = new Vector2(0, -500.0f);
-        piece.MySubType = PieceSubType.None;
+        //piece.transform.position = new Vector2(0, -500.0f);
+        piece.MyAnimator.SetTrigger("Pop");
     }
 
     /// <summary>

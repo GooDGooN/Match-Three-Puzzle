@@ -13,6 +13,7 @@ public partial class PuzzlePieceManager
             self.SetHintCountDown();
             self.selectedPuzzlePiece = null;
             self.swapTargetPuzzlePiece = null;
+            GameManager.Instance.Combo = 0;
         }
 
         public override void StateExit()
