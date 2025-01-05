@@ -142,8 +142,11 @@ public class PuzzlePiece : MonoBehaviour
     {
         var except = new PieceType[] { PieceType.None, PieceType.Block };
         MyType = Utility.PickRandom(Utility.GetEnumArray(except));
+        MyManager.MyPieceField[tuple.Item1, tuple.Item2] = this;
         MyIndex = tuple;
         transform.position = MyManager.GetPiecePosition(MyIndex) + (Vector3Int.up * 300);
+        MySubType = PieceSubType.None;
+        MyAnimator.Play("Idle");
     }
 }
 

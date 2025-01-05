@@ -54,14 +54,7 @@ public partial class PuzzlePieceManager
                         while (nullYpos != -1)
                         {
                             var newPiece = self.GetUseablePiece();
-                            var except = new PieceType[] { PieceType.None, PieceType.Block };
-                            newPiece.MyType = Utility.PickRandom(Utility.GetEnumArray(except));
-                            newPiece.MyIndex = (ix, nullYpos);
-                            self.MyPieceField[ix, nullYpos] = newPiece;
-
-                            var pos = self.GetPiecePosition(newPiece.MyIndex) + (Vector3Int.up * 300);
-                            newPiece.transform.position = pos;
-
+                            newPiece.ResetPiece((ix, nullYpos));
                             nullYpos = self.MyPieceField.GetNullYPos(ix);
                             if (!played)
                             {
