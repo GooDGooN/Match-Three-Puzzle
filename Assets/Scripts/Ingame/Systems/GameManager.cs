@@ -14,10 +14,13 @@ public class GameManager : Singleton<GameManager>
     public const float PieceScore = 10;
     public float TotalScore = 0;
     public int Combo = 0;
+    public bool isPause;
 
     public float TimeLimitValue = 0;
     public GameObject TimeLimitBarImageObject;
     private float timeLimitBarWidth;
+
+    public GameObject TimeOverObject;
 
     protected override void Awake()
     {
@@ -27,6 +30,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        isPause = false;
         TimeLimitValue = 1.0f;
         timeLimitBarWidth = TimeLimitBarImageObject.GetComponent<RectTransform>().rect.width;
     }
@@ -75,7 +79,7 @@ public class GameManager : Singleton<GameManager>
             }
 
             TimeLimitBarImageObject.GetComponent<Image>().color = targetColor;
-        }
+        }       
     }
 
 
@@ -96,5 +100,14 @@ public class GameManager : Singleton<GameManager>
             }
         }
         targetScore += (basicScore) + (comboMultiply * basicScore);
+    }
+
+    public void TimeOver()
+    {
+        if (!TimeOverObject.activeSelf)
+        {
+            TimeOverObject.SetActive(true);
+            isPause = true;
+        }
     }
 }

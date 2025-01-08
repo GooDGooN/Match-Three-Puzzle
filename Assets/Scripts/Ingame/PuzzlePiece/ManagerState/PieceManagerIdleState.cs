@@ -14,6 +14,11 @@ public partial class PuzzlePieceManager
             self.selectedPuzzlePiece = null;
             self.swapTargetPuzzlePiece = null;
             GameManager.Instance.Combo = 0;
+
+            if(GameManager.Instance.TimeLimitValue < 0)
+            {
+                GameManager.Instance.TimeOver();
+            }
         }
 
         public override void StateExit()
@@ -29,7 +34,7 @@ public partial class PuzzlePieceManager
 
         public override void StateUpdate()
         {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButtonDown(0) && !GameManager.Instance.isPause)
             {
                 // 6 = PuzzlePiece
                 var pieceObjs = IngameTouchManager.GetMousePointObjects(1 << 6);
