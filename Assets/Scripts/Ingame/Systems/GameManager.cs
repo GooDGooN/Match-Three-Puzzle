@@ -36,9 +36,9 @@ public class GameManager : Singleton<GameManager>
     {
         if (TotalScore < targetScore)
         {
-            TotalScore += (targetScore - TotalScore) / 10.0f;
+            TotalScore += (targetScore - TotalScore) * 0.1f;
         }
-        if(TotalScore > targetScore || targetScore - TotalScore < 3)
+        if(TotalScore > targetScore || targetScore - TotalScore < 1)
         {
             TotalScore = targetScore;
         }
