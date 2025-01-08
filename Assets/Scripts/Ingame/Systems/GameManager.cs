@@ -16,6 +16,7 @@ public class GameManager : Singleton<GameManager>
 
     public float TimeLimitValue = 0;
     public GameObject TimeLimitBarImageObject;
+    private float timeLimitBarWidth;
 
     protected override void Awake()
     {
@@ -26,6 +27,7 @@ public class GameManager : Singleton<GameManager>
     private void Start()
     {
         TimeLimitValue = 1.0f;
+        timeLimitBarWidth = TimeLimitBarImageObject.GetComponent<RectTransform>().rect.width;
     }
 
     // Update is called once per frame
@@ -41,7 +43,7 @@ public class GameManager : Singleton<GameManager>
         {
             TimeLimitValue -= Time.deltaTime / 60.0f;
             var rectTransform = TimeLimitBarImageObject.GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(320.0f * TimeLimitValue, 32.0f);
+            rectTransform.sizeDelta = new Vector2(timeLimitBarWidth * TimeLimitValue, 32.0f);
 
             var targetColor = new Color32();
             targetColor.a = 255;

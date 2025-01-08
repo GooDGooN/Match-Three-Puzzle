@@ -123,6 +123,7 @@ public partial class PuzzlePieceManager : MonoBehaviour
 
         PieceContainer = new GameObject("PuzzlePieceContainer");
         PieceContainer.transform.parent = transform;
+        PieceContainer.transform.localPosition = Vector3.zero;
         repositionedPieceQueue = new();
         BombPieceList = new();
         HintPieceList = new();
@@ -287,13 +288,13 @@ public partial class PuzzlePieceManager : MonoBehaviour
         switch(repositionType)
         {
             case PieceRepositionType.Generate:
-                target.transform.DOMove(pos, 0.5f).SetEase(Ease.InOutSine).onComplete = callback;
+                target.transform.DOLocalMove(pos, 0.5f).SetEase(Ease.InOutSine).onComplete = callback;
                 break;
             case PieceRepositionType.Swap:
-                target.transform.DOMove(pos, 0.25f).SetEase(Ease.InOutSine).onComplete = callback;
+                target.transform.DOLocalMove(pos, 0.25f).SetEase(Ease.InOutSine).onComplete = callback;
                 break;
             case PieceRepositionType.Refill:
-                target.transform.DOMove(pos, 0.5f).SetEase(Ease.InCubic).onComplete = callback;
+                target.transform.DOLocalMove(pos, 0.5f).SetEase(Ease.InCubic).onComplete = callback;
                 break;
         }
     }
