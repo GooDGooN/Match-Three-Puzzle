@@ -34,6 +34,11 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene(0);
+        }
+
         if (TotalScore < targetScore)
         {
             TotalScore += (targetScore - TotalScore) * 0.1f;
@@ -43,10 +48,6 @@ public class GameManager : Singleton<GameManager>
             TotalScore = targetScore;
         }
         ScoreTMP.text = $"Score : {(int)TotalScore}";
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            SceneManager.LoadScene(0);
-        }
 
         if (TimeLimitValue > 0)
         {
@@ -75,7 +76,6 @@ public class GameManager : Singleton<GameManager>
 
             TimeLimitBarImageObject.GetComponent<Image>().color = targetColor;
         }
-
     }
 
 
