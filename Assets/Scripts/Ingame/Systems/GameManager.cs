@@ -10,8 +10,9 @@ public class GameManager : Singleton<GameManager>
 {
     public TMP_Text ScoreTMP;
 
-    public const int PieceScore = 10;
-    public int TotalScore = 0;
+    [SerializeField] private float targetScore = 0;
+    public const float PieceScore = 10;
+    public float TotalScore = 0;
     public int Combo = 0;
 
     public float TimeLimitValue = 0;
@@ -33,7 +34,15 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     private void Update()
     {
-        ScoreTMP.text = $"Score : {TotalScore}";
+        if (TotalScore < targetScore)
+        {
+            TotalScore += (targetScore - TotalScore) / 10.0f;
+        }
+        if(TotalScore > targetScore || targetScore - TotalScore < 3)
+        {
+            TotalScore = targetScore;
+        }
+        ScoreTMP.text = $"Score : {(int)TotalScore}";
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             SceneManager.LoadScene(0);
@@ -66,6 +75,7 @@ public class GameManager : Singleton<GameManager>
 
             TimeLimitBarImageObject.GetComponent<Image>().color = targetColor;
         }
+
     }
 
 
@@ -85,6 +95,6 @@ public class GameManager : Singleton<GameManager>
                 basicScore *= 3;
             }
         }
-        TotalScore += (basicScore) + (int)(comboMultiply * basicScore);
+        targetScore += (basicScore) + (comboMultiply * basicScore);
     }
 }
