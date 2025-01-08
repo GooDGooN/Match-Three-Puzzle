@@ -2423,7 +2423,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1601988672
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3776,8 +3776,10 @@ MonoBehaviour:
   targetScore: 0
   TotalScore: 0
   Combo: 0
+  isPause: 0
   TimeLimitValue: 0
   TimeLimitBarImageObject: {fileID: 768919071}
+  TimeOverObject: {fileID: 1601988671}
 --- !u!1 &1967767680
 GameObject:
   m_ObjectHideFlags: 0
