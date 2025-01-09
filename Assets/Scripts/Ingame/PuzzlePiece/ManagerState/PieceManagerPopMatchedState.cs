@@ -286,7 +286,7 @@ public partial class PuzzlePieceManager
         var delay = 0.5f / sameTypePieceList.Count;
         while (sameTypePieceList.Count > 0)
         {
-            if (sameTypePieceList[0] != null)
+            if (sameTypePieceList[0] != null && sameTypePieceList[0].MyIndex != (-1, -1))
             {
                 PopPiece(sameTypePieceList[0]);
             }
