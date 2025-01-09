@@ -13,6 +13,7 @@ public class TimeOver : MonoBehaviour
     private float backgroundColorLerpValue;
     private int index;
     private bool skipable;
+    private readonly float time = 0.75f;
 
     private void OnEnable()
     {
@@ -47,7 +48,8 @@ public class TimeOver : MonoBehaviour
             {
                 for(int i = 2; i < Childrens.Length; i++)
                 {
-                    Childrens[i].GetComponent<Animator>().Play("Done");
+                    Childrens[i].transform.DOKill();
+                    Childrens[i].transform.localScale = Vector3.one;
                 }
             }
         }
@@ -55,7 +57,7 @@ public class TimeOver : MonoBehaviour
 
     private void ShowScores()
     {
-        Childrens[index++].GetComponent<Animator>().SetTrigger("Play");
+        Childrens[index++].transform.DOScale(Vector3.one, time).SetEase(Ease.InOutElastic).onComplete = PopDone;
         skipable = true;    
     }
 
@@ -63,11 +65,11 @@ public class TimeOver : MonoBehaviour
     {
         if(index < 6)
         {
-            Childrens[index++].GetComponent<Animator>().SetTrigger("Play");
+            Childrens[index++].transform.DOScale(Vector3.one, time).SetEase(Ease.InOutElastic).onComplete = PopDone;
         }
         if(index == 5)
         {
-            Childrens[index++].GetComponent<Animator>().SetTrigger("Play");
+            Childrens[index++].transform.DOScale(Vector3.one, time).SetEase(Ease.InOutElastic).onComplete = PopDone;
         }
     }
 
