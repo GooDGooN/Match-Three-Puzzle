@@ -225,26 +225,31 @@ public partial class PuzzlePieceManager
         {
             yield return new WaitForSeconds(delayTime);
             popStateChangeDelay = popDelayValue;
-            TryRemovePiece(increasedTuple, bombPieceType);
-            TryRemovePiece(decreasedTuple, bombPieceType);
+            StartCoroutine(TryRemovePiece(increasedTuple, bombPieceType));
+            StartCoroutine(TryRemovePiece(decreasedTuple, bombPieceType));
 
             if(bombPieceSubType == PieceSubType.CrossBomb)
             {
                 var testIncreasedPiece = (increasedTuple.Item2, bombTuple.Item2);
                 var testDecreasedPiece = (decreasedTuple.Item2, bombTuple.Item2);
-                TryRemovePiece(testIncreasedPiece, bombPieceType);
-                TryRemovePiece(testDecreasedPiece, bombPieceType);
+                StartCoroutine(TryRemovePiece(testIncreasedPiece, bombPieceType));
+                StartCoroutine(TryRemovePiece(testDecreasedPiece, bombPieceType));
             }
 
             increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2 + addTuple.Item2);
             decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
 
-            void TryRemovePiece((int, int) testTuple, PieceType bombPieceType)
+            IEnumerator TryRemovePiece((int, int) testTuple, PieceType bombPieceType)
             {
                 if (IsPlaceAreExist(testTuple) && !IsPlaceEmpty(testTuple))
                 {
                     var targetPiece = MyPieceField[testTuple.Item1, testTuple.Item2];
                     var targetSubType = targetPiece.MySubType;
+
+                    while(targetPiece.MyAnimator.GetCurrentAnimatorStateInfo(0).IsName("ChangeType"))
+                    {
+                        yield return null;
+                    }
                     if (targetPiece.MySubType == PieceSubType.Rainbow)
                     {
                         StartActiveRainbowBomb(targetPiece, bombPieceType, 4);
