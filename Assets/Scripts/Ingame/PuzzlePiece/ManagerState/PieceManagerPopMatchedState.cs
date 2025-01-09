@@ -250,6 +250,7 @@ public partial class PuzzlePieceManager
                     {
                         yield return null;
                     }
+
                     if (targetPiece.MySubType == PieceSubType.Rainbow)
                     {
                         StartActiveRainbowBomb(targetPiece, bombPieceType, 4);
