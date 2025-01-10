@@ -288,13 +288,13 @@ public partial class PuzzlePieceManager : MonoBehaviour
         switch(repositionType)
         {
             case PieceRepositionType.Generate:
-                target.transform.DOLocalMove(pos, 0.5f).SetEase(Ease.InOutSine).onComplete = callback;
+                target.transform.DOLocalMove(pos, 0.3f).SetEase(Ease.OutExpo).onComplete = callback;
                 break;
             case PieceRepositionType.Swap:
                 target.transform.DOLocalMove(pos, 0.25f).SetEase(Ease.InOutSine).onComplete = callback;
                 break;
             case PieceRepositionType.Refill:
-                target.transform.DOLocalMove(pos, 0.5f).SetEase(Ease.InCubic).onComplete = callback;
+                target.transform.DOLocalMove(pos, 0.3f).SetEase(Ease.OutExpo).onComplete = callback;
                 break;
         }
     }
