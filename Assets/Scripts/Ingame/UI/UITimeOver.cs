@@ -1,6 +1,7 @@
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class UITimeOver : MonoBehaviour
@@ -24,7 +25,7 @@ public class UITimeOver : MonoBehaviour
         Childrens[1].transform.localPosition = Vector3.up * 600.0f;
         Childrens[1].transform.DOLocalMove(Vector3.up * 220.0f, 2.0f).SetEase(Ease.OutBounce).onComplete = ShowScores;
 
-        var highScore = PlayerPrefs.GetInt("ThreeMatchPuzzleHighScore");
+        var highScore = GameManager.Instance.GetPlayerPref(PlayerPrefType.HighScore);
         var currentScore = GameManager.Instance.TotalScore;
         CurrentScore.text = GameManager.Instance.TotalScore.ToString();
         HighScore.text = highScore.ToString();
@@ -32,7 +33,7 @@ public class UITimeOver : MonoBehaviour
         if (highScore < currentScore)
         {
             NewRecord.SetActive(true);
-            PlayerPrefs.SetInt("ThreeMatchPuzzleHighScore", (int)currentScore);
+            GameManager.Instance.SetPlayerPref(PlayerPrefType.HighScore, currentScore);
             HighScore.text = currentScore.ToString();
         }
     }
@@ -75,6 +76,7 @@ public class UITimeOver : MonoBehaviour
 
     public void Restart()
     {
+        SceneManager.LoadSceneAsync(SceneManager.GetSceneByName("GameScene").buildIndex);
 
     }
 

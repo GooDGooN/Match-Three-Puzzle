@@ -6,11 +6,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public enum PlayerPrefType
+{
+    HighScore,
+    Music,
+    Sound,
+}
 public class GameManager : Singleton<GameManager>
 {
     public TMP_Text ScoreTMP;
 
-    [SerializeField] private float targetScore = 0;
+    private float targetScore = 0;
     public const float PieceScore = 10;
     public float TotalScore = 0;
     public int Combo = 0;
@@ -20,7 +26,9 @@ public class GameManager : Singleton<GameManager>
     public GameObject TimeLimitBarImageObject;
     private float timeLimitBarWidth;
 
+    public GameObject CurrentFocus;
     public GameObject TimeOverObject;
+    public GameObject PauseObject;
 
     protected override void Awake()
     {
@@ -37,6 +45,7 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     private void Update()
     {
+        GamePause();
         if (Input.GetKeyDown(KeyCode.F5))
         {
             SceneManager.LoadScene(0);
@@ -88,8 +97,29 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
-            Time.timeScale = 0;
+            if (PauseObject.activeSelf)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                if (!isPause)
+                {
+                    isPause = true;
+                    CurrentFocus = PauseObject;
+                    PauseObject.SetActive(true);
+                    Time.timeScale = 0;
+                }
+            }
         }
+    }
+
+    public void ResumeGame()
+    {
+        isPause = false;
+        Time.timeScale = 1.0f;
+        PauseObject.SetActive(false);
+        CurrentFocus = null;
     }
 
     public void AddScore(int amount, int bombMultiply = 1)
@@ -120,4 +150,43 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+    public void SetPlayerPref(PlayerPrefType playerPref, float value)
+    {
+        var result = value.ToString();
+
+        switch(playerPref)
+        {
+            case PlayerPrefType.HighScore:
+                PlayerPrefs.SetString("ThreeMatchPuzzleHighScore", result);
+                break;
+            case PlayerPrefType.Music:
+                PlayerPrefs.SetString("ThreeMatchPuzzleMusicVolume", result);
+                break;
+            case PlayerPrefType.Sound:
+                PlayerPrefs.SetString("ThreeMatchPuzzleSoundVolume", result);
+                break;
+        }
+    }
+    public void SetPlayerPref(PlayerPrefType playerPref, int value)
+    {
+        SetPlayerPref(playerPref, (float)value);
+    }
+
+    public float GetPlayerPref(PlayerPrefType playerPref)
+    {
+        var result = 0.0f;
+        switch (playerPref)
+        {
+            case PlayerPrefType.HighScore:
+                result = float.Parse(PlayerPrefs.GetString("ThreeMatchPuzzleHighScore"));
+                break;
+            case PlayerPrefType.Music:
+                result = float.Parse(PlayerPrefs.GetString("ThreeMatchPuzzleMusicVolume"));
+                break;
+            case PlayerPrefType.Sound:
+                result = float.Parse(PlayerPrefs.GetString("ThreeMatchPuzzleSoundVolume"));
+                break;
+        }
+        return result;
+    }
 }
