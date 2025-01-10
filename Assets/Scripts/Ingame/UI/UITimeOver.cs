@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TimeOver : MonoBehaviour
+public class UITimeOver : MonoBehaviour
 {
     public GameObject[] Childrens;
     public TMP_Text CurrentScore;

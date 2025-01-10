@@ -18,7 +18,6 @@ public partial class PuzzlePieceManager
 
         public override void StateExit()
         {
-            self.SetHintCountDown(true);
             self.SelectedIcon.SetActive(false);
             self.HintPieceList.ForEach(piece => piece.MyAnimator.SetBool("Hint", false));
         }
@@ -75,17 +74,25 @@ public partial class PuzzlePieceManager
             }
         }
     }
-    private void SetHintCountDown(bool stopCoroutine = false)
-    {
-        if (stopCoroutine && hintCountDownCoroutine != null)
+    /*    private void SetHintCountDown(bool stopCoroutine = false)
         {
-            StopCoroutine(hintCountDownCoroutine);
-            return;
-        }
-        hintCountDownCoroutine = StartCoroutine(HintCountDown());
+            if (stopCoroutine && hintCountDownCoroutine != null)
+            {
+                StopCoroutine(hintCountDownCoroutine);
+                return;
+            }
+            hintCountDownCoroutine = StartCoroutine(HintCountDown());
+        }*/
+    private void SetHintCountDown()
+    {
+        StartCoroutine(HintCountDown());
     }
     private IEnumerator HintCountDown()
     {
+        while (GameManager.Instance.isPause)
+        {
+            yield return null;
+        }
         yield return new WaitForSeconds(4.0f);
         if (myStateController.CurrentState.GetType() == typeof(PieceManagerIdleState))
         {

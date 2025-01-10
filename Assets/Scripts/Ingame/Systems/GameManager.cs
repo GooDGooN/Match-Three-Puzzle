@@ -30,7 +30,6 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        isPause = false;
         TimeLimitValue = 1.0f;
         timeLimitBarWidth = TimeLimitBarImageObject.GetComponent<RectTransform>().rect.width;
     }
@@ -38,7 +37,7 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.F5))
         {
             SceneManager.LoadScene(0);
         }
@@ -55,7 +54,10 @@ public class GameManager : Singleton<GameManager>
 
         if (TimeLimitValue > 0)
         {
-            TimeLimitValue -= Time.deltaTime / 60.0f;
+            if(!isPause)
+            {
+                TimeLimitValue -= Time.deltaTime / 60.0f;
+            }
             var rectTransform = TimeLimitBarImageObject.GetComponent<RectTransform>();
             rectTransform.sizeDelta = new Vector2(timeLimitBarWidth * TimeLimitValue, 32.0f);
 
@@ -82,6 +84,13 @@ public class GameManager : Singleton<GameManager>
         }       
     }
 
+    private void GamePause()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
+        {
+            Time.timeScale = 0;
+        }
+    }
 
     public void AddScore(int amount, int bombMultiply = 1)
     {
@@ -110,4 +119,5 @@ public class GameManager : Singleton<GameManager>
             isPause = true;
         }
     }
+
 }
