@@ -45,10 +45,10 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     private void Update()
     {
-        GamePause();
+        GamePauseInput();
         if (Input.GetKeyDown(KeyCode.F5))
         {
-            SceneManager.LoadScene(0);
+            GameRestart();
         }
 
         if (TotalScore < targetScore)
@@ -93,7 +93,7 @@ public class GameManager : Singleton<GameManager>
         }       
     }
 
-    private void GamePause()
+    private void GamePauseInput()
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
@@ -103,15 +103,26 @@ public class GameManager : Singleton<GameManager>
             }
             else
             {
-                if (!isPause)
-                {
-                    isPause = true;
-                    CurrentFocus = PauseObject;
-                    PauseObject.SetActive(true);
-                    Time.timeScale = 0;
-                }
+                PauseGame();
             }
         }
+    }
+
+    public void PauseGame()
+    {
+        Debug.Log("sd");
+        if (!isPause)
+        {
+            isPause = true;
+            CurrentFocus = PauseObject;
+            PauseObject.SetActive(true);
+            Time.timeScale = 0;
+        }
+    }
+
+    public void GameRestart()
+    {
+        SceneManager.LoadScene(0);
     }
 
     public void ResumeGame()
@@ -175,18 +186,33 @@ public class GameManager : Singleton<GameManager>
     public float GetPlayerPref(PlayerPrefType playerPref)
     {
         var result = 0.0f;
+        var targetString = "";
         switch (playerPref)
         {
             case PlayerPrefType.HighScore:
-                result = float.Parse(PlayerPrefs.GetString("ThreeMatchPuzzleHighScore"));
+                targetString = PlayerPrefs.GetString("ThreeMatchPuzzleHighScore");
+                if (targetString == "")
+                {
+                    targetString = "0";
+                }
                 break;
             case PlayerPrefType.Music:
-                result = float.Parse(PlayerPrefs.GetString("ThreeMatchPuzzleMusicVolume"));
+                targetString = PlayerPrefs.GetString("ThreeMatchPuzzleMusicVolume");
+                if (targetString == "")
+                {
+                    targetString = "0.5";
+                }
                 break;
             case PlayerPrefType.Sound:
-                result = float.Parse(PlayerPrefs.GetString("ThreeMatchPuzzleSoundVolume"));
+                targetString = PlayerPrefs.GetString("ThreeMatchPuzzleSoundVolume");
+                if (targetString == "")
+                {
+                    targetString = "0.5";
+                }
                 break;
         }
+        Debug.Log(targetString);
+        result = float.Parse(targetString);
         return result;
     }
 }
