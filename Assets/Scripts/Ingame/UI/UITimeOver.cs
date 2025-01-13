@@ -74,12 +74,6 @@ public class UITimeOver : MonoBehaviour
         }
     }
 
-    public void Restart()
-    {
-        SceneManager.LoadSceneAsync(SceneManager.GetSceneByName("GameScene").buildIndex);
-
-    }
-
     public void GotoMain()
     {
 
