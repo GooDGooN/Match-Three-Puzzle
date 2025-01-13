@@ -8,8 +8,12 @@ public partial class PuzzlePieceManager
     private Coroutine hintCountDownCoroutine;
     public class PieceManagerIdleState : BaseFSM<PuzzlePieceManager>
     {
+        private Vector3 inputPos;
+        private Vector3 inputResetPos;
         public override void StateEnter()
         {
+            inputResetPos = Vector3.one * -1;
+            inputPos = inputResetPos;
             self.SetHintCountDown();
             self.selectedPuzzlePiece = null;
             self.swapTargetPuzzlePiece = null;
@@ -43,6 +47,7 @@ public partial class PuzzlePieceManager
 
                     if (self.selectedPuzzlePiece == null)
                     {
+                        inputPos = Camera.main.WorldToScreenPoint(Input.mousePosition);
                         self.selectedPuzzlePiece = targetPiece;
                         self.SelectedIcon.SetActive(true);
                         self.SelectedIcon.transform.position = self.selectedPuzzlePiece.transform.position;
@@ -51,6 +56,7 @@ public partial class PuzzlePieceManager
                     {
                         if (targetPiece == self.selectedPuzzlePiece)
                         {
+                            inputPos = inputResetPos;
                             self.selectedPuzzlePiece = null;
                             self.SelectedIcon.SetActive(false);
                         }
@@ -58,9 +64,11 @@ public partial class PuzzlePieceManager
                         {
                             self.swapTargetPuzzlePiece = targetPiece;
                             stateManager.ChangeState<PieceManagerSwapPieceState>();
+                            return;
                         }
                         else
                         {
+                            inputPos = Camera.main.WorldToScreenPoint(Input.mousePosition);
                             self.selectedPuzzlePiece = targetPiece;
                             self.SelectedIcon.transform.position = self.selectedPuzzlePiece.transform.position;
                         }
@@ -68,10 +76,51 @@ public partial class PuzzlePieceManager
                 }
                 else
                 {
+                    inputPos = inputResetPos;
                     self.selectedPuzzlePiece = null;
                     self.SelectedIcon.SetActive(false);
                 }
+            }
 
+            if(Input.GetMouseButton(0))
+            {
+                if (self.selectedPuzzlePiece != null)
+                {
+                    var currentPos = Camera.main.WorldToScreenPoint(Input.mousePosition);
+                    var delta = inputPos - currentPos;
+                    var targetTuple = self.selectedPuzzlePiece.MyIndex;
+                    var dotest = true;
+                    if (delta.x > self.PieceSize)
+                    {
+                        targetTuple.Item1 -= 1;
+                    }
+                    else if (delta.x < -self.PieceSize)
+                    {
+                        targetTuple.Item1 += 1;
+                    }
+                    else if (delta.y > self.PieceSize)
+                    {
+                        targetTuple.Item2 -= 1;
+                    }
+                    else if (delta.y < -self.PieceSize)
+                    {
+                        targetTuple.Item2 += 1;
+                    }
+                    else
+                    {
+                        dotest = false;
+                    }
+
+                    if(dotest)
+                    {
+                        if(self.IsPlaceAreExist(targetTuple) && !self.IsPlaceEmpty(targetTuple))
+                        {
+                            self.swapTargetPuzzlePiece = self.MyPieceField[targetTuple.Item1, targetTuple.Item2];
+                            stateManager.ChangeState<PieceManagerSwapPieceState>();
+                        }
+                    }
+
+                }
             }
         }
     }
