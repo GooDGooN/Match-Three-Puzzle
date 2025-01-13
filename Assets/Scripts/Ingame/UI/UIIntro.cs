@@ -31,6 +31,7 @@ public class UIIntro : MonoBehaviour
 
     private void Start()
     {
+        Time.timeScale = 1.0f;
         GameManager.Instance.isPause = true;
     }
 
