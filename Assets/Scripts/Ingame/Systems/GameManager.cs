@@ -26,7 +26,6 @@ public class GameManager : Singleton<GameManager>
     public GameObject TimeLimitBarImageObject;
     private float timeLimitBarWidth;
 
-    public GameObject CurrentFocus;
     public GameObject TimeOverObject;
     public GameObject PauseObject;
 
@@ -97,11 +96,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
-            if (PauseObject.activeSelf)
-            {
-                ResumeGame();
-            }
-            else
+            if (!PauseObject.activeSelf)
             {
                 PauseGame();
             }
@@ -114,7 +109,6 @@ public class GameManager : Singleton<GameManager>
         if (!isPause)
         {
             isPause = true;
-            CurrentFocus = PauseObject;
             PauseObject.SetActive(true);
             Time.timeScale = 0;
         }
@@ -130,7 +124,6 @@ public class GameManager : Singleton<GameManager>
         isPause = false;
         Time.timeScale = 1.0f;
         PauseObject.SetActive(false);
-        CurrentFocus = null;
     }
 
     public void AddScore(int amount, int bombMultiply = 1)

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPause : MonoBehaviour
+public class UIMain : MonoBehaviour
 {
     public GameObject CurrentFocus;
     public GameObject OptionDetail;
@@ -15,21 +15,16 @@ public class UIPause : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
-            if(CurrentFocus == gameObject)
+            if (CurrentFocus == gameObject)
             {
-                Resume();
+                ShowQuit();
             }
             else
             {
                 OptionBack();
             }
-            
+
         }
-    }
-    public void Resume()
-    {
-        CurrentFocus = null;
-        GameManager.Instance.ResumeGame();
     }
 
     public void ShowOption()
@@ -51,13 +46,15 @@ public class UIPause : MonoBehaviour
         QuitDetail.SetActive(false);
     }
 
+    public void QuitGame()
+    {
+        Application.Quit();
+    }
+
 
     public void SaveOption()
     {
         GameManager.Instance.SetPlayerPref(PlayerPrefType.Music, MusicSlider.value);
         GameManager.Instance.SetPlayerPref(PlayerPrefType.Sound, SoundSlider.value);
     }
-
-
-    
 }
