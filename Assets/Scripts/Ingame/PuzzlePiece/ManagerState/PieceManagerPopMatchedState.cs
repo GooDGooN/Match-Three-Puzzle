@@ -220,6 +220,7 @@ public partial class PuzzlePieceManager
         var decreasedTuple = (bombTuple.Item1 - addTuple.Item1, bombTuple.Item2 - addTuple.Item2);
         var delayTime = popDelayValue / repeatTime;
 
+        Debug.Log($"{increasedTuple} {decreasedTuple}");
 
         while (repeatTime-- > 0)
         {
@@ -230,14 +231,17 @@ public partial class PuzzlePieceManager
 
             if(bombPieceSubType == PieceSubType.CrossBomb)
             {
-                var testIncreasedPiece = (increasedTuple.Item2, bombTuple.Item2);
-                var testDecreasedPiece = (decreasedTuple.Item2, bombTuple.Item2);
+                var testIncreasedPiece = (bombTuple.Item1 + addTuple.Item2, bombTuple.Item2);
+                var testDecreasedPiece = (bombTuple.Item1 - addTuple.Item2, bombTuple.Item2);
                 StartCoroutine(TryRemovePiece(testIncreasedPiece, bombPieceType));
                 StartCoroutine(TryRemovePiece(testDecreasedPiece, bombPieceType));
             }
 
-            increasedTuple = (increasedTuple.Item1 + addTuple.Item1, increasedTuple.Item2 + addTuple.Item2);
-            decreasedTuple = (decreasedTuple.Item1 - addTuple.Item1, decreasedTuple.Item2 - addTuple.Item2);
+            addTuple.Item1 += addTuple.Item1 != 0 ? 1 : 0;
+            addTuple.Item2 += addTuple.Item2 != 0 ? 1 : 0;
+
+            increasedTuple = (bombTuple.Item1 + addTuple.Item1, bombTuple.Item2 + addTuple.Item2);
+            decreasedTuple = (bombTuple.Item1 - addTuple.Item1, bombTuple.Item2 - addTuple.Item2);
 
             IEnumerator TryRemovePiece((int, int) testTuple, PieceType bombPieceType)
             {
