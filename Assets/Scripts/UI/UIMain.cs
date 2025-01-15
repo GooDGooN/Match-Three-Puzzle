@@ -1,4 +1,5 @@
 using System.Xml.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class UIMain : MonoBehaviour
     public GameObject CurrentFocus;
     public GameObject OptionDetail;
     public GameObject QuitDetail;
+    public TMP_Text HighScore;
 
     public Slider MusicSlider;
     public Slider SoundSlider;
@@ -14,6 +16,7 @@ public class UIMain : MonoBehaviour
     {
         MusicSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Music);
         SoundSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Sound);
+        HighScore.text = GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore).ToString();
     }
 
     public void LateUpdate()
