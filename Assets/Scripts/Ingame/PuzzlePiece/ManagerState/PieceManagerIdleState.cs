@@ -90,19 +90,20 @@ public partial class PuzzlePieceManager
                     var delta = inputPos - currentPos;
                     var targetTuple = self.selectedPuzzlePiece.MyIndex;
                     var dotest = true;
-                    if (delta.x > self.PieceSize)
+                    var range = self.PieceSize * 2;
+                    if (delta.x > range)
                     {
                         targetTuple.Item1 -= 1;
                     }
-                    else if (delta.x < -self.PieceSize)
+                    else if (delta.x < -range)
                     {
                         targetTuple.Item1 += 1;
                     }
-                    else if (delta.y > self.PieceSize)
+                    else if (delta.y > range)
                     {
                         targetTuple.Item2 -= 1;
                     }
-                    else if (delta.y < -self.PieceSize)
+                    else if (delta.y < -range)
                     {
                         targetTuple.Item2 += 1;
                     }
