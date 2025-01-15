@@ -27,7 +27,7 @@ public class UITimeOver : MonoBehaviour
         Childrens[1].transform.DOLocalMove(Vector3.up * 220.0f, 2.0f).SetEase(Ease.OutBounce).onComplete = ShowScores;
 
         var highScore = GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore);
-        var currentScore = GameManager.Instance.TotalScore;
+        var currentScore = (int)GameManager.Instance.TargetScore;
         CurrentScore.text = GameManager.Instance.TotalScore.ToString();
         HighScore.text = highScore.ToString();
 

@@ -16,7 +16,7 @@ public class UIMain : MonoBehaviour
     {
         MusicSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Music);
         SoundSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Sound);
-        HighScore.text = GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore).ToString();
+        HighScore.text = ((int)GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore)).ToString();
     }
 
     public void LateUpdate()

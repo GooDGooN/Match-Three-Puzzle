@@ -16,8 +16,6 @@ public class UIIntro : MonoBehaviour
         texts[0] = ReadyObject.GetComponentInChildren<TextMeshProUGUI>();
         texts[1] = StartObject.GetComponentInChildren<TextMeshProUGUI>();
 
-        Debug.Log(texts[0]);
-
         for(int i = 0; i < texts.Length; i++)
         {
             texts[i].fontMaterial = new Material(texts[i].fontMaterial);
@@ -33,7 +31,6 @@ public class UIIntro : MonoBehaviour
 
     private void Start()
     {
-        Time.timeScale = 1.0f;
         GameManager.Instance.isPause = true;
         SoundPlayer.PlayAudio(1);
     }
