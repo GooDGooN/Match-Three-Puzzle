@@ -201,11 +201,11 @@ public partial class PuzzlePieceManager
                 break;
             case PieceSubType.Vbomb:
                 addTuple.Item2 = 1;
-                repeatTime = Mathf.Max(bombTuple.Item1, FieldInfo.Height - bombTuple.Item1);
+                repeatTime = Mathf.Max(bombTuple.Item2, FieldInfo.Height - bombTuple.Item2);
                 break;
             case PieceSubType.CrossBomb:
                 addTuple.Item2 = 1;
-                var heightTime = Mathf.Max(bombTuple.Item1, FieldInfo.Height - bombTuple.Item1);
+                var heightTime = Mathf.Max(bombTuple.Item2, FieldInfo.Height - bombTuple.Item2);
                 var widthTime = Mathf.Max(bombTuple.Item1, FieldInfo.Width - bombTuple.Item1);
                 if (widthTime < heightTime)
                 {

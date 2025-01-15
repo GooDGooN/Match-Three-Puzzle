@@ -177,6 +177,7 @@ MonoBehaviour:
   CurrentFocus: {fileID: 0}
   OptionDetail: {fileID: 750135276}
   QuitDetail: {fileID: 217447054}
+  HighScore: {fileID: 1125473698}
   MusicSlider: {fileID: 1223133668}
   SoundSlider: {fileID: 471243478}
 --- !u!1 &33921340

@@ -65,7 +65,7 @@ public partial class PuzzlePieceManager
                         var ix = finalDirection.Item1;
                         var iy = finalDirection.Item2;
                         var exceptIndex = Utility.Choose(2, 3);
-                        var targetType = Utility.PickRandom(Utility.GetEnumArray<PieceType>(PieceType.None));
+                        var targetType = Utility.PickRandom(Utility.GetEnumArray(PieceType.None));
 
                         for (int dist = 0; dist < 4; dist++)
                         {
@@ -171,7 +171,7 @@ public partial class PuzzlePieceManager
 
         public override void StateExit()
         {
-            TestGenerate();
+            //TestGenerate();
         }
 
         public override void StateFixedUpdate()
@@ -186,28 +186,13 @@ public partial class PuzzlePieceManager
         private void TestGenerate()
         {
             // blue
-            testList.Add(self.MyPieceField[0, 0]);
-            testList.Add(self.MyPieceField[2, 0]);
-            testList.Add(self.MyPieceField[3, 0]);
-            testList.Add(self.MyPieceField[1, 1]);
+            testList.Add(self.MyPieceField[2, 7]);
+            testList.Add(self.MyPieceField[3, 6]);
+            testList.Add(self.MyPieceField[4, 7]);
+            self.MyPieceField[3, 6].TargetChangeSubType = PieceSubType.CrossBomb;
             foreach (var piece in testList)
             {
                 piece.TargetChangeType = PieceType.Blue;
-                piece.ChangeToNewType();
-            }
-            self.MyPieceField[1, 1].TargetChangeType = PieceType.Blue;
-            self.MyPieceField[1, 1].TargetChangeSubType = PieceSubType.Rainbow;         
-            self.MyPieceField[1, 1].ChangeToNewType();
-            testList.Clear();
-
-            // red
-            testList.Add(self.MyPieceField[1, 0]);
-            testList.Add(self.MyPieceField[0, 1]);
-            testList.Add(self.MyPieceField[2, 1]);
-            testList.Add(self.MyPieceField[3, 1]);
-            foreach (var piece in testList)
-            {
-                piece.TargetChangeType = PieceType.Red;
                 piece.ChangeToNewType();
             }
             testList.Clear();
