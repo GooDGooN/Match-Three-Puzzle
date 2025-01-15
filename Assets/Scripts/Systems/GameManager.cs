@@ -6,12 +6,6 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public enum PlayerPrefType
-{
-    HighScore,
-    Music,
-    Sound,
-}
 public class GameManager : Singleton<GameManager>
 {
     public TMP_Text ScoreTMP;
@@ -29,6 +23,8 @@ public class GameManager : Singleton<GameManager>
     public GameObject TimeOverObject;
     public GameObject PauseObject;
 
+    public AudioPlayer SoundPlayer;
+
     protected override void Awake()
     {
         base.Awake();
@@ -44,6 +40,7 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     private void Update()
     {
+        Debug.Log(GameSystem.Instance.GetPlayerPref(PlayerPrefType.Sound));
         GamePauseInput();
         if (Input.GetKeyDown(KeyCode.F5))
         {
@@ -79,6 +76,7 @@ public class GameManager : Singleton<GameManager>
             } 
             else if (TimeLimitValue > 0.3f)
             {
+                SoundPlayer.PlayAudio(0);
                 targetColor.r = 180;
                 targetColor.g = 180;
             } 
@@ -105,9 +103,9 @@ public class GameManager : Singleton<GameManager>
 
     public void PauseGame()
     {
-        Debug.Log("sd");
         if (!isPause)
         {
+            SoundPlayer.PlayAudio(3);
             isPause = true;
             PauseObject.SetActive(true);
             Time.timeScale = 0;
@@ -121,6 +119,7 @@ public class GameManager : Singleton<GameManager>
 
     public void ResumeGame()
     {
+        SoundPlayer.PlayAudio(6);
         isPause = false;
         Time.timeScale = 1.0f;
         PauseObject.SetActive(false);
@@ -128,7 +127,6 @@ public class GameManager : Singleton<GameManager>
 
     public void AddScore(int amount, int bombMultiply = 1)
     {
-        Debug.Log($"{amount} {bombMultiply}");
         var basicScore = amount * PieceScore * bombMultiply;
         var comboMultiply = Mathf.Clamp(Combo, 0, 5) * 0.1f;
         if (bombMultiply == 1)
@@ -149,63 +147,9 @@ public class GameManager : Singleton<GameManager>
     {
         if (!TimeOverObject.activeSelf)
         {
+            SoundPlayer.PlayAudio(2);
             TimeOverObject.SetActive(true);
             isPause = true;
         }
-    }
-
-    public void SetPlayerPref(PlayerPrefType playerPref, float value)
-    {
-        var result = value.ToString();
-
-        switch(playerPref)
-        {
-            case PlayerPrefType.HighScore:
-                PlayerPrefs.SetString("ThreeMatchPuzzleHighScore", result);
-                break;
-            case PlayerPrefType.Music:
-                PlayerPrefs.SetString("ThreeMatchPuzzleMusicVolume", result);
-                break;
-            case PlayerPrefType.Sound:
-                PlayerPrefs.SetString("ThreeMatchPuzzleSoundVolume", result);
-                break;
-        }
-    }
-    public void SetPlayerPref(PlayerPrefType playerPref, int value)
-    {
-        SetPlayerPref(playerPref, (float)value);
-    }
-
-    public float GetPlayerPref(PlayerPrefType playerPref)
-    {
-        var result = 0.0f;
-        var targetString = "";
-        switch (playerPref)
-        {
-            case PlayerPrefType.HighScore:
-                targetString = PlayerPrefs.GetString("ThreeMatchPuzzleHighScore");
-                if (targetString == "")
-                {
-                    targetString = "0";
-                }
-                break;
-            case PlayerPrefType.Music:
-                targetString = PlayerPrefs.GetString("ThreeMatchPuzzleMusicVolume");
-                if (targetString == "")
-                {
-                    targetString = "0.5";
-                }
-                break;
-            case PlayerPrefType.Sound:
-                targetString = PlayerPrefs.GetString("ThreeMatchPuzzleSoundVolume");
-                if (targetString == "")
-                {
-                    targetString = "0.5";
-                }
-                break;
-        }
-        Debug.Log(targetString);
-        result = float.Parse(targetString);
-        return result;
     }
 }

@@ -10,8 +10,14 @@ public class UIPause : MonoBehaviour
     public Slider MusicSlider;
     public Slider SoundSlider;
 
+    public AudioPlayer SoundPlayer;
 
-    public void LateUpdate()
+    private void Start()
+    {
+        MusicSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Music);
+        SoundSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Sound);
+    }
+    private void LateUpdate()
     {
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.Backspace))
         {
@@ -47,17 +53,14 @@ public class UIPause : MonoBehaviour
     public void OptionBack()
     {
         CurrentFocus = gameObject;
+        GameSystem.Instance.SaveOptions();
         OptionDetail.SetActive(false);
         QuitDetail.SetActive(false);
     }
 
-
-    public void SaveOption()
+    public void AudioVolumeChange()
     {
-        GameManager.Instance.SetPlayerPref(PlayerPrefType.Music, MusicSlider.value);
-        GameManager.Instance.SetPlayerPref(PlayerPrefType.Sound, SoundSlider.value);
+        GameSystem.Instance.SoundVolume = SoundSlider.value;
+        GameSystem.Instance.MusicVolume = MusicSlider.value;
     }
-
-
-    
 }

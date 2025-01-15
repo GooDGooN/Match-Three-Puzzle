@@ -1,3 +1,4 @@
+using System.Xml.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,11 @@ public class UIMain : MonoBehaviour
 
     public Slider MusicSlider;
     public Slider SoundSlider;
-
+    private void Start()
+    {
+        MusicSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Music);
+        SoundSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Sound);
+    }
 
     public void LateUpdate()
     {
@@ -41,6 +46,7 @@ public class UIMain : MonoBehaviour
 
     public void OptionBack()
     {
+        GameSystem.Instance.SaveOptions();
         CurrentFocus = gameObject;
         OptionDetail.SetActive(false);
         QuitDetail.SetActive(false);
@@ -51,10 +57,10 @@ public class UIMain : MonoBehaviour
         Application.Quit();
     }
 
-
-    public void SaveOption()
+    public void AudioVolumeChange()
     {
-        GameManager.Instance.SetPlayerPref(PlayerPrefType.Music, MusicSlider.value);
-        GameManager.Instance.SetPlayerPref(PlayerPrefType.Sound, SoundSlider.value);
+        GameSystem.Instance.SoundVolume = SoundSlider.value;
+        GameSystem.Instance.MusicVolume = MusicSlider.value;
     }
+
 }

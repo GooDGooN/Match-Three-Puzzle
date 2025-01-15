@@ -10,6 +10,7 @@ public class UITimeOver : MonoBehaviour
     public TMP_Text CurrentScore;
     public TMP_Text HighScore;
     public GameObject NewRecord;
+    public AudioPlayer SoundPlayer;
 
     private float backgroundColorLerpValue;
     private int index;
@@ -25,7 +26,7 @@ public class UITimeOver : MonoBehaviour
         Childrens[1].transform.localPosition = Vector3.up * 600.0f;
         Childrens[1].transform.DOLocalMove(Vector3.up * 220.0f, 2.0f).SetEase(Ease.OutBounce).onComplete = ShowScores;
 
-        var highScore = GameManager.Instance.GetPlayerPref(PlayerPrefType.HighScore);
+        var highScore = GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore);
         var currentScore = GameManager.Instance.TotalScore;
         CurrentScore.text = GameManager.Instance.TotalScore.ToString();
         HighScore.text = highScore.ToString();
@@ -33,7 +34,7 @@ public class UITimeOver : MonoBehaviour
         if (highScore < currentScore)
         {
             NewRecord.SetActive(true);
-            GameManager.Instance.SetPlayerPref(PlayerPrefType.HighScore, currentScore);
+            GameSystem.Instance.SetPlayerPref(PlayerPrefType.HighScore, currentScore);
             HighScore.text = currentScore.ToString();
         }
     }
@@ -64,7 +65,8 @@ public class UITimeOver : MonoBehaviour
 
     public void PopDone() 
     {
-        if(index < 6)
+        SoundPlayer.PlayAudio(5);
+        if (index < 6)
         {
             Childrens[index++].transform.DOScale(Vector3.one, time).SetEase(Ease.InOutElastic).onComplete = PopDone;
         }

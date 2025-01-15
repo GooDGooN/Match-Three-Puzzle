@@ -65,6 +65,7 @@ public class PuzzlePiece : MonoBehaviour
     public PieceSubType TargetChangeSubType;
     public (int, int) MyIndex;
     public PuzzlePieceManager MyManager;
+    public AudioPlayer SoundPlayer;
     public Animator MyAnimator
     {
         get => GetComponent<Animator>();
@@ -147,6 +148,13 @@ public class PuzzlePiece : MonoBehaviour
         transform.localPosition = MyManager.GetPiecePosition(MyIndex) + (Vector3Int.up * 300);
         MySubType = PieceSubType.None;
         MyAnimator.Play("Idle");
+        SoundPlayer.MyAudioSource.pitch = 1.0f;
+    }
+
+    public void PlayPopSound(int combo)
+    {
+        SoundPlayer.MyAudioSource.pitch = 1.0f + (0.25f * combo);
+        SoundPlayer.PlayAudio();
     }
 }
 

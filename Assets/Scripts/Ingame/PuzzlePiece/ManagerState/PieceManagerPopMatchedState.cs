@@ -166,6 +166,7 @@ public partial class PuzzlePieceManager
         MyPieceField[piece.MyIndex.Item1, piece.MyIndex.Item2] = null;
         piece.MyIndex = (-1, -1);
         piece.MyAnimator.SetTrigger("Pop");
+        piece.PlayPopSound(GameManager.Instance.Combo);
     }
 
     /// <summary>

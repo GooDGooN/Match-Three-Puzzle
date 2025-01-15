@@ -7,6 +7,8 @@ public class UIIntro : MonoBehaviour
 {
     public GameObject ReadyObject;
     public GameObject StartObject;
+    public AudioPlayer SoundPlayer;
+    public AudioPlayer MusicPlayer;
     private TextMeshProUGUI[] texts = new TextMeshProUGUI[2];
 
     private void Awake()
@@ -33,6 +35,7 @@ public class UIIntro : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         GameManager.Instance.isPause = true;
+        SoundPlayer.PlayAudio(1);
     }
 
     private void ActiveStart()
@@ -43,7 +46,8 @@ public class UIIntro : MonoBehaviour
             .DOScale(Vector3.one, 1.5f)
             .SetEase(Ease.OutElastic)
             .onComplete = GameStart;
-
+        SoundPlayer.PlayAudio(2);
+        MusicPlayer.PlayAudio();
     }
 
     private void GameStart()
