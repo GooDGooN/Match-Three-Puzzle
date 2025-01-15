@@ -15,6 +15,7 @@ public class GameSystem : Singleton<GameSystem>
     {
         MusicVolume = GetPlayerPref(PlayerPrefType.Music);
         SoundVolume = GetPlayerPref(PlayerPrefType.Sound);
+        Application.targetFrameRate = 60;
         base.Awake();
     }
 
@@ -48,9 +49,17 @@ public class GameSystem : Singleton<GameSystem>
                 break;
             case PlayerPrefType.Music:
                 result = PlayerPrefs.GetFloat("ThreeMatchPuzzleMusicVolume");
+                if(!PlayerPrefs.HasKey("ThreeMatchPuzzleMusicVolume"))
+                {
+                    result = 0.5f;
+                }
                 break;
             case PlayerPrefType.Sound:
                 result = PlayerPrefs.GetFloat("ThreeMatchPuzzleSoundVolume");
+                if (!PlayerPrefs.HasKey("ThreeMatchPuzzleSoundVolume"))
+                {
+                    result = 0.5f;
+                }
                 break;
         }
         return result;
