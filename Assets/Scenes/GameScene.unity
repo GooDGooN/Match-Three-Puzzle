@@ -5533,7 +5533,7 @@ GameObject:
   - component: {fileID: 1580303768}
   - component: {fileID: 1580303767}
   m_Layer: 5
-  m_Name: Cancle
+  m_Name: Cancel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7357,6 +7357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ScoreTMP: {fileID: 1221277257}
+  TargetScore: 0
   TotalScore: 0
   Combo: 0
   isPause: 0
@@ -8072,7 +8073,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cancle
+  m_text: Cancel
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 508ef6b8faf4f554284209e0b5f3626e, type: 2}
   m_sharedMaterial: {fileID: -7046394033134221917, guid: 508ef6b8faf4f554284209e0b5f3626e, type: 2}
