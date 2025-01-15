@@ -9,6 +9,7 @@ public class UICircleEffect : MonoBehaviour
     [SerializeField] private bool working;
     private void Start()
     {
+        Time.timeScale = 1.0f;
         FadeIn();
     }
     public void FadeIn()
@@ -33,6 +34,7 @@ public class UICircleEffect : MonoBehaviour
 
     public void ChangeScene(int sceneNum)
     {
+        working = false;
         SceneManager.LoadScene(sceneNum);
     }
 }
