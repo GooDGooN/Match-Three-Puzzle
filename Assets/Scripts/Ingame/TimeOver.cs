@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UITimeOver : MonoBehaviour
+public class TimeOver : MonoBehaviour
 {
     public GameObject[] Childrens;
     public TMP_Text CurrentScore;

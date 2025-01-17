@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class UICircleEffect : MonoBehaviour
+public class CircleEffect : MonoBehaviour
 {
     [SerializeField] private bool working;
     private void Start()

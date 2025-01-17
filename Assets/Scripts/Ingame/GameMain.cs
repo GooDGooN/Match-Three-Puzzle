@@ -3,10 +3,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIMain : MonoBehaviour
+public class GameMain : MonoBehaviour
 {
     public GameObject CurrentFocus;
     public GameObject OptionDetail;
+    public GameObject TutorialDetail;
     public GameObject QuitDetail;
     public TMP_Text HighScore;
 
@@ -41,6 +42,12 @@ public class UIMain : MonoBehaviour
         OptionDetail.SetActive(true);
     }
 
+    public void ShowTutorial()
+    {
+        CurrentFocus = TutorialDetail;
+        TutorialDetail.SetActive(true);
+    }
+
     public void ShowQuit()
     {
         CurrentFocus = QuitDetail;
@@ -52,6 +59,7 @@ public class UIMain : MonoBehaviour
         GameSystem.Instance.SaveOptions();
         CurrentFocus = gameObject;
         OptionDetail.SetActive(false);
+        TutorialDetail.SetActive(false);
         QuitDetail.SetActive(false);
     }
 

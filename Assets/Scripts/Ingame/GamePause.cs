@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIPause : MonoBehaviour
+public class GamePause : MonoBehaviour
 {
     public GameObject CurrentFocus;
     public GameObject OptionDetail;

@@ -3,7 +3,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class UIIntro : MonoBehaviour
+public class GameIntro : MonoBehaviour
 {
     public GameObject ReadyObject;
     public GameObject StartObject;
