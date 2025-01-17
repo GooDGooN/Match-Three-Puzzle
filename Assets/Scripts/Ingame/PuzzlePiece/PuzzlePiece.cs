@@ -56,7 +56,7 @@ public class PuzzlePiece : MonoBehaviour
     public Sprite[] SpecialPieceSprites;
     public SpriteRenderer BackgroundSpriteRenderer
     {
-        get => transform.GetChild(0).GetComponent<SpriteRenderer>();
+        get => transform.GetChild(1).GetComponent<SpriteRenderer>();
     }
 
     public PieceType MyType;
