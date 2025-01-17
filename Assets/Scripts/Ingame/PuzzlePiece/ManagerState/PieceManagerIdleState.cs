@@ -141,7 +141,7 @@ public partial class PuzzlePieceManager
             yield return null;
         }
 
-        yield return new WaitForSeconds(4.0f);
+        yield return new WaitForSeconds(2.0f);
 
         if (myStateController.CurrentState.GetType() == typeof(PieceManagerIdleState))
         {

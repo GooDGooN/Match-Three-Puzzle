@@ -93,7 +93,11 @@ public class PuzzlePiece : MonoBehaviour
         else
         {
             GetComponent<SpriteRenderer>().sprite = SpecialPieceSprites[(int)MySubType];
-            BackgroundSpriteRenderer.color = Color.clear;
+            if(MySubType == PieceSubType.Rainbow)
+            {
+                GetComponent<SpriteRenderer>().color = Color.white;
+                BackgroundSpriteRenderer.color = Color.clear;
+            }
         }    
         testpos[0] = MyIndex.Item1;
         testpos[1] = MyIndex.Item2;

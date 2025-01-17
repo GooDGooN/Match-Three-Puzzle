@@ -10,7 +10,7 @@ public class GameManager : Singleton<GameManager>
 {
     public TMP_Text ScoreTMP;
 
-    private float targetScore = 0;
+    public float TargetScore = 0;
     public const float PieceScore = 10;
     public float TotalScore = 0;
     public int Combo = 0;
@@ -40,20 +40,15 @@ public class GameManager : Singleton<GameManager>
     // Update is called once per frame
     private void Update()
     {
-        Debug.Log(GameSystem.Instance.GetPlayerPref(PlayerPrefType.Sound));
         GamePauseInput();
-        if (Input.GetKeyDown(KeyCode.F5))
-        {
-            GameRestart();
-        }
 
-        if (TotalScore < targetScore)
+        if (TotalScore < TargetScore)
         {
-            TotalScore += (targetScore - TotalScore) * 0.1f;
+            TotalScore += (TargetScore - TotalScore) * 0.1f;
         }
-        if(TotalScore > targetScore || targetScore - TotalScore < 1)
+        if(TotalScore > TargetScore || TargetScore - TotalScore < 1)
         {
-            TotalScore = targetScore;
+            TotalScore = TargetScore;
         }
         ScoreTMP.text = $"Score : {(int)TotalScore}";
 
@@ -140,7 +135,7 @@ public class GameManager : Singleton<GameManager>
                 basicScore *= 3;
             }
         }
-        targetScore += (basicScore) + (comboMultiply * basicScore);
+        TargetScore += (basicScore) + (comboMultiply * basicScore);
     }
 
     public void TimeOver()
