@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,9 @@ public class GameManager : Singleton<GameManager>
     public const float PieceScore = 10;
     public float TotalScore = 0;
     public int Combo = 0;
+    public GameObject ComboText;
     public bool isPause;
+    public Color32[] ComboColors;
 
     public float TimeLimitValue = 0;
     public GameObject TimeLimitBarImageObject;
@@ -35,6 +38,7 @@ public class GameManager : Singleton<GameManager>
     {
         TimeLimitValue = 1.0f;
         timeLimitBarWidth = TimeLimitBarImageObject.GetComponent<RectTransform>().rect.width;
+        ComboText.transform.localScale = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -94,6 +98,37 @@ public class GameManager : Singleton<GameManager>
                 PauseGame();
             }
         }
+    }
+
+    public void IncreaseCombo()
+    {
+        Combo++;
+        if(Combo < ComboColors.Length)
+        {
+            if(Combo > 1)
+            {
+                ComboText.GetComponent<TextMeshProUGUI>().color = ComboColors[Combo - 1];
+            }
+        }
+        else
+        {
+            ComboText.GetComponent<TextMeshProUGUI>().color = ComboColors[ComboColors.Length - 1];
+        }
+        if (Combo > 1) 
+        {
+            ComboText.transform.localScale = Vector3.zero;
+            ComboText.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutElastic);
+            ComboText.GetComponent<TextMeshProUGUI>().text = $"{Combo - 1} Combo!";
+        }
+    }
+
+    public void ResetCombo()
+    {
+        if(Combo > 1)
+        {
+            ComboText.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InElastic);
+        }
+        Combo = 0;  
     }
 
     public void PauseGame()

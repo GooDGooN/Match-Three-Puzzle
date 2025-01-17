@@ -134,7 +134,6 @@ public partial class PuzzlePieceManager
 
         public override void StateExit()
         {
-            GameManager.Instance.Combo++;
             self.swapTargetPuzzlePiece = null;
             self.selectedPuzzlePiece = null;
         }
@@ -152,6 +151,7 @@ public partial class PuzzlePieceManager
                 {
                     self.MyPieceField.RepositionNulls();
                     stateManager.ChangeState<PieceManagerRefillState>();
+                    GameManager.Instance.IncreaseCombo();
                     return;
                 }
                 stateManager.ChangeState<PieceManagerFindMatchableState>();

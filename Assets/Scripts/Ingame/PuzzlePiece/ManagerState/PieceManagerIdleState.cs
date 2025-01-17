@@ -17,7 +17,7 @@ public partial class PuzzlePieceManager
             self.SetHintCountDown();
             self.selectedPuzzlePiece = null;
             self.swapTargetPuzzlePiece = null;
-            GameManager.Instance.Combo = 0;
+            GameManager.Instance.ResetCombo();
         }
 
         public override void StateExit()
