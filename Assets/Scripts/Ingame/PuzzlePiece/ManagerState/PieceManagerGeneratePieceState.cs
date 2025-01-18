@@ -186,10 +186,9 @@ public partial class PuzzlePieceManager
         private void TestGenerate()
         {
             // blue
-            testList.Add(self.MyPieceField[2, 7]);
-            testList.Add(self.MyPieceField[3, 6]);
-            testList.Add(self.MyPieceField[4, 7]);
-            self.MyPieceField[3, 6].TargetChangeSubType = PieceSubType.CrossBomb;
+            testList.Add(self.MyPieceField[4, 5]);
+            testList.Add(self.MyPieceField[3, 5]);
+            self.MyPieceField[3, 5].TargetChangeSubType = PieceSubType.Rainbow;
             foreach (var piece in testList)
             {
                 piece.TargetChangeType = PieceType.Blue;
