@@ -58,6 +58,7 @@ public partial class PuzzlePieceManager
                     self.MyPieceField[ix][iy] = null;
                 }
             }
+            GameManager.Instance.NoMatchObject.SetActive(true);
             stateManager.ChangeState<PieceManagerGeneratePieceState>();
         }
 

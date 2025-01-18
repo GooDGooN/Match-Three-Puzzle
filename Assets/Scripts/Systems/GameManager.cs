@@ -25,6 +25,7 @@ public class GameManager : Singleton<GameManager>
 
     public GameObject TimeOverObject;
     public GameObject PauseObject;
+    public GameObject NoMatchObject;
 
     public AudioPlayer SoundPlayer;
 
