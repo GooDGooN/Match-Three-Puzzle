@@ -12,10 +12,9 @@ public enum PieceType
     Block,
     Blue,
     Green,
-    Orange,
-    Pink,
+    Purple,
     Red,
-    Sky,
+    White,
     Yellow,
 }
 
@@ -34,30 +33,16 @@ public class PuzzlePiece : MonoBehaviour
     {
         new Color32(60, 118, 255, 255), // blue
         new Color32(45, 255, 107, 255), // green
-        new Color32(255, 163, 60, 255), // orange
         new Color32(255, 85, 225, 255), // pink
         new Color32(255, 55, 55, 255), // red
-        new Color32(0, 232, 251, 255), // lightblue
+        new Color32(255, 255, 255, 255), // white
         new Color32(255, 209, 51, 255), // yellow  
-    };
-
-    private Color32[] pieceBackgroundColors = new Color32[]
-    {
-        new Color32(182, 203, 255, 255), // blue
-        new Color32(177, 255, 199, 255), // green
-        new Color32(255, 220, 182, 255), // orange
-        new Color32(255, 191, 243, 255), // pink
-        new Color32(255, 197, 197, 255), // red
-        new Color32(179, 248, 255, 255), // lightblue
-        new Color32(255, 237, 178, 255), // yellow  
     };
 
     public Sprite[] PieceSprites;
     public Sprite[] SpecialPieceSprites;
-    public SpriteRenderer BackgroundSpriteRenderer
-    {
-        get => transform.GetChild(1).GetComponent<SpriteRenderer>();
-    }
+
+    private SpriteRenderer mySpriteRenderer { get => GetComponent<SpriteRenderer>(); }
 
     public PieceType MyType;
     public PieceType TargetChangeType;
@@ -75,7 +60,7 @@ public class PuzzlePiece : MonoBehaviour
 
     private void Start()
     {
-        GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
+        mySpriteRenderer.sprite = PieceSprites[(int)MyType];
         MySubType = PieceSubType.None;
         TargetChangeSubType = PieceSubType.None;
     }
@@ -83,20 +68,21 @@ public class PuzzlePiece : MonoBehaviour
 
     void Update()
     {
-        BackgroundSpriteRenderer.color = pieceBackgroundColors[(int)MyType];
-        GetComponent<SpriteRenderer>().color = pieceColors[(int)MyType];
-
         if (MySubType == PieceSubType.None)
         {
-            GetComponent<SpriteRenderer>().sprite = PieceSprites[(int)MyType];
+            mySpriteRenderer.sprite = PieceSprites[(int)MyType];
+            mySpriteRenderer.color = Color.white;
         }
         else
         {
-            GetComponent<SpriteRenderer>().sprite = SpecialPieceSprites[(int)MySubType];
-            if(MySubType == PieceSubType.Rainbow)
+            mySpriteRenderer.sprite = SpecialPieceSprites[(int)MySubType];
+            if (MySubType == PieceSubType.Rainbow)
             {
-                GetComponent<SpriteRenderer>().color = Color.white;
-                BackgroundSpriteRenderer.color = Color.clear;
+                mySpriteRenderer.color = Color.white;
+            }
+            else
+            {
+                mySpriteRenderer.color = pieceColors[(int)MyType];
             }
         }    
         testpos[0] = MyIndex.Item1;
