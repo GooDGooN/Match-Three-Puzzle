@@ -33,7 +33,7 @@ public class GameManager : Singleton<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        
+
     }
 
     private void Start()
@@ -43,7 +43,6 @@ public class GameManager : Singleton<GameManager>
         ComboText.transform.localScale = Vector3.zero;
     }
 
-    // Update is called once per frame
     private void Update()
     {
         GamePauseInput();
@@ -52,7 +51,7 @@ public class GameManager : Singleton<GameManager>
         {
             TotalScore += (TargetScore - TotalScore) * 0.1f;
         }
-        if(TotalScore > TargetScore || TargetScore - TotalScore < 1)
+        if (TotalScore > TargetScore || TargetScore - TotalScore < 1)
         {
             TotalScore = TargetScore;
         }
@@ -60,7 +59,7 @@ public class GameManager : Singleton<GameManager>
 
         if (TimeLimitValue > 0)
         {
-            if(!isPause)
+            if (!isPause)
             {
                 TimeLimitValue -= Time.deltaTime / 60.0f;
             }
@@ -74,13 +73,13 @@ public class GameManager : Singleton<GameManager>
             {
                 targetColor.r = 27;
                 targetColor.g = 205;
-            } 
+            }
             else if (TimeLimitValue > 0.3f)
             {
                 SoundPlayer.PlayAudio(0);
                 targetColor.r = 180;
                 targetColor.g = 180;
-            } 
+            }
             else
             {
                 targetColor.r = 205;
@@ -88,7 +87,7 @@ public class GameManager : Singleton<GameManager>
             }
 
             TimeLimitBarImageObject.GetComponent<Image>().color = targetColor;
-        }       
+        }
     }
 
     private void GamePauseInput()
@@ -105,9 +104,9 @@ public class GameManager : Singleton<GameManager>
     public void IncreaseCombo()
     {
         Combo++;
-        if(Combo < ComboColors.Length)
+        if (Combo < ComboColors.Length)
         {
-            if(Combo > 1)
+            if (Combo > 1)
             {
                 ComboText.GetComponent<TextMeshProUGUI>().color = ComboColors[Combo - 1];
             }
@@ -116,7 +115,7 @@ public class GameManager : Singleton<GameManager>
         {
             ComboText.GetComponent<TextMeshProUGUI>().color = ComboColors[ComboColors.Length - 1];
         }
-        if (Combo > 1) 
+        if (Combo > 1)
         {
             ComboText.transform.localScale = Vector3.zero;
             ComboText.transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.OutElastic);
@@ -126,11 +125,11 @@ public class GameManager : Singleton<GameManager>
 
     public void ResetCombo()
     {
-        if(Combo > 1)
+        if (Combo > 1)
         {
             ComboText.transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InElastic);
         }
-        Combo = 0;  
+        Combo = 0;
     }
 
     public void PauseGame()

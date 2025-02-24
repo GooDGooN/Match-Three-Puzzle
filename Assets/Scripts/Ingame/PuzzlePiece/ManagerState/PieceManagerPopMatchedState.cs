@@ -293,7 +293,10 @@ public partial class PuzzlePieceManager
         {
             if (sameTypePieceList[0] != null && sameTypePieceList[0].MyIndex != (-1, -1))
             {
-                PopPiece(sameTypePieceList[0]);
+                if (sameTypePieceList[0].MySubType != PieceSubType.Rainbow)
+                {
+                    PopPiece(sameTypePieceList[0]);
+                }
             }
             sameTypePieceList.RemoveAt(0);
             popStateChangeDelay = popDelayValue;

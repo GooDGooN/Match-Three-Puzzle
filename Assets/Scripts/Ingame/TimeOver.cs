@@ -11,6 +11,7 @@ public class TimeOver : MonoBehaviour
     public TMP_Text HighScore;
     public GameObject NewRecord;
     public AudioPlayer SoundPlayer;
+    public CoinContainer CoinController;
 
     private float backgroundColorLerpValue;
     private int index;
@@ -24,7 +25,7 @@ public class TimeOver : MonoBehaviour
         skipable = false;
         Childrens[0].GetComponent<Image>().color = Color.clear;
         Childrens[1].transform.localPosition = Vector3.up * 600.0f;
-        Childrens[1].transform.DOLocalMove(Vector3.up * 220.0f, 2.0f).SetEase(Ease.OutBounce).onComplete = ShowScores;
+        Childrens[1].transform.DOLocalMove(Vector3.up * 220.0f, 2.0f).SetEase(Ease.OutBounce).onComplete = ShowChildrens;
 
         var highScore = GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore);
         var currentScore = (int)GameManager.Instance.TargetScore;
@@ -37,6 +38,11 @@ public class TimeOver : MonoBehaviour
             GameSystem.Instance.SetPlayerPref(PlayerPrefType.HighScore, currentScore);
             HighScore.text = currentScore.ToString();
         }
+
+        var gainedCoin = Mathf.CeilToInt(GameManager.Instance.TotalScore / 100);
+        var savedCoin = (int)GameSystem.Instance.GetPlayerPref(PlayerPrefType.Coin);
+        CoinController.SetCoinValue(savedCoin, gainedCoin);
+        GameSystem.Instance.SetPlayerPref(PlayerPrefType.Coin, savedCoin + gainedCoin);
     }
 
     private void Update()
@@ -48,7 +54,8 @@ public class TimeOver : MonoBehaviour
         {
             if(Input.GetMouseButtonDown(0))
             {
-                for(int i = 2; i < Childrens.Length; i++)
+                CoinController.Skip();
+                for (int i = 2; i < Childrens.Length; i++)
                 {
                     Childrens[i].transform.DOKill();
                     Childrens[i].transform.localScale = Vector3.one;
@@ -57,7 +64,7 @@ public class TimeOver : MonoBehaviour
         }
     }
 
-    private void ShowScores()
+    private void ShowChildrens()
     {
         Childrens[index++].transform.DOScale(Vector3.one, time).SetEase(Ease.InOutElastic).onComplete = PopDone;
         skipable = true;    
@@ -66,14 +73,24 @@ public class TimeOver : MonoBehaviour
     public void PopDone() 
     {
         SoundPlayer.PlayAudio(5);
-        if (index < 6)
+        if (index == Childrens.Length)
         {
-            Childrens[index++].transform.DOScale(Vector3.one, time).SetEase(Ease.InOutElastic).onComplete = PopDone;
+            StartCoroutine(CoinController.ScoreToCoin((int)GameManager.Instance.TargetScore));
         }
-        if(index == 5)
+        if (index < Childrens.Length - 1)
         {
-            Childrens[index++].transform.DOScale(Vector3.one, time).SetEase(Ease.InOutElastic).onComplete = PopDone;
+            Childrens[index++].transform
+                .DOScale(Vector3.one, time)
+                .SetEase(Ease.InOutElastic)
+                .onComplete = PopDone;
         }
+        if(index == Childrens.Length - 1)
+        {
+            Childrens[index++].transform
+                .DOScale(Vector3.one, time)
+                .SetEase(Ease.InOutElastic);
+        }
+        
     }
 
     public void GotoMain()

@@ -5,6 +5,7 @@ public enum PlayerPrefType
     HighScore,
     Music,
     Sound,
+    Coin,
 }
 
 public class GameSystem : Singleton<GameSystem>
@@ -31,6 +32,9 @@ public class GameSystem : Singleton<GameSystem>
                 break;
             case PlayerPrefType.Sound:
                 PlayerPrefs.SetFloat("ThreeMatchPuzzleSoundVolume", value);
+                break;
+            case PlayerPrefType.Coin:
+                PlayerPrefs.SetFloat("ThreeMatchPuzzleCoin", value);
                 break;
         }
     }
@@ -59,6 +63,13 @@ public class GameSystem : Singleton<GameSystem>
                 if (!PlayerPrefs.HasKey("ThreeMatchPuzzleSoundVolume"))
                 {
                     result = 0.5f;
+                }
+                break;
+            case PlayerPrefType.Coin:
+                result = PlayerPrefs.GetFloat("ThreeMatchPuzzleCoin");
+                if (!PlayerPrefs.HasKey("ThreeMatchPuzzleCoin"))
+                {
+                    result = 0;
                 }
                 break;
         }
