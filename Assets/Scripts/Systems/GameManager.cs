@@ -55,7 +55,7 @@ public class GameManager : Singleton<GameManager>
         {
             TotalScore = TargetScore;
         }
-        ScoreTMP.text = $"Score : {(int)TotalScore}";
+        ScoreTMP.text = $"{(int)TotalScore}";
 
         if (TimeLimitValue > 0)
         {
