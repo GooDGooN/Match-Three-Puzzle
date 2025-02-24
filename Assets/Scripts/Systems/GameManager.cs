@@ -29,6 +29,7 @@ public class GameManager : Singleton<GameManager>
 
     public AudioPlayer SoundPlayer;
 
+
     protected override void Awake()
     {
         base.Awake();
@@ -64,7 +65,7 @@ public class GameManager : Singleton<GameManager>
                 TimeLimitValue -= Time.deltaTime / 60.0f;
             }
             var rectTransform = TimeLimitBarImageObject.GetComponent<RectTransform>();
-            rectTransform.sizeDelta = new Vector2(timeLimitBarWidth * TimeLimitValue, 32.0f);
+            rectTransform.sizeDelta = new Vector2(timeLimitBarWidth * TimeLimitValue, 40.0f);
 
             var targetColor = new Color32();
             targetColor.a = 255;
