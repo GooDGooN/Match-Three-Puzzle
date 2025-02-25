@@ -17,8 +17,8 @@ public class CircleEffect : MonoBehaviour
         if (!working)
         {
             working = true;
-            transform.localScale = Vector3.one;
-            transform.DOScale(Vector3.zero, 0.75f).SetEase(Ease.OutExpo).onComplete = () => { working = false; };
+            transform.localScale = Vector3.zero;
+            transform.DOScale(Vector3.one, 1.0f).SetEase(Ease.OutExpo).onComplete = () => { working = false; };
         }
     }
 
@@ -27,8 +27,8 @@ public class CircleEffect : MonoBehaviour
         if (!working)
         {
             working = true;
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, 0.75f).SetEase(Ease.OutExpo).SetUpdate(true).onComplete = () => ChangeScene(sceneNum);
+            transform.localScale = Vector3.one;
+            transform.DOScale(Vector3.zero, 0.75f).SetEase(Ease.OutExpo).SetUpdate(true).onComplete = () => ChangeScene(sceneNum);
         }
     }
 

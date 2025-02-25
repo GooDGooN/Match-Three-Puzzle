@@ -9,7 +9,9 @@ public class GameMain : MonoBehaviour
     public GameObject OptionDetail;
     public GameObject TutorialDetail;
     public GameObject QuitDetail;
+
     public TMP_Text HighScore;
+    public TMP_Text CoinValue;
 
     public Slider MusicSlider;
     public Slider SoundSlider;
@@ -18,6 +20,7 @@ public class GameMain : MonoBehaviour
         MusicSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Music);
         SoundSlider.value = GameSystem.Instance.GetPlayerPref(PlayerPrefType.Sound);
         HighScore.text = ((int)GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore)).ToString();
+        CoinValue.text = ((int)GameSystem.Instance.GetPlayerPref(PlayerPrefType.Coin)).ToString();
     }
 
     public void LateUpdate()

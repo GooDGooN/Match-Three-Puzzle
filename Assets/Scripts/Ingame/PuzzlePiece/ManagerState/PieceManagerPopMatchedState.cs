@@ -293,7 +293,15 @@ public partial class PuzzlePieceManager
         {
             if (sameTypePieceList[0] != null && sameTypePieceList[0].MyIndex != (-1, -1))
             {
-                if (sameTypePieceList[0].MySubType != PieceSubType.Rainbow)
+                var pieceSubType = sameTypePieceList[0].MySubType;
+                if (pieceSubType != PieceSubType.None)
+                {
+                    if(pieceSubType != PieceSubType.Rainbow)
+                    {
+                        StartActiveBomb(sameTypePieceList[0]);
+                    }
+                }
+                else
                 {
                     PopPiece(sameTypePieceList[0]);
                 }

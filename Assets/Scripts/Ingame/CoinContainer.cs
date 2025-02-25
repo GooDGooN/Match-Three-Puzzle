@@ -12,6 +12,7 @@ public class CoinContainer : MonoBehaviour
     public GameObject ScoreObj;
     public GameObject IconObj;
     public TMP_Text CoinValue;
+    public TMP_Text ScoreValue;
     private List<GameObject> CoinList = new();
     private int count;
     private int gainedCoin;
@@ -37,12 +38,16 @@ public class CoinContainer : MonoBehaviour
 
     public IEnumerator ScoreToCoin(int score)
     {
-        count = Mathf.CeilToInt(score / 100);
+        count = score / 100;
         while(count-- > 0)
         {
             var coin = PickCoin();
             coin.transform.position = ScoreObj.transform.position;
             coin.transform.localScale = Vector3.zero;
+            var scoreToInt = int.Parse(ScoreValue.text);
+            scoreToInt -= 100;
+            scoreToInt = scoreToInt > 0 ? scoreToInt : 0;
+            ScoreValue.text = scoreToInt.ToString();
             coin.transform
                 .DOScale(new Vector3(-1.0f, 1.0f, 1.0f), 0.25f);
             coin.transform
@@ -52,6 +57,7 @@ public class CoinContainer : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
+        ScoreValue.text = "0";
     }
 
     private void DisableCoin(GameObject target, bool last = false)
