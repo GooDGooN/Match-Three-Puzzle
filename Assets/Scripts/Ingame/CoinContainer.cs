@@ -12,7 +12,7 @@ public class CoinContainer : MonoBehaviour
     public GameObject ScoreObj;
     public GameObject IconObj;
     public TMP_Text CoinValue;
-    public TMP_Text ScoreValue;
+    public GainedCoin GainedValue;
     private List<GameObject> CoinList = new();
     private int count;
     private int gainedCoin;
@@ -29,6 +29,11 @@ public class CoinContainer : MonoBehaviour
         }
     }
 
+    private void Start()
+    {
+        CoinValue.text = ((int)GameSystem.Instance.GetPlayerPref(PlayerPrefType.Coin)).ToString();
+    }
+
     public void SetCoinValue(int saved, int gained)
     {
         gainedCoin = gained;
@@ -36,28 +41,26 @@ public class CoinContainer : MonoBehaviour
         CoinValue.text = saved.ToString();
     }
 
-    public IEnumerator ScoreToCoin(int score)
+    public IEnumerator CoinTransfer(int score)
     {
-        count = score / 100;
-        while(count-- > 0)
+        count = GainedValue.Gained;
+        while (count-- > 0)
         {
             var coin = PickCoin();
-            coin.transform.position = ScoreObj.transform.position;
+            coin.transform.position = GainedValue.Icon.transform.position;
             coin.transform.localScale = Vector3.zero;
-            var scoreToInt = int.Parse(ScoreValue.text);
-            scoreToInt -= 100;
-            scoreToInt = scoreToInt > 0 ? scoreToInt : 0;
-            ScoreValue.text = scoreToInt.ToString();
+
+            GainedValue.ReduceCoin(); 
+
             coin.transform
                 .DOScale(new Vector3(-1.0f, 1.0f, 1.0f), 0.25f);
             coin.transform
-                .DOMove(IconObj.transform.position, 0.5f)
+                .DOMove(IconObj.transform.position, 1.0f)
                 .SetEase(Ease.OutCirc)
                 .onComplete = count > 0 ? () => DisableCoin(coin) : () => DisableCoin(coin, true);
 
             yield return new WaitForSeconds(0.1f);
         }
-        ScoreValue.text = "0";
     }
 
     private void DisableCoin(GameObject target, bool last = false)
@@ -90,6 +93,7 @@ public class CoinContainer : MonoBehaviour
     {
         count = 0;
         CoinValue.text = (savedCoin + gainedCoin).ToString();
+        GainedValue.Gained = 0;
         foreach (var coin in CoinList)
         {
             if (coin.activeSelf)

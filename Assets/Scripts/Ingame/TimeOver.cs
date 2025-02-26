@@ -12,6 +12,8 @@ public class TimeOver : MonoBehaviour
     public GameObject NewRecord;
     public AudioPlayer SoundPlayer;
     public CoinContainer CoinController;
+    public GainedCoin GainedCoin;
+    public GameObject CoinParent;
 
     private float backgroundColorLerpValue;
     private int index;
@@ -25,7 +27,7 @@ public class TimeOver : MonoBehaviour
         skipable = false;
         Childrens[0].GetComponent<Image>().color = Color.clear;
         Childrens[1].transform.localPosition = Vector3.up * 600.0f;
-        Childrens[1].transform.DOLocalMove(Vector3.up * 220.0f, 2.0f).SetEase(Ease.OutBounce).onComplete = ShowChildrens;
+        Childrens[1].transform.DOLocalMove(Vector3.up * 190.0f, 2.0f).SetEase(Ease.OutBounce).onComplete = ShowChildrens;
 
         var highScore = GameSystem.Instance.GetPlayerPref(PlayerPrefType.HighScore);
         var currentScore = (int)GameManager.Instance.TargetScore;
@@ -39,8 +41,11 @@ public class TimeOver : MonoBehaviour
             HighScore.text = currentScore.ToString();
         }
 
-        var gainedCoin = Mathf.CeilToInt(GameManager.Instance.TotalScore / 100);
+        var gainedCoin = (int)GameManager.Instance.TotalScore / 100;
         var savedCoin = (int)GameSystem.Instance.GetPlayerPref(PlayerPrefType.Coin);
+        GainedCoin.Gained = gainedCoin;
+        CoinParent.transform.parent = transform;
+        CoinController.GetComponentInParent<Transform>().parent = transform;
         CoinController.SetCoinValue(savedCoin, gainedCoin);
         GameSystem.Instance.SetPlayerPref(PlayerPrefType.Coin, savedCoin + gainedCoin);
     }
@@ -75,7 +80,7 @@ public class TimeOver : MonoBehaviour
         SoundPlayer.PlayAudio(5);
         if (index == Childrens.Length)
         {
-            StartCoroutine(CoinController.ScoreToCoin((int)GameManager.Instance.TargetScore));
+            StartCoroutine(CoinController.CoinTransfer((int)GameManager.Instance.TargetScore));
         }
         if (index < Childrens.Length - 1)
         {
