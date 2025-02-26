@@ -3827,7 +3827,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 156715410}
         m_TargetAssemblyTypeName: CircleEffect, Assembly-CSharp
-        m_MethodName: ChangeScene
+        m_MethodName: FadeOut
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -10782,7 +10782,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1549390225
 MonoBehaviour:
   m_ObjectHideFlags: 0

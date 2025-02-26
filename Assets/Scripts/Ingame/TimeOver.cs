@@ -45,7 +45,6 @@ public class TimeOver : MonoBehaviour
         var savedCoin = (int)GameSystem.Instance.GetPlayerPref(PlayerPrefType.Coin);
         GainedCoin.Gained = gainedCoin;
         CoinParent.transform.parent = transform;
-        CoinController.GetComponentInParent<Transform>().parent = transform;
         CoinController.SetCoinValue(savedCoin, gainedCoin);
         GameSystem.Instance.SetPlayerPref(PlayerPrefType.Coin, savedCoin + gainedCoin);
     }
