@@ -13,6 +13,7 @@ public class CoinContainer : MonoBehaviour
     public GameObject IconObj;
     public TMP_Text CoinValue;
     public GainedCoin GainedValue;
+    public AudioPlayer MyAudioPlayer;
     private List<GameObject> CoinList = new();
     private int count;
     private int gainedCoin;
@@ -68,6 +69,8 @@ public class CoinContainer : MonoBehaviour
         IconObj.transform.DOKill();
         IconObj.transform.localScale = new Vector3(-2.0f, 2.0f, 1.0f);
         IconObj.transform.DOScale(new Vector3(-1.0f, 1.0f, 1.0f), 0.5f);
+        MyAudioPlayer.PlayAudio(7);
+
         CoinValue.text = (localCoin++).ToString();
         if (last)
         {

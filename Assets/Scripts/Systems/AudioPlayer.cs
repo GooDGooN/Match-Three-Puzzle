@@ -10,7 +10,6 @@ public class AudioPlayer : MonoBehaviour
     public bool AutoPlayLoop;
     public bool IgnoreTimeScale;
     public int AutoPlayIndex;
-
     private void Awake()
     {
         MyAudioSource = GetComponent<AudioSource>();
